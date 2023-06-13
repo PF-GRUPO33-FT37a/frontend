@@ -2,7 +2,7 @@
 import ContainerProducts from "@/components/ContainerProducts"
 import {useState } from "react"
 
-export default function ProductsPage() {
+export default function HombresRemerasPage() {
 
     const [rangeValue, setRangeValue] = useState(0)
 
