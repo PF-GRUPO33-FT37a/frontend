@@ -65,9 +65,9 @@ export default function Menu() {
                                     isOpen2
                                         ?
                                         <ul className="absolute bg-white flex flex-col left-[100%] top-0 ">
-                                            <li className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Zapatillas</li>
-                                            <li className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Buzos</li>
-                                            <li className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Remeras</li>
+                                            <Link href={'/products/hombres/zapatillas'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Zapatillas</Link>
+                                            <Link href={'products/hombres/buzos'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Buzos</Link>
+                                            <Link href={'/products/hombres/remeras'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Remeras</Link>
                                             <li className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Pantalones</li>
                                         </ul>
                                         :
