@@ -5,16 +5,21 @@ import Image from "next/image"
 import ProductCard from "./ProductCard"
 import Tippy from "@tippyjs/react"
 import 'tippy.js/dist/tippy.css';
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 
 export default function ContainerProducts() {
 
+    const route = useRouter()
     const path = usePathname()
     
     const [productos, setProductos] = useState([])
 
+    const handleOnClick =(id) =>{
+        route.push(`/products/hombres/zapatillas/${id}`)
+    }
     const getProducts = async () => {
+
 
         if(path.includes('hombres/remeras')){ 
         
@@ -30,6 +35,16 @@ export default function ContainerProducts() {
     }else if(path.includes('hombres/buzos')) {
         try {
             const response = await axios('http://localhost:3000/productsHombresBuzos.json')
+            console.log(response);
+            setProductos(response.data)
+            console.log(`esto son productos ${productos.length}`);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else if(path.includes('hombres/pantalones')) {
+        try {
+            const response = await axios('http://localhost:3000/productsHombresPantalones.json')
             console.log(response);
             setProductos(response.data)
             console.log(`esto son productos ${productos.length}`);
@@ -98,6 +113,7 @@ export default function ContainerProducts() {
                             }
                             key={index}>
                             <div
+                                onClick={()=>{handleOnClick(producto.id)}}
                                 className="w-[30%] flex flex-col gap-y-[1rem]"
                             >
                                 <Image

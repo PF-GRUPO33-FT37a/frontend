@@ -25,12 +25,14 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         {
           !path.includes('login') &&
+          !path.includes('admin') &&
           !path.includes('register') && <NavBar/>
         }
         {children}
 
         {
           !path.includes('login') &&
+          !path.includes('admin') &&
           !path.includes('register') && <Footer/>
         }
         
