@@ -68,7 +68,7 @@ export default function Menu() {
                                             <Link href={'/products/hombres/zapatillas'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Zapatillas</Link>
                                             <Link href={'products/hombres/buzos'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Buzos</Link>
                                             <Link href={'/products/hombres/remeras'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Remeras</Link>
-                                            <li className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Pantalones</li>
+                                            <Link href={'/products/hombres/pantalones'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Pantalones</Link>
                                         </ul>
                                         :
                                         <></>
