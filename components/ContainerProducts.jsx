@@ -79,7 +79,7 @@ export default function ContainerProducts() {
                     return (
                         <Tippy
                             interactive={true}
-                            placement="right"
+                            placement="left"
                             content={
                                 <div className="flex gap-x-[1rem] py-[1rem] z-0">
                                     <div className="w-[20%] flex flex-col gap-y-[1rem]">

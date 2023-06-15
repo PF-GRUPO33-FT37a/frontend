@@ -5,10 +5,10 @@ import logo from '../../public/logocommerce.png'
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Form, Formik, Field, ErrorMessage } from "formik"
-import validate from "./validate"
+import validate from "./validation"
 import { useState } from "react"
 
-export default function RegisterPage() {
+export default function RegistrarPage() {
     const [formularioSend, setFormularioSend] = useState(false);
 
     return (
