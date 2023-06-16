@@ -21,7 +21,7 @@ export default function ContainerProducts() {
     const getProducts = async () => {
 
 
-        if(path.includes('hombres/remeras')){ 
+        if(path.includes('hombres/remeras') || path.includes('children/shirt') || path.includes('female/shirt')){ 
         
         try {
             const response = await axios('http://localhost:3000/productsHombresRemeras.json')
@@ -32,7 +32,7 @@ export default function ContainerProducts() {
             console.log(error);
         }
 
-    }else if(path.includes('hombres/buzos')) {
+    }else if(path.includes('hombres/buzos') || path.includes('children/sweatshirt') || path.includes('female/sweatshirt')) {
         try {
             const response = await axios('http://localhost:3000/productsHombresBuzos.json')
             console.log(response);
@@ -42,7 +42,7 @@ export default function ContainerProducts() {
             console.log(error);
         }
     }
-    else if(path.includes('hombres/pantalones')) {
+    else if(path.includes('hombres/pantalones') || path.includes('children/pants') || path.includes('female/pants')) {
         try {
             const response = await axios('http://localhost:3000/productsHombresPantalones.json')
             console.log(response);

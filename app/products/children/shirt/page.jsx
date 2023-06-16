@@ -2,7 +2,7 @@
 import ContainerProducts from "@/components/ContainerProducts"
 import {useState } from "react"
 
-export default function ChildrenPantsPage() {
+export default function ChildrenShirtPage() {
 
     const [rangeValue, setRangeValue] = useState(0)
 
