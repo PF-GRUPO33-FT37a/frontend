@@ -4,16 +4,16 @@ import React from 'react'
 //email
 //password
 //confirm_password
-//tel
+//phoneNumber
 //date
 
 export default function validate(values) {
     const errors = {};
 
-    if (!values.user_name) {
-        errors.user_name = "Required";
-    } else if (values.user_name.length < 3) {
-        errors.user_name = "Must be 3 characters or more";
+    if (!values.name) {
+        errors.name = "Required";
+    } else if (values.name.length < 3) {
+        errors.name = "Must be 3 characters or more";
     }
     if (!values.email) {
         errors.email = "Required";
@@ -37,12 +37,12 @@ export default function validate(values) {
     }
 
 
-    if(!/^\d+$/.test(values.tel)){
-        errors.tel = "Enter only numbers"
+    if(!/^\d+$/.test(values.phoneNumber)){
+        errors.phoneNumber = "Enter only numbers"
     }
 
-    if(!values.tel) {
-        errors.tel = "Required"
+    if(!values.phoneNumber) {
+        errors.phoneNumber = "Required"
     }
 
 
