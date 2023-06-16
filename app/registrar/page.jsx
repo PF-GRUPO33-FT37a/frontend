@@ -5,24 +5,11 @@ import logo from '../../public/logocommerce.png'
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Form, Formik, Field, ErrorMessage } from "formik"
-import validate from "./validate"
+import validate from "./validation"
 import { useState } from "react"
-import axios from "axios"
 
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
-
-export default function RegisterPage() {
+export default function RegistrarPage() {
     const [formularioSend, setFormularioSend] = useState(false);
-
-    const notify = (message) => {
-        toast.success(message, {
-            autoClose: 6000,
-        });
-    };
-
-    const notifyError = (message) => toast.error(message);
-
 
     return (
         <main className="min-h-[100vh]">
@@ -45,29 +32,18 @@ export default function RegisterPage() {
                     className="w-[50%] min-h-[100vh] flex items-center">
                     <Formik
                         initialValues={{
-                            name: "",
+                            user_name: "",
                             email: "",
                             password: "",
                             confirm_password: "",
-                            phoneNumber: "",
+                            tel: "",
                             date: "",
                         }}
                         validate={validate}
                         onSubmit={async (values, { resetForm }) => {
-                            // resetForm()
+                            resetForm()
                             setFormularioSend(true)
                             setTimeout(() => setFormularioSend(false), 5000);
-                            console.log('hola');
-                            try {
-                                const response = await axios.post("http://localhost:3001/users", values)
-                                console.log(response);
-                                notify("User created successfully, check your email to activate your account");
-                            } catch (error) {
-                                console.log(error);
-
-                                notifyError("User already exists");
-                            }
-
                         }}
                     >
                         {({ errors }) => (
@@ -99,15 +75,15 @@ export default function RegisterPage() {
                                                 htmlFor="">
                                                 <span className="font-medium">User Name:</span>
                                                 <Field
-                                                    name="name"
+                                                    name="user_name"
                                                     placeholder="Enter you User Name.."
                                                     className=" py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"
                                                     type="text" />
                                                 <ErrorMessage
-                                                    name="name"
+                                                    name="user_name"
                                                     component={() => (
                                                         <div className="absolute top-[110%] text-red-500 text-xs">
-                                                            {errors.name}
+                                                            {errors.user_name}
                                                         </div>
                                                     )}
                                                 />
@@ -180,16 +156,16 @@ export default function RegisterPage() {
                                             <label
                                                 className="relative flex flex-col gap-y-[0.4rem]"
                                                 htmlFor="">
-                                                <span className="font-medium">Phone:</span>
+                                                <span className="font-medium">Tel:</span>
                                                 <Field
-                                                    name="phoneNumber"
+                                                    name="tel"
                                                     className="py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"
                                                     type="text" />
                                                 <ErrorMessage
-                                                    name="phoneNumber"
+                                                    name="tel"
                                                     component={() => (
                                                         <div className="absolute top-[110%] text-red-500 text-xs">
-                                                            {errors.phoneNumber}
+                                                            {errors.tel}
                                                         </div>
                                                     )}
                                                 />
@@ -203,7 +179,7 @@ export default function RegisterPage() {
                                                     name="date"
                                                     className="py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"
                                                     type="date" />
-                                                <ErrorMessage
+                                                    <ErrorMessage
                                                     name="date"
                                                     component={() => (
                                                         <div className="absolute top-[110%] text-red-500 text-xs">
@@ -218,12 +194,12 @@ export default function RegisterPage() {
                                         <button
                                             type="submit"
                                             className="font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[50%] mx-[auto] shadow-md shadow-[#11111180]">Register</button>
+
                                     </div>
                                 </div>
                             </Form>
                         )}
                     </Formik>
-                <ToastContainer />
                 </motion.article>
             </section>
         </main>

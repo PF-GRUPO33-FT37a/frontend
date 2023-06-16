@@ -27,8 +27,8 @@ export default function DetailHombresZapatillas() {
 
     return (
         <main className="min-h-[100vh] pt-[9rem]">
-            <section className="w-[70%] mx-[auto] flex justify-between pt-[1rem] pb-[4rem]">
-                <article className="w-[55%] flex justify-between">
+            <section className="w-[70%] mx-[auto] flex justify-center pt-[1rem] pb-[4rem] gap-x-[3rem]">
+                <article className="w-[40%] flex justify-between ">
                     <div className="w-[15%] flex flex-col gap-y-[1rem]">
                         <Image src={detail.background_image} alt={detail.title} width={500} height={500} />
                         <Image src={detail.background_image} alt={detail.title} width={500} height={500} />
