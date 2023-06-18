@@ -52,7 +52,7 @@ export default function DetailHombresZapatillas() {
     return (
         <main className="min-h-[100vh] pt-[9rem]">
             <section className="w-[70%] mx-[auto] flex justify-center pt-[1rem] pb-[4rem] gap-x-[3rem]">
-                <article className="w-[40%] flex justify-between ">
+                <article className="w-[40%] flex justify-between gap-x-[1rem]">
                     <div className="w-[15%] flex flex-col gap-y-[1rem]">
                         {
                             productDetail[0]?.images?.map((img, index) => {
@@ -70,7 +70,7 @@ export default function DetailHombresZapatillas() {
                         <Image src={productDetail[0]?.images[0]} alt={productDetail[0]?.name} width={500} height={500} /> */}
 
                     </div>
-                    <div className="relative w-[80%] overflow-hidden">
+                    <div className="relative w-[100%] overflow-hidden ">
 
                         <Image
                             onMouseMove={handleMouseMove}
@@ -82,7 +82,7 @@ export default function DetailHombresZapatillas() {
                     </div>
                 </article>
                 <article className="w-[40%] flex flex-col gap-y-[2rem]">
-                    <div className="w-[80%]">
+                    <div className="w-[80%] mx-[auto]">
                         <div className="flex flex-col gap-y-[1rem]">
                             <div>
                                 <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.brand}</h2>
@@ -112,7 +112,7 @@ export default function DetailHombresZapatillas() {
                             <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] ">♥ Agregar a favoritos</span>
                         </div>
                     </div>
-                    <div className="w-[100%] flex flex-col gap-y-[1rem]">
+                    <div className="w-[80%] flex flex-col gap-y-[1rem] mx-[auto]">
                         <h3>Mas colores</h3>
                         <div className="flex gap-x-[1rem]">
 
