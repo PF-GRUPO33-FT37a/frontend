@@ -1,16 +1,29 @@
 'use client'
 import ContainerProducts from "@/components/ContainerProducts"
-import {useState } from "react"
+import {useEffect, useState } from "react"
+import axios from "axios"
 
-export default function HombresBuzosPage() {
+export default function ProductsPage() {
 
     const [rangeValue, setRangeValue] = useState(0)
+    const [products, setProducts] = useState([])
 
     const handleRange = (event) =>{
         setRangeValue(event.target.value)
     }
 
-    
+    const getShoes = async() =>{
+        const response = await axios.get('http://localhost:3001/products/search?gender=male&category=hoodie')
+        const arrayProduct = response.data.documents
+        setProducts(arrayProduct)
+        // console.log(response.data.documents);
+    }
+
+    useEffect(()=>{
+        console.log(products);
+        getShoes()
+    },[])
+
 
     return (
         <main className="pt-[9rem] min-h-[100vh]">
@@ -130,7 +143,7 @@ export default function HombresBuzosPage() {
                 </div>
 
                 <div className="w-[80%]">
-                    <ContainerProducts/>
+                    <ContainerProducts products={products}/>
                 </div>
             </section>
         </main>
