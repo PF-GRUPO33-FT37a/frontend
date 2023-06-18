@@ -18,7 +18,7 @@ export default function Home() {
       <h2 className='absolute text-white font-bold text-[2rem] top-[2rem] left-[4rem] bg-[#90909050] py-[1rem] px-[1.4rem] rounded-[1rem]'>Empieza tu negocio</h2>
       </div>
 
-      {/* <section className='flex w-[80%] mx-[auto]  justify-center py-[3rem]'>
+      <section className='flex w-[80%] mx-[auto]  justify-center py-[3rem]'>
         <div className='w-[60%] pt-[2rem] text-center'>
           <h2 className='text-[3.4rem] font-semibold'>Vende tus productos</h2>
           <p className='w-[60%] mx-[auto] mt-[2rem] text-[1.4rem]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum ut eos facere vero, laborum fugiat ipsum quis autem iusto, aut, ipsam magnam vitae nisi consequuntur dicta culpa architecto iure possimus?</p>
@@ -26,7 +26,7 @@ export default function Home() {
         <Image 
         className='h-[500px] w-[40%] object-cover rounded-[1rem]'
         src={clothes} alt='photo1' width={600} height={600}/>
-      </section> */}
+      </section>
 
       <section className='bg-[#909090] py-[4rem]'>
         <div className='flex w-[80%] mx-[auto] justify-around flex-wrap '>
