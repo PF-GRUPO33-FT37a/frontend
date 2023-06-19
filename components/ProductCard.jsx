@@ -23,7 +23,6 @@ export default function ProductCard({ product }) {
     useEffect(()=>{
         setTooltip(product)
     },[])
-    console.log(toolTip);
 
     return (
 
