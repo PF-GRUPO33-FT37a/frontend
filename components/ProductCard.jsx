@@ -2,7 +2,6 @@ import Image from "next/image"
 import Tippy from "@tippyjs/react"
 import 'tippy.js/dist/tippy.css';
 import { usePathname, useRouter } from "next/navigation";
-import axios from "axios"
 import { useEffect, useState } from "react"
 
 export default function ProductCard({ product }) {
