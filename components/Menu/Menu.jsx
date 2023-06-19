@@ -42,9 +42,10 @@ export default function Menu() {
             <li
                 className="block pb-[0.4rem]"
             >Home</li>
-            <li
+            <Link
                 className="block pb-[0.4rem]"
-            >About</li>
+                href={'/about'}
+            >About</Link>
             <div
                 onMouseEnter={openMenu}
                 onMouseLeave={closeMenu}
