@@ -1,138 +1,76 @@
 'use client'
-import ContainerProducts from "@/components/ContainerProducts"
-import {useState } from "react"
+import maleShoes from '../../../public/maleShoes.jpg'
+import maleHoodie from '../../../public/maleHoodie.jpg'
+import maleShirt from '../../../public/maleShirt.jpg'
+import maleTrousers from '../../../public/maleTrousers.jpg'
+import Image from 'next/image'
+import { useState } from 'react'
+import Link from 'next/link'
 
-export default function ChildrenPantsPage() {
 
-    const [rangeValue, setRangeValue] = useState(0)
+export default function ProductsPage() {
 
-    const handleRange = (event) =>{
-        setRangeValue(event.target.value)
-    }
+    const [hoveredIndex, setHoveredIndex] = useState(-1);
 
-    
+    const image = [
+        {
+            title: "Shoes",
+            img: maleShoes,
+            link:'products/hombres/zapatillas'
+        },
+        {
+            title: "Hoodies",
+            img: maleHoodie,
+            link:'products/hombres/buzos'
+        },
+        {
+            title: "T-shirts",
+            img: maleShirt,
+            link:'products/hombres/remeras'
+        },
+        {
+            title: "Pants",
+            img: maleTrousers,
+            link:'products/hombres/pantalones'
+        },
+    ]
+
+    const handleMouseEnter = (index) => {
+        setHoveredIndex(index);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredIndex(-1);
+    };
 
     return (
-        <main className="pt-[9rem] min-h-[100vh]">
-            <section className="w-[70%] mx-[auto] flex py-[3rem]">
-                <div className="w-[20%]">
+        <main className='pt-[9rem]'>
+            <div className='flex w-[70%] mx-[auto] flex-wrap justify-center pt-[3rem] pb-[6rem] gap-[4rem]'>
+                {
+                    image.map((img, index) => {
 
+                        return (
 
-                    <article className="w-[100%]  p-[0.6rem] flex flex-col gap-y-[1rem]">
-                        <h3 className="border-[#A9A9B2] border-b-[1px]">Marca</h3>
-                        <input
-                            className="w-[100%] text-[0.8rem] p-[0.4rem] border-[#A9A9B2] border-[1px]"
-                            type="text" placeholder="Buscar por marca" />
+                            <Link href={img.link} key={index}
+                                className='relative w-[40%] h-[500px] cursor-pointer'
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                {
+                                    hoveredIndex === index && (
+                                        <span className={`font-semibold text-[3rem] absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] opacity-100`}>{img.title}</span>
+                                    )
+                                }
+                                <Image
+                                    className='object-cover h-full w-full rounded-[1rem] hover:opacity-50'
+                                    src={img.img} alt={`photo-${index + 1}`} width={1000} height={1000} />
+                            </Link>
+                        )
+                    })
+                }
 
-                        <div
-                            className="flex flex-col h-[120px] overflow-y-scroll">
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Adidas</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Nike</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Reebok</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Puma</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Vans</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">NBA</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Wilson</span>
-                            </label>
-                        </div>
-                        <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Aplicar</h4>
-
-                    </article>
-
-                    <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
-                        <h3 className="border-[#A9A9B2] border-b-[1px]">Talle</h3>
-                        <input
-                            className="w-[100%] text-[0.8rem] p-[0.4rem] border-[#A9A9B2] border-[1px]"
-                            type="text" placeholder="Buscar por talle" />
-
-                        <div
-                            className="flex flex-col h-[120px] overflow-y-scroll">
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">37</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">38</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">39</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">40</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">41</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">42</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">43</span>
-                            </label>
-                        </div>
-                        <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Aplicar</h4>
-
-                    </article>
-
-                    <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
-                        <h3 className="border-[#A9A9B2] border-b-[1px]">Color</h3>
-                        <input
-                            className="w-[100%] text-[0.8rem] p-[0.4rem] border-[#A9A9B2] border-[1px]"
-                            type="text" placeholder="Buscar por color" />
-
-                        <div
-                            className="flex flex-col h-[120px] overflow-y-scroll">
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Blanco</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Negro</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Rojo</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Azul</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Verde</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Violeta</span>
-                            </label>
-                            <label htmlFor="">
-                                <input type="checkbox" /> <span className="text-[#A9A9B2]">Marron</span>
-                            </label>
-                        </div>
-                        <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Aplicar</h4>
-
-                    </article>
-
-                    <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
-                    <h3 className="border-[#A9A9B2] border-b-[1px]">Precio</h3>
-                        <input value={rangeValue} onChange={handleRange} type="range" min={0} max={10000} />
-                        <span>{rangeValue}</span>
-                        <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Aplicar</h4>
-
-                    </article>
-                </div>
-
-                <div className="w-[80%]">
-                    <ContainerProducts/>
-                </div>
-            </section>
+            </div>
         </main>
     )
+
 }
