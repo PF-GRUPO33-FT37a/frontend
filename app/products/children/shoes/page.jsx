@@ -11,7 +11,7 @@ export default function ChildrenShoesPage() {
     const [products, setProducts] = useState([]);
   
     useEffect(() => {
-      dispatch(getProducts("children", "shoe"));
+      dispatch(getProducts("child", "shoe"));
     }, [dispatch]);
   
     useEffect(() => {
