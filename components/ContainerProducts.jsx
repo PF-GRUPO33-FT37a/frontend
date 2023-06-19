@@ -6,10 +6,10 @@ export default function ContainerProducts({products}) {
     return (
         <div className="flex flex-wrap p-[2rem] justify-between gap-y-[2rem]">
             {
-                products?.map((product,index)=>{
+                products.map((product)=>{
                     return(
                         <ProductCard
-                        key={index}
+                        key={product._id}
                         product={product}
                         />
                     )

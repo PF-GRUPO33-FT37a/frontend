@@ -6,7 +6,7 @@ import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import { usePathname } from "next/navigation";
 
-
+import Providers from '@/redux/provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <Providers>
       <body className={inter.className}>
         {
           !path.includes('login') &&
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         }
         
         </body>
+      </Providers>
     </html>
   )
 }

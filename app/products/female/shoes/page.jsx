@@ -1,8 +1,27 @@
 'use client'
 import ContainerProducts from "@/components/ContainerProducts"
-import {useState } from "react"
+import {useState, useEffect} from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { getProducts } from "@/redux/Slice"
+
+
 
 export default function FemaleShoesPage() {
+
+    const dispatch = useDispatch();
+    const allProducts = useSelector((state) => state.products.allProducts);
+    const [products, setProducts] = useState([]);
+  
+    useEffect(() => {
+      dispatch(getProducts("female", "shoe"));
+    }, [dispatch]);
+  
+    useEffect(() => {
+        if (allProducts && allProducts.length > 0) {
+          setProducts(allProducts);
+        }
+      }, [allProducts]);
+
 
     const [rangeValue, setRangeValue] = useState(0)
 
@@ -10,7 +29,6 @@ export default function FemaleShoesPage() {
         setRangeValue(event.target.value)
     }
 
-    
 
     return (
         <main className="pt-[9rem] min-h-[100vh]">
@@ -130,7 +148,7 @@ export default function FemaleShoesPage() {
                 </div>
 
                 <div className="w-[80%]">
-                    <ContainerProducts/>
+                    {products&&products.length>1?<ContainerProducts products={products}/>:<p>loading...</p>}
                 </div>
             </section>
         </main>
