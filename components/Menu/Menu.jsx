@@ -42,9 +42,10 @@ export default function Menu() {
             <li
                 className="block pb-[0.4rem]"
             >Home</li>
-            <li
+            <Link
                 className="block pb-[0.4rem]"
-            >About</li>
+                href={'/about'}
+            >About</Link>
             <div
                 onMouseEnter={openMenu}
                 onMouseLeave={closeMenu}
@@ -60,7 +61,7 @@ export default function Menu() {
                                 onMouseEnter={openMenu2}
                                 onMouseLeave={closeMenu2}
                                 className="relative ">
-                                <li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen2 === true ? 'bg-[#909090] text-white' : ''}`}>Hombres</li>
+                                <Link href={'/products/hombres'}><li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen2 === true ? 'bg-[#909090] text-white' : ''}`}>Hombres</li></Link>
                                 {
                                     isOpen2
                                         ?
@@ -80,7 +81,7 @@ export default function Menu() {
                                 onMouseLeave={closeMenu3}
                                 className="relative ">
 
-                                <li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen3 === true ? 'bg-[#909090] text-white' : ''}`}>Female</li>
+                                <Link href={'/products/female'}><li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen3 === true ? 'bg-[#909090] text-white' : ''}`}>Female</li></Link>
                                 {
                                     isOpen3
                                         ?
@@ -99,7 +100,7 @@ export default function Menu() {
                                 onMouseEnter={openMenu4}
                                 onMouseLeave={closeMenu4}
                                 className="relative ">
-                                <li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen4 === true ? 'bg-[#909090] text-white' : ''}`}>Children</li>
+                                <Link href={'/products/children'}><li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer ${isOpen4 === true ? 'bg-[#909090] text-white' : ''}`}>Children</li></Link>
                                 {
                                     isOpen4
                                         ?
