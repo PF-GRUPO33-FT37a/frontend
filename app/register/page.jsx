@@ -57,7 +57,6 @@ export default function RegisterPage() {
                             // resetForm()
                             setFormularioSend(true)
                             setTimeout(() => setFormularioSend(false), 5000);
-                            console.log('hola');
                             try {
                                 const response = await axios.post("http://localhost:3001/users", values)
                                 console.log(response);
