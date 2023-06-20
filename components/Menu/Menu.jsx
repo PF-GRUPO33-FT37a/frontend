@@ -87,8 +87,8 @@ export default function Menu() {
                                         ?
                                         <ul className="absolute bg-white flex flex-col left-[100%] top-0 ">
                                             <Link href={'/products/female/shoes'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Shoes</Link>
-                                            <Link href={'/products/female/sweatshirt'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Sweatshirt</Link>
-                                            <Link href={'/products/female/shirt'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Shirt</Link>
+                                            <Link href={'/products/female/hoodie'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Sweatshirt</Link>
+                                            <Link href={'/products/female/t-shirt'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Shirt</Link>
                                             <Link href={'/products/female/pants'} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Pants</Link>
                                         </ul>
                                         :
