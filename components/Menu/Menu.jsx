@@ -39,9 +39,11 @@ export default function Menu() {
 
     return (
         <ul className="flex justify-around items-center ">
+            <Link href={'/'}>
             <li
                 className="block pb-[0.4rem]"
-            >Home</li>
+                >Home</li>
+                </Link>
             <Link
                 className="block pb-[0.4rem]"
                 href={'/about'}
@@ -121,9 +123,11 @@ export default function Menu() {
                         <></>
                 }
             </div>
+            <Link href={'/products/create'}>
             <li
                 className="block pb-[0.4rem]"
-            >More</li>
+                >Create</li>
+                </Link>
         </ul>
     )
 }
