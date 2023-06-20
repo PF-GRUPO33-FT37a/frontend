@@ -44,11 +44,13 @@ export default function ProductCard({ product }) {
                     <div className="w-[20%] flex flex-col gap-y-[1rem]">
                         {
                             product?.sameCode?.map((color, index) => {
-                                return (
-                                    <Image
-                                        key={index}
-                                        src={color?.images[0]} alt={color?.name} width={200} height={400} />
-                                )
+                                if(product?._id !== color?._id){
+                                    return (
+                                        <Image
+                                            key={index}
+                                            src={color?.images[0]} alt={color?.name} width={200} height={400} />
+                                    )
+                                } 
                             })
                         }
                     </div>
