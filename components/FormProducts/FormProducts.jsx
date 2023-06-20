@@ -17,11 +17,13 @@ export default function FormProducts (){
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required').min(4),
         category: Yup.string().required('Category is required').min(4),
+        color: Yup.string().required('Color is required'),
         gender: Yup.string().required('Gender is required'),
         season: Yup.string().required('Season is required'),
         stock: Yup.number().integer('Stock must be an integer').positive('Stock must be a positive number'),
         brand: Yup.string().required('Brand is required'),
         price: Yup.number().positive('Price must be a positive number'),
+        articleCode:Yup.string().required('articleCode is required'),
       });
 
     const formik = useFormik({
@@ -34,7 +36,8 @@ export default function FormProducts (){
           season: '',
           stock: 0,
           brand: '',
-          price: 0
+          price: 0,
+          articleCode:""
         },
         validationSchema: validationSchema,
         validate: (values) => {
@@ -43,11 +46,6 @@ export default function FormProducts (){
             if (sizeValue.length === 0) {
               errors.sizeValue = 'Size is required';
             }
-        
-            if (colorValue.length === 0) {
-              errors.colorValue = 'Color is required';
-            }
-        
             return errors;
           },
         onSubmit: (values) => { 
@@ -58,12 +56,11 @@ export default function FormProducts (){
             sizeValue.forEach((value) => {
                 formData.append("size", value);
               });
-            colorValue.forEach((value) => {
-                formData.append("color", value);
-              });
+            formData.append("color", values.color);
             formData.append("season", values.season);
             formData.append("stock", values.stock);
             formData.append("brand", values.brand);
+            formData.append("articleCode", values.articleCode);
             formData.append("price", values.price);
             images.forEach((file) => {
               formData.append("images", file);
@@ -150,9 +147,8 @@ export default function FormProducts (){
             <div>
                 <label htmlFor="color" className="flex flex-col gap-y-[0.4rem]">Color: </label>
                 <input type="text" id="color" placeholder="eje: Red" onChange={handleChange} value={formik.values.color} onBlur={handleBlur} className="py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"/>
-                <button onClick={handleClickColor} className="font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[10%] mx-[auto] shadow-md shadow-[#11111180]">Add</button>
-                {formik.errors.colorValue && (
-                <div className="text-red-500 text-sm">{formik.errors.colorValue}</div>
+                {formik.errors.color && (
+                <div className="text-red-500 text-sm">{formik.errors.color}</div>
                 )}
             </div>
             <div>
@@ -160,7 +156,7 @@ export default function FormProducts (){
                 <select id="season" onChange={handleChange} onBlur={handleBlur} value={formik.values.season}>
                     <option value="">Select</option>
                     <option value="spring">Spring </option>
-                    <option value="summer ">Summer </option>
+                    <option value="summer">Summer </option>
                     <option value="autumn">Autumn</option>
                     <option value="winter">Winter </option>
                 </select>
@@ -191,6 +187,13 @@ export default function FormProducts (){
                 <input type="number" id="price" placeholder="eje: 500" onChange={handleChange} value={formik.values.price} onBlur={handleBlur} className="py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"/>
                 {formik.errors.price && (
                 <div className="text-red-500 text-sm">{formik.errors.price}</div>
+                )}
+            </div>
+            <div>
+                <label htmlFor="articleCode">Aticle Code</label>
+                <input type="text" id="articleCode" placeholder="eje: 500" onChange={handleChange} value={formik.values.articleCode} onBlur={handleBlur} className="py-[0.6rem] px-[1rem] rounded-[1rem] shadow-md shadow-[#11111180]"/>
+                {formik.errors.articleCode && (
+                <div className="text-red-500 text-sm">{formik.errors.articleCode}</div>
                 )}
             </div>
             {formik.isValid && (
