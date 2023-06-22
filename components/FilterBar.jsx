@@ -10,6 +10,7 @@ export default function FilterBar({ products, gender, category }) {
     const [categorys, setCategorys] = useState("")
     const [filterBrands, setFilterBrands] = useState([])
     const [filterColors, setFilterColors] = useState([])
+    
 
     const [filterBar, setFilterBar] = useState({
         brand:"",
@@ -34,6 +35,7 @@ export default function FilterBar({ products, gender, category }) {
         const newArray = Array.from(brands)
         setFilterBrands(newArray)
     }
+
 
     const getColors = () => {
         const arrayColors = products?.flatMap((el) => el.color[0])
@@ -85,13 +87,16 @@ export default function FilterBar({ products, gender, category }) {
         getColors()
     }, [products,filterBar])
 
+    useEffect(() => {
+        if((filterBrands!==','&&filterBrands.length>0)||(filterColors!==','&& filterColors.length>0)) handleSubmit()
+    }, [filterBar])
+
     console.log(products);
     console.log(filterBrands);
 
     console.log(filterBar);
 
-
-    const handleSubmit = (event) =>{
+    const handleSubmit = () =>{
         if ((filterBar.brand && filterBar.brand.length>1)||(filterBar.color && filterBar.color.length>1)){
             let brand = filterBar.brand
             let color = filterBar.color
@@ -101,6 +106,7 @@ export default function FilterBar({ products, gender, category }) {
             dispatch(getFilterProducts(genders, categorys))
         }
     }
+
 
     return (
         <div className="w-[20%]">
