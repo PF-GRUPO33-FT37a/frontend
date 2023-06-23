@@ -5,6 +5,7 @@ import logo from '../public/logocommerce.png';
 import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
+import UserMenu from './UserMenu';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
@@ -12,14 +13,15 @@ import { searchProducts } from '@/redux/Slice';
 
 export default function NavBar() {
   const [search, setSearch] = useState('');
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const userData = localStorage.getItem('user')
 
   const debouncedSearch = useCallback(
     debounce((searchTerm) => {
       if (searchTerm.length > 0) {
         dispatch(searchProducts(searchTerm));
-        router.push('/search');
+        router.push('/search')
       }
     }, 500),
     []
@@ -50,11 +52,15 @@ export default function NavBar() {
           value={search}
         />
         <div className="flex items-center gap-x-[2rem]">
-          <Link href={'/login'}>Register/Login</Link>
+          { userData ?
+            <UserMenu/>
+            :
+            <Link href={'/login'}>Register/Login</Link>
+          }
           <Image src={cart} alt="ico-cart" width={40} height={40} />
         </div>
       </div>
       <Menu />
     </nav>
-  );
+  )
 }
