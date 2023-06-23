@@ -17,7 +17,7 @@ export default function LoginPage() {
 
     const notify = (message) => {
         toast.success(message, {
-            autoClose: 6000,
+            autoClose: 2000,
         });
     };
 
@@ -41,11 +41,14 @@ export default function LoginPage() {
         let url = (`password=${login.password}&email=${login.email}`)
         try {
             const response = await axios(`http://localhost:3001/users/login?${url}`)
-            console.log(response);
-            notify("You are successfully logged in");
-            setTimeout(() => router.push('/'), 3000);
+            localStorage.setItem('user', JSON.stringify({
+                data: response.data,
+                validated: false
+            }))
+            notify("You were successfully logged in")
+            setTimeout(() => router.push('/'), 3000)
         } catch (error) {
-            notifyError(error.response.data.error);
+            notifyError(error.message)
         }
     }
 
@@ -118,7 +121,7 @@ export default function LoginPage() {
                                     <input type="checkbox" />
                                 </div>
 
-                                <span className="font-light text-[0.8rem]">Fogget password?</span>
+                                <span className="font-light text-[0.8rem]">Forgot your password?</span>
                             </div>
 
                             <button 
