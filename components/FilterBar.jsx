@@ -1,12 +1,14 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useState,  useCallback  } from "react"
 import { useDispatch } from "react-redux"
 import { getFilterProducts } from "@/redux/Slice"
+import { debounce } from 'lodash';
 
-export default function FilterBar({ products, gender, category }) {
+export default function FilterBar({ products, gender, category, name }) {
 
     const [rangeValue, setRangeValue] = useState(0)
     const [genders, setGenders] = useState("")
+    const [names, setNames] = useState("")
     const [categorys, setCategorys] = useState("")
     const [filterBrands, setFilterBrands] = useState([])
     const [filterColors, setFilterColors] = useState([])
@@ -22,8 +24,12 @@ export default function FilterBar({ products, gender, category }) {
 
     useEffect(()=>{setGenders(gender)},[gender])
     useEffect(()=>{setCategorys(category)},[category])
+    useEffect(()=>{setNames(name)},[name])
 
-    useEffect(()=>{dispatch(getFilterProducts(gender,category))},[genders,categorys])
+    useEffect(()=>{
+        if(genders&&genders.length>0&&categorys&&categorys.length>0){
+        dispatch(getFilterProducts(gender,category))}
+    },[genders,categorys])
     
     const handleRange = (event) =>{
         setRangeValue(event.target.value)
@@ -38,7 +44,7 @@ export default function FilterBar({ products, gender, category }) {
 
 
     const getColors = () => {
-        const arrayColors = products?.flatMap((el) => el.color[0])
+        const arrayColors = products?.flatMap((el) => el.color?el.color[0]:'')
         const colors = new Set(arrayColors)
         const newArray = Array.from(colors)
         setFilterColors(newArray)
@@ -96,16 +102,41 @@ export default function FilterBar({ products, gender, category }) {
 
     console.log(filterBar);
 
-    const handleSubmit = () =>{
-        if ((filterBar.brand && filterBar.brand.length>1)||(filterBar.color && filterBar.color.length>1)){
-            let brand = filterBar.brand
-            let color = filterBar.color
-            dispatch(getFilterProducts(genders, categorys, brand!=","?brand:null, color!=","?color:null))
-        }
-        else{
-            dispatch(getFilterProducts(genders, categorys))
-        }
-    }
+    const debouncedSubmit = useCallback(
+        debounce(() => {
+          if (
+            (filterBar.brand && filterBar.brand.length > 1) ||
+            (filterBar.color && filterBar.color.length > 1) ||
+            (names && names.length > 0)
+          ) {
+            let brand = filterBar.brand;
+            let color = filterBar.color;
+            dispatch(
+              getFilterProducts(
+                genders,
+                categorys,
+                brand !== ',' ? brand : null,
+                color !== ',' ? color : null,
+                names
+              )
+            );
+          } else {
+            dispatch(getFilterProducts(genders, categorys, names));
+          }
+        }, 500),
+        [filterBar, names, dispatch]
+      );
+    
+      const handleSubmit = () => {
+        debouncedSubmit();
+      };
+    
+      useEffect(() => {
+        return () => {
+          // Cancelar el debounce cuando se desmonte el componente
+          debouncedSubmit.cancel();
+        };
+      }, [debouncedSubmit]);
 
 
     return (
@@ -133,41 +164,8 @@ export default function FilterBar({ products, gender, category }) {
                         })
                     }
                 </div>
-                <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]" onClick={handleSubmit}>Apply</h4>
+               
 
-            </article>
-
-            <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
-                <h3 className="border-[#A9A9B2] border-b-[1px]">Size</h3>
-                <input
-                    className="w-[100%] text-[0.8rem] p-[0.4rem] border-[#A9A9B2] border-[1px]"
-                    type="text" placeholder="Search for size" />
-
-                <div
-                    className="flex flex-col h-[120px] overflow-y-scroll">
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">37</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">38</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">39</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">40</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">41</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">42</span>
-                    </label>
-                    <label htmlFor="">
-                        <input type="checkbox" /> <span className="text-[#A9A9B2]">43</span>
-                    </label>
-                </div>
-                <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Apply</h4>
             </article>
 
             <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
@@ -188,14 +186,14 @@ export default function FilterBar({ products, gender, category }) {
                         })
                     }
                 </div>
-                <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]" onClick={handleSubmit}>Apply</h4>
+                
             </article>
 
             <article className="w-[100%] p-[0.6rem] flex flex-col gap-y-[1rem]">
                 <h3 className="border-[#A9A9B2] border-b-[1px]">Price</h3>
                 <input value={rangeValue} onChange={handleRange} type="range" min={0} max={10000} />
                 <span>{rangeValue}</span>
-                <h4 className="bg-[white] text-[#A9A9B2] text-[0.8rem] p-[0.4rem] text-center cursor-pointer border-[#A9A9B2] border-[1px]">Apply</h4>
+                
             </article>
 
         </div>
