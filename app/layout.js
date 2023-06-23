@@ -27,14 +27,16 @@ export default function RootLayout({ children }) {
         {
           !path.includes('login') &&
           !path.includes('admin') &&
-          !path.includes('register') && <NavBar/>
+          !path.includes('register') && 
+          !path.includes('profile') && <NavBar/>
         }
         {children}
 
         {
           !path.includes('login') &&
           !path.includes('admin') &&
-          !path.includes('register') && <Footer/>
+          !path.includes('register') &&
+          !path.includes('profile') && <Footer/>
         }
         
         </body>
