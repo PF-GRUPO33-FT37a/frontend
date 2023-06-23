@@ -52,8 +52,8 @@ export default function CarouselBanner() {
 
                 </motion.div>
             </AnimatePresence>
-            <button onClick={() => { prevImage() }}>{"<"}</button>
-            <button onClick={() => { nextImage() }}>{">"}</button>
+            <button onClick={prevImage}>{"<"}</button>
+            <button onClick={ nextImage}>{">"}</button>
         </section>
     )
 }
