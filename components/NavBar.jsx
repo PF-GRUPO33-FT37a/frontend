@@ -13,15 +13,15 @@ import { searchProducts } from '@/redux/Slice';
 
 export default function NavBar() {
   const [search, setSearch] = useState('');
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const dispatch = useDispatch()
   const userData = localStorage.getItem('user')
 
   const debouncedSearch = useCallback(
     debounce((searchTerm) => {
       if (searchTerm.length > 0) {
         dispatch(searchProducts(searchTerm));
-        router.push('/search');
+        router.push('/search')
       }
     }, 500),
     []
