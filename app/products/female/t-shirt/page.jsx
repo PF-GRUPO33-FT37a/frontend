@@ -14,7 +14,7 @@ export default function FemaleShirtPage() {
     const [render, setRender] = useState([])
   
     useEffect(() => {
-      dispatch(getProducts("female", "shirt"));
+      dispatch(getProducts("female", "t-shirt"));
     }, [dispatch]);
   
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function FemaleShirtPage() {
         <main className="pt-[9rem] min-h-[100vh]">
             <section className="w-[70%] mx-[auto] flex py-[3rem]">
                 
-                {products&&products.length>0?<FilterBar products={products} gender={"female"} category={"shirt"}/>:<p>loading...</p>}
+                {products&&products.length>0?<FilterBar products={products} gender={"female"} category={"t-shirt"}/>:<p>loading...</p>}
 
                 <div className="w-[80%]">
                     {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}

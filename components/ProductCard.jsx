@@ -62,7 +62,7 @@ export default function ProductCard({ product }) {
                             <h2 className="font-bold">{product?.brand}</h2>
                             <p>{product?.name}</p>
                             <span className="font-bold">$ {product.price}</span>
-                            <select
+                            {/* <select
                                 name="" id="" className="text-black p-[0.6rem] rounded-[0.6rem]">
                                 <option value="" disabled>Elegir talle</option>
                                 {
@@ -73,7 +73,7 @@ export default function ProductCard({ product }) {
                                     })
                                 }
                                 
-                            </select>
+                            </select> */}
                             <span className="w-[100%] py-[0.6rem] text-center bg-[white] text-black rounded-[0.6rem]">Añadir a carrito</span>
                         </div>
                     </div>
