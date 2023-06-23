@@ -26,6 +26,7 @@ export const Slice = createSlice({
     },
     searchProductsSuccess: (state, action) =>{
       state.isLoading = false;
+      console.log('esto se esta ejecuatando')
       state.productsSearch = action.payload.allProducts;
       state.nameSearch = action.payload.name
       state.filterProducts = action.payload.allProducts;
@@ -59,7 +60,7 @@ export const getProducts = (gender, category) => async (dispatch) => {
       url += `/search?${queryString}`;
     }
     const response = await axios.get(url);
-    const allProducts = response.data.documents;
+    const allProducts = response.data;
     dispatch(getProductsSuccess(allProducts));
   } catch (error) {
     dispatch(getProductsFailure(error.message));
@@ -80,7 +81,7 @@ export const getFilterProducts = (gender, category, brand, color, name) => async
     }
     const response = await axios.get(url);
     console.log(URL+url)
-    const allProducts = response.data.documents;
+    const allProducts = response.data;
     console.log({FIJATEESTO:category})
     dispatch(clearRender())
     dispatch(getProductsFilterSuccess(allProducts));
@@ -92,16 +93,16 @@ export const getFilterProducts = (gender, category, brand, color, name) => async
 export const searchProducts = (name) => async (dispatch) => {
   dispatch(getProductsStart());
   try {
-    let url = "http://localhost:3001/products";
+    if (name != undefined){let url = "http://localhost:3001/products";
   
     if (name) {
       url += `/search?name=${name}`;
     }
     const response = await axios.get(url);
-    let allProducts = response.data.documents;
+    let allProducts = response.data;
     console.log({FIJATEESTO:name})
     dispatch(clearSearch())
-    dispatch(searchProductsSuccess({allProducts:allProducts, name:name}));
+    dispatch(searchProductsSuccess({allProducts:allProducts, name:name}));}
   } catch (error) {
     dispatch(getProductsFailure(error.message));
   }
