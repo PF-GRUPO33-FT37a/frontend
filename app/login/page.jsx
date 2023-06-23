@@ -42,8 +42,8 @@ export default function LoginPage() {
         try {
             const response = await axios(`http://localhost:3001/users/login?${url}`)
             localStorage.setItem('user', JSON.stringify({
-                _id: response.data._id,
-                password: response.data.password
+                data: response.data,
+                validated: false
             }))
             notify("You were successfully logged in")
             setTimeout(() => router.push('/'), 3000)
