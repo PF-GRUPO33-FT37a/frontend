@@ -9,15 +9,19 @@ export const Slice = createSlice({
     error: null,
     filterProducts:[],
     productsSearch:[],
-    nameSearch:""
+    nameSearch:"",
+    renderProducts:[]
   },
   reducers: {
     getProductsStart: (state) => {
       state.isLoading = true;
+      state.filterProducts = []
+      state.renderProducts=[]
       state.error = null;
     },
     getProductsSuccess: (state, action) => {
       state.isLoading = false;
+      state.filterProducts= []
       state.allProducts = action.payload;
     },
     getProductsFilterSuccess: (state, action) =>{
@@ -26,12 +30,18 @@ export const Slice = createSlice({
     },
     searchProductsSuccess: (state, action) =>{
       state.isLoading = false;
+      console.log('esto se esta ejecuatando')
       state.productsSearch = action.payload.allProducts;
       state.nameSearch = action.payload.name
       state.filterProducts = action.payload.allProducts;
     },
+    productsRenderPerPage: (state, action) =>{
+      console.log({ESTOESLOQUELLEGAARENDER:action.payload})
+      state.renderProducts = action.payload
+    },
     clearRender: (state, action) =>{
       state.filterProducts = []
+      state.renderProducts = []
     },
     clearSearch:(state, action) =>{
       state.productsSearch = []
@@ -43,8 +53,7 @@ export const Slice = createSlice({
   },
 });
 
-export const { getProductsStart, getProductsSuccess, getProductsFailure, getProductsFilterSuccess, clearRender, clearSearch, searchProductsSuccess } =
-  Slice.actions;
+export const { getProductsStart, getProductsSuccess, getProductsFailure, getProductsFilterSuccess, clearRender, clearSearch, searchProductsSuccess, productsRenderPerPage } =Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
   dispatch(getProductsStart());
@@ -59,7 +68,7 @@ export const getProducts = (gender, category) => async (dispatch) => {
       url += `/search?${queryString}`;
     }
     const response = await axios.get(url);
-    const allProducts = response.data.documents;
+    const allProducts = response.data;
     dispatch(getProductsSuccess(allProducts));
   } catch (error) {
     dispatch(getProductsFailure(error.message));
@@ -80,7 +89,7 @@ export const getFilterProducts = (gender, category, brand, color, name) => async
     }
     const response = await axios.get(url);
     console.log(URL+url)
-    const allProducts = response.data.documents;
+    const allProducts = response.data;
     console.log({FIJATEESTO:category})
     dispatch(clearRender())
     dispatch(getProductsFilterSuccess(allProducts));
@@ -98,7 +107,7 @@ export const searchProducts = (name) => async (dispatch) => {
       url += `/search?name=${name}`;
     }
     const response = await axios.get(url);
-    let allProducts = response.data.documents;
+    let allProducts = response.data;
     console.log({FIJATEESTO:name})
     dispatch(clearSearch())
     dispatch(searchProductsSuccess({allProducts:allProducts, name:name}));
@@ -106,5 +115,13 @@ export const searchProducts = (name) => async (dispatch) => {
     dispatch(getProductsFailure(error.message));
   }
 };
+
+export const getProductsRender = (products) => (dispatch)=>{
+  dispatch(productsRenderPerPage(products))
+}
+
+export const clearState = () =>(dispatch)=>{
+  dispatch(clearRender())
+}
 
 export default Slice.reducer;

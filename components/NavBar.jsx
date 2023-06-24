@@ -6,42 +6,49 @@ import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
 import UserMenu from './UserMenu';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
-import { searchProducts } from '@/redux/Slice';
+import { searchProducts, clearState } from '@/redux/Slice';
 
 export default function NavBar() {
     const [search, setSearch] = useState('');
     const router = useRouter()
     const dispatch = useDispatch()
-    const userData = localStorage.getItem('user')
+    // const userData = localStorage.getItem('user')
 
+    // useEffect(() => {
+    //     const myCartLocal = localStorage.getItem('myCart')
+    //     if (!myCartLocal) {
+    //         localStorage.setItem("myCart", JSON.stringify([]))
+    //     }
+    // }, [])
+    
+    const pathname = usePathname() 
     useEffect(() => {
-        const myCartLocal = localStorage.getItem('myCart')
-        if (!myCartLocal) {
-            localStorage.setItem("myCart", JSON.stringify([]))
-        }
-    }, [])
+        if(pathname.includes("products")){
+        setSearch("")}
+  },[pathname])
 
     const debouncedSearch = useCallback(
         debounce((searchTerm) => {
             if (searchTerm.length > 0) {
-                dispatch(searchProducts(searchTerm));
                 router.push('/search')
+                dispatch(searchProducts(searchTerm));
             }
         }, 500),
         []
     );
-
+  
     const handleChange = (event) => {
         const searchTerm = event.target.value;
         setSearch(searchTerm);
-        debouncedSearch(searchTerm);
+        if(pathname.includes(search)){
+        debouncedSearch(searchTerm);}
     };
 
     useEffect(() => {
-        if (!search) {
+        if ((!search||search=="")&&pathname.includes('search')) {
             dispatch(searchProducts());
         }
     }, [search, dispatch]);
@@ -58,11 +65,11 @@ export default function NavBar() {
                 />
                 <div className="flex items-center gap-x-[2rem]">
 
-                    {userData ?
+                    {/* {userData ?
                         <UserMenu />
                         :
                         <Link href={'/login'}>Register/Login</Link>
-                    }
+                    } */}
                     <Link href={'/checkout'}>
                         <Image src={cart} alt="ico-cart" width={40} height={40} />
                     </Link>
