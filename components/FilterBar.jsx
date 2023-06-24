@@ -1,10 +1,18 @@
 'use client'
 import { useEffect, useState,  useCallback  } from "react"
 import { useDispatch } from "react-redux"
-import { getFilterProducts } from "@/redux/Slice"
+import { getFilterProducts, clearState } from "@/redux/Slice"
 import { debounce } from 'lodash';
 
 export default function FilterBar({ products, gender, category, name }) {
+    
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        return ()=>{
+            dispatch(clearState())
+        }
+    },[])
 
     const [rangeValue, setRangeValue] = useState(0)
     const [genders, setGenders] = useState("")
@@ -18,7 +26,6 @@ export default function FilterBar({ products, gender, category, name }) {
         brand:"",
         color:""
     })
-    const dispatch = useDispatch()
 
     console.log({FILTRADOPRINCIPAL:genders+" "+categorys})
 
