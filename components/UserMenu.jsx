@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function UserMenu({user}) {
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter()
-    console.log(user); //
+    
     const notify = (message) => {
         toast.success(message, {
             autoClose: 2000,

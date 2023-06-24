@@ -3,9 +3,9 @@ import Summary from "@/components/Stripe Components/ContainerSummary";
 import { useEffect, useState } from "react";
 
 export default function CheckoutPage ( ){
-    const [products,setProducts ] = useState()
+    const [products,setProducts ] = useState() // estado "products"
 
-    const getMyCart = ()=>{
+    const getMyCart = ()=>{ // extrae localStorage y almacena en estado "products"
         const myCartLocal = localStorage.getItem("myCart")
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
