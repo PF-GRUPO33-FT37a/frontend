@@ -34,15 +34,22 @@ export default function ProductsPage() {
 
 
     return (
-        <main className="pt-[9rem] min-h-[100vh]">
-        <section className="w-[70%] mx-[auto] flex py-[3rem]">
-            
-            {products&&products.length>0?<FilterBar products={products} gender={"male"} category={"shoe"}/>:<p>loading...</p>}
-            <Paginate />
-            <div className="w-[80%]">
-                {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}
-            </div>
-        </section>
+      <main className="pt-[9rem] min-h-[100vh]">
+      <section className="w-[70%] mx-[auto] flex py-[3rem] relative">
+        {products && products.length > 0 ? (
+          <FilterBar products={products} gender="male" category="shoe" />
+        ) : (
+          <p>loading...</p>
+        )}
+        <div className="w-[80%] relative">
+                <Paginate />
+          {render && render.length > 0 ? (
+            <ContainerProducts products={render} />
+          ) : (
+            <p>loading...</p>
+          )}
+        </div>
+      </section>
     </main>
     )
 }
