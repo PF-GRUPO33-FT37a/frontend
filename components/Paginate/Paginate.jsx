@@ -19,7 +19,6 @@ export default function Paginate() {
       setRenderProducts(currentProducts);
       dispatch(getProductsRender(currentProducts));
     }
-
   }, [products, currentPage, productsPerPage, dispatch]);
 
   const paginado = (pageNumbers) => {
@@ -31,18 +30,56 @@ export default function Paginate() {
     const newPageNumbers = Array.from({ length: totalPageNumbers }, (_, index) => index + 1);
     setPageNumbers(newPageNumbers);
     setRenderProducts([]);
-    setCurrentPage(1)
+    setCurrentPage(1);
   }, [products, productsPerPage]);
 
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < pageNumbers.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
-    <nav>
-      <ul>
+    <nav className="flex justify-center items-center">
+      <button
+        onClick={goToPreviousPage}
+        disabled={currentPage === 1}
+        className={`cursor-pointer px-3 py-2 rounded-lg ${
+          currentPage === 1 ? 'opacity-0 cursor-default' : 'bg-gray-200 hover:bg-gray-300'
+        }`}
+      >
+        Prev
+      </button>
+      <ul className="flex space-x-2">
         {pageNumbers.map((number) => (
-          <span id={`elemento${number}`} onClick={() => paginado(number)} key={number}>
-            {number}
-          </span>
+          <li key={number}>
+            <span
+              id={`elemento${number}`}
+              onClick={() => paginado(number)}
+              className={`cursor-pointer px-3 py-2 rounded-lg ${
+                number === currentPage ? 'bg-black text-white' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+            >
+              {number}
+            </span>
+          </li>
         ))}
       </ul>
+      <button
+        onClick={goToNextPage}
+        disabled={currentPage === pageNumbers.length}
+        className={`cursor-pointer px-3 py-2 rounded-lg ${
+          currentPage === pageNumbers.length ? 'opacity-0 cursor-default' : 'bg-gray-200 hover:bg-gray-300'
+        }`}
+      >
+        Next
+      </button>
     </nav>
   );
 }

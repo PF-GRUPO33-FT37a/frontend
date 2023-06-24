@@ -38,7 +38,7 @@ export default function HombresRemerasPage() {
             
             {products&&products.length>0?<FilterBar products={products} gender={"male"} category={"t-shirt"}/>:<p>loading...</p>}
 
-            <div className="w-[80%]">
+            <div className="w-[80%] relative">
                 <Paginate />
                 {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}
             </div>

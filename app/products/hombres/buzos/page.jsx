@@ -37,8 +37,8 @@ export default function ProductsPage() {
                
             {products&&products.length>0?<FilterBar products={products} gender={"male"} category={"hoodie"}/>:<p>loading...</p>}
 
-                <div className="w-[80%]">
-                  <Paginate />
+            <div className="w-[80%] relative">
+                <Paginate />
                 {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}
                 </div>
             </section>
