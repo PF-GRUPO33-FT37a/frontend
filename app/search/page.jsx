@@ -1,9 +1,19 @@
 'use client'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
 import FilterBar from "@/components/FilterBar"
 import ContainerProducts from "@/components/ContainerProducts"
+import { clearState } from "@/redux/Slice"
 
 export default function Search(){
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        return ()=>{
+            dispatch(clearState())
+        }
+    },[])
 
     const productsSearch = useSelector((state)=>state.products.productsSearch)
     const nameSearch = useSelector((state)=>state.products.nameSearch)

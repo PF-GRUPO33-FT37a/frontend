@@ -4,12 +4,13 @@ import {useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "@/redux/Slice";
 import FilterBar from "@/components/FilterBar";
+import Paginate from "@/components/Paginate/Paginate";
 
 export default function FemalePantsPage() {
 
     const dispatch = useDispatch();
     const allProducts = useSelector((state) => state.products.allProducts);
-    const renderProducts = useSelector((state)=>state.products.filterProducts)
+    const renderProducts = useSelector((state)=>state.products.renderProducts)
     const [products, setProducts] = useState([]);
     const [render, setRender] = useState([])
   
@@ -39,6 +40,7 @@ export default function FemalePantsPage() {
                 {products&&products.length>0?<FilterBar products={products} gender={"female"} category={"pants"}/>:<p>loading...</p>}
 
                 <div className="w-[80%]">
+                    <Paginate />
                     {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}
                 </div>
             </section>

@@ -9,15 +9,19 @@ export const Slice = createSlice({
     error: null,
     filterProducts:[],
     productsSearch:[],
-    nameSearch:""
+    nameSearch:"",
+    renderProducts:[]
   },
   reducers: {
     getProductsStart: (state) => {
       state.isLoading = true;
+      state.filterProducts = []
+      state.renderProducts=[]
       state.error = null;
     },
     getProductsSuccess: (state, action) => {
       state.isLoading = false;
+      state.filterProducts= []
       state.allProducts = action.payload;
     },
     getProductsFilterSuccess: (state, action) =>{
@@ -31,8 +35,13 @@ export const Slice = createSlice({
       state.nameSearch = action.payload.name
       state.filterProducts = action.payload.allProducts;
     },
+    productsRenderPerPage: (state, action) =>{
+      console.log({ESTOESLOQUELLEGAARENDER:action.payload})
+      state.renderProducts = action.payload
+    },
     clearRender: (state, action) =>{
       state.filterProducts = []
+      state.renderProducts = []
     },
     clearSearch:(state, action) =>{
       state.productsSearch = []
@@ -44,8 +53,7 @@ export const Slice = createSlice({
   },
 });
 
-export const { getProductsStart, getProductsSuccess, getProductsFailure, getProductsFilterSuccess, clearRender, clearSearch, searchProductsSuccess } =
-  Slice.actions;
+export const { getProductsStart, getProductsSuccess, getProductsFailure, getProductsFilterSuccess, clearRender, clearSearch, searchProductsSuccess, productsRenderPerPage } =Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
   dispatch(getProductsStart());
@@ -93,7 +101,7 @@ export const getFilterProducts = (gender, category, brand, color, name) => async
 export const searchProducts = (name) => async (dispatch) => {
   dispatch(getProductsStart());
   try {
-    if (name != undefined){let url = "http://localhost:3001/products";
+    let url = "http://localhost:3001/products";
   
     if (name) {
       url += `/search?name=${name}`;
@@ -102,10 +110,18 @@ export const searchProducts = (name) => async (dispatch) => {
     let allProducts = response.data;
     console.log({FIJATEESTO:name})
     dispatch(clearSearch())
-    dispatch(searchProductsSuccess({allProducts:allProducts, name:name}));}
+    dispatch(searchProductsSuccess({allProducts:allProducts, name:name}));
   } catch (error) {
     dispatch(getProductsFailure(error.message));
   }
 };
+
+export const getProductsRender = (products) => (dispatch)=>{
+  dispatch(productsRenderPerPage(products))
+}
+
+export const clearState = () =>(dispatch)=>{
+  dispatch(clearRender())
+}
 
 export default Slice.reducer;
