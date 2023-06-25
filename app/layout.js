@@ -11,6 +11,9 @@ import Providers from '@/redux/provider'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
+import { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -30,8 +33,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Elements stripe={stripePromise}>
+      {/* <Elements stripe={stripePromise}> */}
       <Providers>
+        {/* <SkeletonTheme baseColor='#202020' highlightColor='#444' enableAnimation={true}> */}
       <body className={inter.className}>
         {
           !path.includes('login') &&
@@ -47,8 +51,9 @@ export default function RootLayout({ children }) {
         }
         
         </body>
+        {/* </SkeletonTheme> */}
       </Providers>
-      </Elements>
+      {/* </Elements> */}
     </html>
   )
 }

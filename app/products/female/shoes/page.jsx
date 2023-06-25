@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { getProducts } from "@/redux/Slice"
 import FilterBar from "@/components/FilterBar"
 import Paginate from "@/components/Paginate/Paginate"
+import SkeletonFilterBar from "@/components/SkeletonComponents/SkeletonFilterBar"
+import SkeletonContainerProducts from "@/components/SkeletonComponents/SkeletonContainerProducts"
 
 
 export default function FemaleShoesPage() {
@@ -35,16 +37,16 @@ export default function FemaleShoesPage() {
 
 
     return (
-        <main className="pt-[9rem] min-h-[100vh]">
-            <section className="w-[70%] mx-[auto] flex py-[3rem]">
-                
-                {products&&products.length>0?<FilterBar products={products} gender={"female"} category={"shoe"}/>:<p>loading...</p>}
+      <main className="pt-[9rem] min-h-[100vh]">
+      <section className="w-[70%] mx-[auto] flex py-[3rem]">
 
-                <div className="w-[80%] relative">
-                <Paginate />
-                    {render&&render.length>0?<ContainerProducts products={render}/>:<p>loading...</p>}
-                </div>
-            </section>
-        </main>
+        {products && products.length > 0 ? <FilterBar products={products} gender={"female"} category={"shoe"} /> : <SkeletonFilterBar />}
+
+        <div className="w-[80%] relative">
+          <Paginate />
+          {render && render.length > 0 ? <ContainerProducts products={render} /> : <SkeletonContainerProducts />}
+        </div>
+      </section>
+    </main>
     )
 }

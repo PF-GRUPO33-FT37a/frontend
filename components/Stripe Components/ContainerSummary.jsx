@@ -2,11 +2,14 @@
 import Image from "next/image";
 import SummaryCard from "./SummaryCard";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTotalPay } from "@/redux/Slice";
 
 export default function ContainerSummary({ products, handleCantChange, handleDeleteProductCart }) {
 
     const [totalSum, setTotalSum] = useState(0)
     const [myCartLocal, setMyCartLocal] = useState()
+    const dispatch = useDispatch()
 
 
     useEffect(() => {
@@ -19,13 +22,15 @@ export default function ContainerSummary({ products, handleCantChange, handleDel
             return acu + (producto.price * producto.cant)
         }, 0)
         setTotalSum(total)
+        dispatch(addTotalPay(total))
+        
     },[myCartLocal])
 
 
 
 
     return (
-        <div className="bg-[#23232790] p-[2rem] flex flex-col gap-y-[1rem]">
+        <div className="bg-[#454545] p-[0.6rem] flex flex-col gap-y-[1rem]">
             {
                 products?.map((prod, index) => {
                     return (
@@ -38,9 +43,22 @@ export default function ContainerSummary({ products, handleCantChange, handleDel
                     )
                 })
             }
-            <h1>Esto es Summary</h1>
+            <div className="flex flex-col justify-between pb-[1rem] gap-y-[1rem] px-[2rem]">
+            <div className="flex justify-between">
+                <h2 className="text-white">Sub total:</h2>
+                <h2 className="text-white" >$ {totalSum}</h2>
+            </div>
+            <div className="flex justify-between">
+                <h2 className="text-white">Cupon de desc:</h2>
+                <h2 className="text-white">$ 0</h2>
+            </div>
+            <div className="flex justify-between pt-[1rem] border-[#F8652A] border-t-[1px]">
+                <h2 className="text-white">Total:</h2>
+                <h2 className="text-[#F8652A]">$ {totalSum}</h2>
+            </div>
+
+            </div>
             
-            <h2>$ {totalSum}</h2>
             
         </div>
     )
