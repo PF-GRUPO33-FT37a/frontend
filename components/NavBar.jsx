@@ -15,14 +15,14 @@ export default function NavBar() {
     const [search, setSearch] = useState('');
     const router = useRouter()
     const dispatch = useDispatch()
-    // const userData = localStorage.getItem('user')
+    const userData = localStorage.getItem('user')
 
-    // useEffect(() => {
-    //     const myCartLocal = localStorage.getItem('myCart')
-    //     if (!myCartLocal) {
-    //         localStorage.setItem("myCart", JSON.stringify([]))
-    //     }
-    // }, [])
+    useEffect(() => {
+        const myCartLocal = localStorage.getItem('myCart')
+        if (!myCartLocal) {
+            localStorage.setItem("myCart", JSON.stringify([]))
+        }
+    }, [])
     
     const pathname = usePathname() 
     useEffect(() => {
@@ -65,11 +65,11 @@ export default function NavBar() {
                 />
                 <div className="flex items-center gap-x-[2rem]">
 
-                    {/* {userData ?
+                    {userData ?
                         <UserMenu />
                         :
                         <Link href={'/login'}>Register/Login</Link>
-                    } */}
+                    }
                     <Link href={'/checkout'}>
                         <Image src={cart} alt="ico-cart" width={40} height={40} />
                     </Link>
