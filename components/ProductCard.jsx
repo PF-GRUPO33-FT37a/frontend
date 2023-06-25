@@ -114,13 +114,8 @@ export default function ProductCard({ product }) {
                             {/* <select
                                 name="" id="" className="text-black p-[0.6rem] rounded-[0.6rem]">
                                 <option value="" disabled>Elegir talle</option>
-                                {
-                                    product?.size?.map((elemento,index)=>{
-                                        return (
-                                            <option key={index} value="">{elemento}</option>
-                                        )
-                                    })
-                                }
+                                
+                                
                                 
                             </select> */}
 
