@@ -1,14 +1,15 @@
 'use client'
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import hombre from '../public/hombres.jpg';
+import offerts from '../public/accesories.jpg';
 import hombres from '../public/hombresbanner.png';
-import shop from '../public/header.jpg';
+import women from '../public/header.jpg';
+import children from  '../public/kids.jpg';
 import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function CarouselBanner() {
-  const images = [hombres, hombre, shop];
+  const images = [hombres, women ,children, offerts];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
