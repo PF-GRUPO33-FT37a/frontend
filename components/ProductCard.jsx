@@ -65,13 +65,8 @@ export default function ProductCard({ product }) {
                             <select
                                 name="" id="" className="text-black p-[0.6rem] rounded-[0.6rem]">
                                 <option value="" disabled>Elegir talle</option>
-                                {
-                                    product?.size?.map((elemento,index)=>{
-                                        return (
-                                            <option key={index} value="">{elemento}</option>
-                                        )
-                                    })
-                                }
+                                
+                                
                                 
                             </select>
                             <span className="w-[100%] py-[0.6rem] text-center bg-[white] text-black rounded-[0.6rem]">Añadir a carrito</span>
