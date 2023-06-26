@@ -9,9 +9,10 @@ export default function ProductCard({ product }) {
     const route = useRouter()
     const path = usePathname()
 
-    const [toolTip, setTooltip] = useState({
-        
-    })
+
+    const [toolTip, setTooltip] = useState({ })
+    const [cant,setCant] = useState(1)
+    const [priceModify, setPriceModify] = useState(product.price)
     
     // const [productos, setProductos] = useState([])
 
@@ -30,9 +31,40 @@ export default function ProductCard({ product }) {
         path.includes('/hombres/zapatillas') && route.push(`/products/hombres/zapatillas/${id}`)
     }
 
+    const addMyCart = () =>{
+        const myCartLocal = localStorage.getItem('myCart')
+        const myCartParse = JSON.parse(myCartLocal) 
+        if(myCartParse.length === 0){
+            localStorage.setItem('myCart', JSON.stringify([{...product,cant:cant}])) 
+        }else{
+            const productMyCart = {...product,cant:cant}
+            const myCart = [...myCartParse,productMyCart]
+            console.log(myCart);
+            localStorage.setItem('myCart', JSON.stringify(myCart))
+        }
+        
+    }
+    
+    const resCant = () =>{
+        if(cant > 1){
+            setCant(cant - 1)
+        }
+    }
+
+    const sumCant = () =>{
+        setCant(cant + 1)
+        
+    }
+
     useEffect(()=>{
-        setTooltip(product)
-    },[])
+        
+        // setTooltip(product)
+    },[cant])
+
+    // const handlePrice = () =>{
+
+    //     setPriceModify(priceModify * cant)
+    // }
 
     return (
 
@@ -61,20 +93,35 @@ export default function ProductCard({ product }) {
                         <div className="w-[90%] mx-[auto] flex flex-col gap-y-[0.6rem]" >
                             <h2 className="font-bold">{product?.brand}</h2>
                             <p>{product?.name}</p>
-                            <span className="font-bold">$ {product.price}</span>
+                    
+                            <div className="flex gap-x-[1rem]">
+                                <span>Cant</span>
+                                <div className="flex">
+                                    <span 
+                                    className="bg-[#FA8B61] hover:bg-[#F8652A] px-[0.6rem] rounded-l-[0.4rem]  cursor-pointer"
+                                    onClick={resCant}>{`<`}</span>
+                                    <span 
+                                    
+                                    className="w-[30px] bg-white text-center text-black ">{cant}</span>
+                                    <span 
+                                    className="bg-[#FA8B61] hover:bg-[#F8652A] px-[0.6rem] rounded-r-[0.4rem] cursor-pointer"
+                                    onClick={sumCant}>{`>`}</span>
+                                </div>
+                            </div>
+                            <span 
+                            
+                            className="font-bold text-[#F8652A]">$ {product.price * cant}</span>tashed changes
                             {/* <select
                                 name="" id="" className="text-black p-[0.6rem] rounded-[0.6rem]">
                                 <option value="" disabled>Elegir talle</option>
-                                {
-                                    product?.size?.map((elemento,index)=>{
-                                        return (
-                                            <option key={index} value="">{elemento}</option>
-                                        )
-                                    })
-                                }
+                                
+                                
                                 
                             </select> */}
-                            <span className="w-[100%] py-[0.6rem] text-center bg-[white] text-black rounded-[0.6rem]">Añadir a carrito</span>
+
+                            <span 
+                            onClick={addMyCart}
+                            className="cursor-pointer w-[100%] py-[0.6rem] text-center bg-[white] text-black rounded-[0.6rem] hover:bg-[#F8652A] hover:text-white">Añadir a carrito</span>
                         </div>
                     </div>
                 </div>

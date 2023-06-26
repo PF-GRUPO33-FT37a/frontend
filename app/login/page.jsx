@@ -17,7 +17,7 @@ export default function LoginPage() {
 
 	const notify = (message) => {
 		toast.success(message, {
-			autoClose: 6000,
+			autoClose: 2000,
 		});
 	};
 
@@ -132,7 +132,7 @@ export default function LoginPage() {
 								</div>
 
 								<span className='font-light text-[0.8rem]'>
-									Fogget password?
+									Forgot your password?
 								</span>
 							</div>
 
