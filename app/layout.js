@@ -26,10 +26,6 @@ const stripePromise = loadStripe(
 	`${process.env.NEXT_PUBLIC_STRIPE_KEY_PUBLIC}`,
 );
 
-const stripePromise = loadStripe(
-	`${process.env.NEXT_PUBLIC_STRIPE_KEY_PUBLIC}`,
-);
-
 export default function RootLayout({ children }) {
 	const path = usePathname();
 
