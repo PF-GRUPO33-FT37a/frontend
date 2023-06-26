@@ -18,7 +18,7 @@ export default function CarouselBanner() {
       setCurrentIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
-    }, 5000); // Cambia el valor "5000" para ajustar la duración de cambio de imagen
+    }, 3000); // Cambia el valor "3000" para ajustar la duración de cambio de imagen
 
     return () => {
       clearInterval(interval);
