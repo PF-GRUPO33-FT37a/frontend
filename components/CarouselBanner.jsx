@@ -20,7 +20,7 @@ export default function CarouselBanner() {
     setCurrentIndex(nextIndex);
   };
 
-  const nextImage = () => {
+  const nextImage = () => { 
     const condition = currentIndex < images.length - 1;
     const nextIndex = condition ? currentIndex + 1 : 0;
     setCurrentIndex(nextIndex);
