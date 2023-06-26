@@ -64,7 +64,7 @@ export default function ProfilePage(){
             <div className="flex flex-col justify-left">
                 {lsDataEntry.map((dat, index)=>{ // mapea los datos y los campos
                     return (
-                    <div className="flex flex-col m-[0.5rem]">
+                    <div key={index} className="flex flex-col m-[0.5rem]">
                         <label
                         >{fields[index]}</label>
                         <div className="flex flex-row relative right-[20px] items-center">

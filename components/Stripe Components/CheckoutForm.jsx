@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement, AddressElement } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Swal from "sweetalert2";
+// import 'sweetalert2/src/sweetalert2.scss'
 
 export default function CheckoutForm({ products }) {
     const stripe = useStripe()
@@ -11,7 +13,7 @@ export default function CheckoutForm({ products }) {
 
     const [message, setMessage] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [email,setEmail] = useState('')
+    const [email, setEmail] = useState('')
     // const myCart = useSelector(state => state.courses.my_cart);
     // const addPurchase = async(email) =>{
     //     const response = await axios.post('http://localhost:3001/purchase',email)
@@ -21,39 +23,53 @@ export default function CheckoutForm({ products }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!stripe || !elements) {
-            return;
+        if (email) {
+
+            if (!stripe || !elements) {
+                return;
+            }
+
+
+            setIsProcessing(true)
+
+            console.log(email);
+
+            const response = await axios.post('http://localhost:3001/purchase', { email: email })
+            console.log(response);
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: `${window.location.origin}/`
+                },
+                //redirect: 'if_required',
+            })
+            console.log(error);
+            setIsProcessing(false)
+
         }
-        
+        else {
 
-        setIsProcessing(true)
+            Swal.fire({
+                title: 'User not logged in!',
+                text: 'Please login to checkout',
+                icon: 'error',
+                confirmButtonText: 'continue',
+                footer: '<a href="http://localhost:3000/login">Go login?</a>'
+            })
+        }
 
-        console.log(email);
-        
-        const response = await axios.post('http://localhost:3001/purchase',{email:email})
-        console.log(response);
-        const { error } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: `${window.location.origin}/`
-            },
-            //redirect: 'if_required',
-        })
-        console.log(error);
-        setIsProcessing(false)
-        
-        
-        
-        
     };
 
-    
+
 
     useEffect(() => {
         const userData = localStorage.getItem('user')
-        const data = JSON.parse(userData)
-        setEmail(data.data.email)
-    },[])
+        if(userData){
+            const data = JSON.parse(userData)
+            setEmail(data.data.email)
+        }
+
+    }, [])
     console.log(email);
 
     return (
