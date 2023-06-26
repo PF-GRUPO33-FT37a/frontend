@@ -17,7 +17,7 @@ export default function NavBar() {
 	const [search, setSearch] = useState('');
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const userData = localStorage.getItem('user');
+	const userData = JSON.parse(localStorage.getItem('user'));
 	const { data: session } = useSession();
 
 	useEffect(() => {
@@ -88,7 +88,7 @@ export default function NavBar() {
 					value={search}
 				/>
 				<div className='flex items-center gap-x-[2rem]'>
-					{userData ? (
+					{userData && userData.data ? (
 						<UserMenu />
 					) : (
 						<Link href={'/login'}>Register/Login</Link>
