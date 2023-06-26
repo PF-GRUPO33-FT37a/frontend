@@ -12,7 +12,6 @@ export default function UserMenu({ user }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
 	const { data: session } = useSession();
-
 	const notify = (message) => {
 		toast.success(message, {
 			autoClose: 2000,
@@ -48,7 +47,7 @@ export default function UserMenu({ user }) {
 	return (
 		<div onMouseEnter={openMenu} onMouseLeave={closeMenu} className='relative '>
 			<Image
-				className='flexblock pb-[0.4rem] self-center'
+				className=' flex block pb-[0.4rem] self-center'
 				src={userBanner}
 				alt={'user'}
 				width={40}

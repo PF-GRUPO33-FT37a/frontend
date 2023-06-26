@@ -2,6 +2,8 @@
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import soldout from '../public/soldout.png'
 
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +13,7 @@ import Link from "next/link";
 import SkeletonDetail from "./SkeletonComponents/SkeletonDetail";
 
 export default function ProductDetail() {
+    const router = useRouter()
 
     const [productDetail, setProductDetail] = useState([])
     const [currentImg, setCurrentImage] = useState("")
@@ -69,6 +72,23 @@ export default function ProductDetail() {
 
     }
 
+    const goBuy = () => {
+        console.log('estoy');
+        const myCartLocal = localStorage.getItem('myCart')
+        const myCart = JSON.parse(myCartLocal)
+        console.log(myCart);
+        const product = myCart.find(prod => prod._id === productDetail[0]._id)
+        if (!product) {
+            productDetail[0].cant = 1;
+            const newCart = [...myCart, productDetail[0]]
+            localStorage.setItem('myCart', JSON.stringify(newCart))
+            notify('Add to Cart')
+        } else {
+            notifyError('Already added to cart')
+        }
+        router.push('/checkout')
+    }
+
     useEffect(() => {
         getDetail()
         console.log(productDetail);
@@ -100,7 +120,6 @@ export default function ProductDetail() {
 
                             </div>
                             <div className="relative w-[85%] overflow-hidden ">
-
                                 <Image
                                     onMouseMove={handleMouseMove}
                                     style={{
@@ -135,33 +154,52 @@ export default function ProductDetail() {
                                     <option value="">40</option>
                                     <option value="">41</option>
                                 </select>
-                                <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
-                                    <Link href={'/checkout'}
-                                        className="text-white p-[0.6rem] w-[100%] text-center bg-[#FA8B61] hover:bg-[#F8652A] font-bold">Comprar</Link>
-                                    <span
-                                        onClick={addMyCart}
-                                        className="text-[#F8652A] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#E9E9ED]">Agregar a carrito</span>
-                                    <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
-                                </div>
-                            </div>
-                            <div className="w-[80%] flex flex-col gap-y-[1rem] mx-[auto]">
-                                <h3>Mas colores</h3>
-                                <div className="flex gap-x-[1rem]">
+                                {
+                                    (productDetail[0]?.stock > 0)
+                                        ?
+                                        <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
+                                            <span
+                                                onClick={goBuy}
+                                                className="text-white p-[0.6rem] w-[100%] text-center bg-[#FA8B61] hover:bg-[#F8652A] font-bold cursor-pointer">Comprar</span>
+                                            <span
+                                                onClick={addMyCart}
+                                                className="text-[#F8652A] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#E9E9ED]">Agregar a carrito</span>
+                                            <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
+                                        </div>
 
-                                    {
-                                        productDetail[1]?.map((img, index) => {
-                                            return (
-                                                <Link
-                                                    className="w-[15%] hover:border-[1px] hover:border-[#F8652A]"
-                                                    href={`/products/hombres/zapatillas/${img?._id}`} key={index}>
-                                                    <Image
-                                                        src={img?.images[0]} alt={img?.name} width={500} height={500} />
-                                                </Link>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                        :
+
+                                        <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
+                                            <span className="text-white p-[0.6rem] w-[100%] text-center bg-red-400 font-bold cursor-pointer">Sold Out</span>
+                                            <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
+                                        </div>
+
+
+                                }
                             </div>
+                            {
+                                (productDetail[1]?.lenght > 0)
+                                    ?
+                                    <div className="w-[80%] flex flex-col gap-y-[1rem] mx-[auto]">
+                                        <h3>Mas colores</h3>
+                                        <div className="flex gap-x-[1rem]">
+
+                                            {
+                                                productDetail[1]?.map((img, index) => {
+                                                    return (
+                                                        <Link
+                                                            className="w-[15%] hover:border-[1px] hover:border-[#F8652A]"
+                                                            href={`/products/hombres/zapatillas/${img?._id}`} key={index}>
+                                                            <Image
+                                                                src={img?.images[0]} alt={img?.name} width={500} height={500} />
+                                                        </Link>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                    : <></>
+                            }
                         </article>
                         <ToastContainer
                             position="bottom-left"

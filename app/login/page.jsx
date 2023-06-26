@@ -36,24 +36,42 @@ export default function LoginPage() {
 		}));
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		let url = `password=${login.password}&email=${login.email}`;
-		try {
-			const response = await axios(`http://localhost:3001/users/login?${url}`);
-			localStorage.setItem(
-				'user',
-				JSON.stringify({
-					data: response.data,
-					validated: false,
-				}),
-			);
-			notify('You were successfully logged in');
-			setTimeout(() => router.push('/'), 3000);
-		} catch (error) {
-			notifyError(error.message);
-		}
-	};
+// <<<<<<< HEAD
+	const handleSubmit = async(event) =>{
+        event.preventDefault()
+        let url = (`password=${login.password}&email=${login.email}`)
+        try {
+            const response = await axios(`http://localhost:3001/users/login?${url}`)
+            localStorage.setItem('user', JSON.stringify({
+                data: response.data,
+                validated: false
+            }))
+            notify("You were successfully logged in")
+            setTimeout(() => router.push('/'), 3000)
+        } catch (error) {
+            notifyError(error.message)
+        }
+    }
+// =======
+// 	const handleSubmit = async (event) => {
+// 		event.preventDefault();
+// 		let url = `password=${login.password}&email=${login.email}`;
+// 		try {
+// 			const response = await axios(`http://localhost:3001/users/login?${url}`);
+// 			localStorage.setItem(
+// 				'user',
+// 				JSON.stringify({
+// 					data: response.data,
+// 					validated: false,
+// 				}),
+// 			);
+// 			notify('You were successfully logged in');
+// 			setTimeout(() => router.push('/'), 3000);
+// 		} catch (error) {
+// 			notifyError(error.message);
+// 		}
+// 	};
+// >>>>>>> 2cea507e28a09d5ac7f7821cbf13f8c69beb0f00
 
 	return (
 		<main className='min-h-[100vh]'>
