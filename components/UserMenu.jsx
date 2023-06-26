@@ -23,9 +23,9 @@ export default function UserMenu({user}) {
         setIsOpen(false);
     };
     const handleClick = () => {
-        localStorage.removeItem('user')
+        localStorage.setItem('user',JSON.stringify({}))
         notify('Logging out ...')
-        setTimeout(()=> {router.push('/login')}, 3000)
+        
     }
 
     return (
@@ -53,7 +53,7 @@ export default function UserMenu({user}) {
                         :
                         <></>
                 }
-            <ToastContainer/>
+            <ToastContainer position="bottom-left"/>
             </div>
     )
 }
