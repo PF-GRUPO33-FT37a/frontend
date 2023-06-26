@@ -12,7 +12,9 @@ export default function SummaryCard({ product , handleCantChange, handleDeletePr
     }
 
     const sumCount = () => {
-        setCant(cant + 1)
+        if(cant < product.stock){
+            setCant(cant + 1)
+        }
     }
 
     useEffect(()=>{
@@ -23,25 +25,25 @@ export default function SummaryCard({ product , handleCantChange, handleDeletePr
 
     return (
         <div>
-            <div className="relative flex gap-x-[2rem] bg-[#232327] h-[130px] pt-[1.6rem] px-[1rem] rounded-[0.6rem]">
+            <div className="relative flex gap-x-[1rem] h-[130px] pt-[0.8rem] px-[0.4rem] border-[#F8652A] border-b-[2px]">
                 <span 
                 onClick={()=>{handleDeleteProductCart(product._id)}}
-                className="cursor-pointer hover:bg-red-600 absolute font-bold bg-red-400 text-white right-[4px] top-[4px] px-[0.6rem] rounded-[0.4rem]">x</span>
+                className="cursor-pointer hover:bg-red-600 absolute font-bold bg-red-400 text-white right-[4px] top-[10px] px-[0.6rem] rounded-[0.4rem]">x</span>
                 <Image
                     className="object-cover h-[60px] rounded-[0.4rem]"
                     src={product.images[0]} alt={product.title} width={100} height={0} />
-                <div className="flex flex-col gap-y-[0.4rem]">
-                    <span className="font-semibold text-[1.2rem] text-white">{product.name}</span>
-                    <div className="flex gap-x-[0.8rem]">
-                        <span className="font-medium text-white">Cant</span>
+                <div className="flex flex-col gap-y-[0.4rem]  w-[65%]">
+                    <span className="font-semibold text-[1rem] text-white">{product.name}</span>
+                    <div className="flex gap-x-[0.8rem] items-center">
+                        <span className="font-medium text-white text-[0.8rem]">Cant</span>
                         <div className="flex">
-                            <span
-                                className=" cursor-pointer select-none text-white font bold bg-[#FA8B61] hover:bg-[#F8652A] px-[0.6rem] rounded-l-[0.6rem]"
-                                onClick={restCount}>{`-`}</span>
-                            <span className=" bg-white w-[2rem] text-center text-[1rem] items-center">{`${cant}`}</span>
-                            <span
-                                className="cursor-pointer select-none text-white font bold bg-[#FA8B61] hover:bg-[#F8652A] px-[0.6rem] rounded-r-[0.4rem]"
-                                onClick={sumCount}>{`+`}</span>
+                            <div
+                                className="flex items-center cursor-pointer select-none text-white  bg-[#FA8B61] hover:bg-[#F8652A] px-[0.2rem]  rounded-l-[0.6rem] h-[16px]"
+                                onClick={restCount}><span>{`-`}</span></div>
+                            <div className="flex items-center justify-center bg-white w-[1.4rem] text-center text-[0.8rem] h-[16px]"><span>{`${cant}`}</span></div>
+                            <div
+                                className="flex items-center cursor-pointer select-none text-white  bg-[#FA8B61] hover:bg-[#F8652A] px-[0.2rem] rounded-r-[0.4rem] h-[16px]"
+                                onClick={sumCount}><span>{`+`}</span></div>
                         </div>
                     </div>
                     <span className="font-medium text-[#F8652A]">$ {product.price * cant}</span>
