@@ -1,9 +1,10 @@
-
+'use client'
+import Image from "next/image"
 
 export default function CardHistoryPurchase({product, size, cant}){
     return(
         <div className="w-[30%] flex flex-col gap-y-[1rem]">
-  <img
+  <Image
      className="w-[90%] mx-[auto] cursor-pointer" width={200} height={400}
     src={product?.images[0]}
     alt={product?.name}
