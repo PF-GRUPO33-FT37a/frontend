@@ -12,7 +12,9 @@ export default function SummaryCard({ product , handleCantChange, handleDeletePr
     }
 
     const sumCount = () => {
-        setCant(cant + 1)
+        if(cant < product.stock){
+            setCant(cant + 1)
+        }
     }
 
     useEffect(()=>{
