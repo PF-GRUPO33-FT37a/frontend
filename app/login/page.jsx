@@ -36,18 +36,21 @@ export default function LoginPage() {
 		}));
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		let url = `password=${login.password}&email=${login.email}`;
-		try {
-			const response = await axios(`http://localhost:3001/users/login?${url}`);
-			console.log(response);
-			notify('You are successfully logged in');
-			setTimeout(() => router.push('/'), 3000);
-		} catch (error) {
-			notifyError(error.response.data.error);
-		}
-	};
+	const handleSubmit = async(event) =>{
+        event.preventDefault()
+        let url = (`password=${login.password}&email=${login.email}`)
+        try {
+            const response = await axios(`http://localhost:3001/users/login?${url}`)
+            localStorage.setItem('user', JSON.stringify({
+                data: response.data,
+                validated: false
+            }))
+            notify("You were successfully logged in")
+            setTimeout(() => router.push('/'), 3000)
+        } catch (error) {
+            notifyError(error.message)
+        }
+    }
 
 	return (
 		<main className='min-h-[100vh]'>
