@@ -29,8 +29,6 @@ export default function UserMenu({ user }) {
 			try {
 				await signOut('google');
 				localStorage.removeItem('user');
-				localStorage.removeItem('next-auth.session-token');
-				localStorage.removeItem('next-auth.csrf-token');
 				notify('Logging out ...');
 				setTimeout(() => {
 					router.push('/login');
