@@ -10,7 +10,7 @@ export default function ProfilePage(){
     const { _id, name, email, phoneNumber, date } = user.data
     const lsDataEntry = Object.entries({ name, email, phoneNumber, date }) // data del localStorage como 'entry'
     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
-    const profileImage = user.data.image[0]
+    const profileImage = user.data.image
     
     const [ data, setData ] = useState({})
     const dataEntry = Object.entries(data ? { name: data.name, email: data.email,
