@@ -6,7 +6,6 @@ import hombres from '../public/hombresbanner.png';
 import women from '../public/header.jpg';
 import children from  '../public/kids.jpg';
 import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function CarouselBanner() {
   const images = [hombres, women ,children, offerts];
@@ -14,17 +13,17 @@ export default function CarouselBanner() {
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  const prevImage = () => {
-    const condition = currentIndex > 0;
-    const nextIndex = condition ? currentIndex - 1 : images.length - 1;
-    setCurrentIndex(nextIndex);
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // Cambia el valor "3000" para ajustar la duración de cambio de imagen
 
-  const nextImage = () => {
-    const condition = currentIndex < images.length - 1;
-    const nextIndex = condition ? currentIndex + 1 : 0;
-    setCurrentIndex(nextIndex);
-  };
+    return () => {
+      clearInterval(interval);
+    };
+  }, [images.length]);
 
   const handleImageLoad = () => {
     setIsImageLoaded(true);
@@ -53,20 +52,6 @@ export default function CarouselBanner() {
       opacity: isImageLoaded ? 1 : 0,
       transition: "opacity 0.5s",
     },
-    arrowButton: {
-      position: "absolute",
-      top: "50%",
-      transform: "translateY(-50%)",
-      backgroundColor: "transparent",
-      border: "none",
-      outline: "none",
-      cursor: "pointer",
-      zIndex: 2,
-    },
-    arrowIcon: {
-      fontSize: "24px",
-      color: "#ffffff",
-    },
   };
 
   return (
@@ -91,22 +76,9 @@ export default function CarouselBanner() {
           </div>
         </motion.div>
       </AnimatePresence>
-      <button
-        style={{ ...styles.arrowButton, left: "10px" }}
-        onClick={prevImage}
-      >
-        <FaChevronLeft style={styles.arrowIcon} />
-      </button>
-      <button
-        style={{ ...styles.arrowButton, right: "10px" }}
-        onClick={nextImage}
-      >
-        <FaChevronRight style={styles.arrowIcon} />
-      </button>
     </section>
   );
-}
-
+}   
 
 
 
