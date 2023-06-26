@@ -34,17 +34,25 @@ export default function CheckoutForm({ products }) {
 
             console.log(email);
 
-            const response = await axios.post('http://localhost:3001/purchase', { email: email })
-            console.log(response);
-            const { error } = await stripe.confirmPayment({
-                elements,
-                confirmParams: {
-                    return_url: `${window.location.origin}/`
-                },
-                //redirect: 'if_required',
-            })
-            console.log(error);
-            setIsProcessing(false)
+            try {
+                const response = await axios.post('http://localhost:3001/purchase', { email: email })
+                console.log(response);
+                
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/checkout/confirmated`
+                    },
+                    //redirect: 'if_required',
+                })
+                console.log(error);
+                setIsProcessing(false)
+    
+                
+            } catch (error) {
+                console.log(error);
+            }
+
 
         }
         else {
