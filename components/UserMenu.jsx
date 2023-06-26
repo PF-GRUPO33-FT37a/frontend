@@ -44,6 +44,10 @@ export default function UserMenu({user}) {
                                 className="relative ">
                                 <Link href={'/profile'}><li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer`}>Profile account</li></Link>
                             </div>
+                            <div
+                                className="relative ">
+                                <Link href={'/purchaseHistory'}><li className={`hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer`}>Purchase history</li></Link>
+                            </div>
                             <li onClick={handleClick} className="hover:bg-[#909090] hover:text-[white] pl-[0.4rem] pr-[2rem] py-[0.6rem] cursor-pointer">Log out</li>
                         </ul>
                         :

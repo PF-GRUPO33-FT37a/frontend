@@ -11,10 +11,15 @@ export default function ProfilePage(){
     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
     const { _id, name, email, phoneNumber, date } = user.data
     const lsDataEntry = Object.entries({ name, email, phoneNumber, date }) // data del localStorage como 'entry'
+<<<<<<< HEAD
+    const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
+    const profileImage = user.data.image
+=======
 
     const [ hover, setHover ] = useState(false)
 
     const [ image, setImage ] = useState([])
+>>>>>>> 2cea507e28a09d5ac7f7821cbf13f8c69beb0f00
     
     const [ data, setData ] = useState(null) // response de la petición del usuario
     const dataEntry = Object.entries(data ? { name: data.name, email: data.email,
