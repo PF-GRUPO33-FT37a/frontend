@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react"
 import Link from "next/link";
 import SkeletonDetail from "./SkeletonComponents/SkeletonDetail";
+import Review from "./Review";
 
 export default function ProductDetail() {
     const router = useRouter()
@@ -30,20 +31,22 @@ export default function ProductDetail() {
 
     const path = usePathname()
     const idPath = path.split('/').pop()
-    console.log(idPath);
     const [detail, setDetail] = useState({});
+    const [ reviews, setReviews ] = useState([]);
 
     const getDetail = async () => {
-        console.log(idPath);
         const response = await axios(`http://localhost:3001/products/${idPath}`)
-        console.log(response);
         const arrayProduct = response.data
-        console.log(arrayProduct);
+        getReviews(arrayProduct[0])
         setProductDetail(arrayProduct)
         const imgBase = arrayProduct[0].images[0]
-        console.log(imgBase);
         setCurrentImage(arrayProduct[0]?.images[0])
         setLoading(false)
+    }
+
+    const getReviews = async (product)=> {
+        const response = await axios.get(`http://localhost:3001/reviews/search?product=${product._id}`)
+        setReviews(response.data)
     }
 
     const handleImgBase = (img) => {
@@ -55,10 +58,8 @@ export default function ProductDetail() {
     };
 
     const addMyCart = () => {
-        console.log('estoy');
         const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
-        console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
         if (!product) {
             productDetail[0].cant = 1;
@@ -73,10 +74,8 @@ export default function ProductDetail() {
     }
 
     const goBuy = () => {
-        console.log('estoy');
         const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
-        console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
         if (!product) {
             productDetail[0].cant = 1;
@@ -91,10 +90,7 @@ export default function ProductDetail() {
 
     useEffect(() => {
         getDetail()
-        console.log(productDetail);
     }, [idPath])
-
-    console.log(productDetail);
 
     return (
         <main className="min-h-[100vh] pt-[9rem]">
@@ -103,6 +99,7 @@ export default function ProductDetail() {
                     ?
                     <SkeletonDetail />
                     :
+                    <>
                     <section className="w-[70%] mx-[auto] flex justify-center pt-[1rem] pb-[4rem] gap-x-[3rem]">
                         <article className="w-[45%] flex justify-between gap-x-[1rem]">
                             <div className="w-[15%] flex flex-col gap-y-[1rem]">
@@ -206,9 +203,21 @@ export default function ProductDetail() {
                             autoClose={2000}
                             theme="light" />
                     </section>
-
+                    <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
+                        <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
+                        {reviews.length ? 
+                        <div className="flex flex-row gap-x-[0.5rem]">
+                            <h1 className="flex text-[3.8rem] text-yellow-500 self-baseline">4.2</h1>
+                            <h1 className="flex text-[1.5rem] text-yellow-500 self-baseline">★ ★ ★ ★ ☆</h1>
+                            <h1 className="flex text-[1rem] w-fit h-fit self-baseline">(7 reviews)</h1>
+                        </div>
+                        :
+                        <h1>No reviews for this product yet, write one!</h1>
+                        }
+                        { reviews?.map((review)=> <Review data={review}/>)}
+                    </section>
+                    </>
             }
-
         </main>
     )
 }
