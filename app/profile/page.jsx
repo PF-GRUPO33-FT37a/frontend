@@ -11,15 +11,8 @@ export default function ProfilePage(){
     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
     const { _id, name, email, phoneNumber, date } = user.data
     const lsDataEntry = Object.entries({ name, email, phoneNumber, date }) // data del localStorage como 'entry'
-// <<<<<<< HEAD
-//     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
-//     const profileImage = user.data.image
-// =======
 
     const [ hover, setHover ] = useState(false)
-
-    const [ image, setImage ] = useState([])
-// >>>>>>> 2cea507e28a09d5ac7f7821cbf13f8c69beb0f00
     
     const [ data, setData ] = useState(null) // response de la petición del usuario
     const dataEntry = Object.entries(data ? { name: data.name, email: data.email,
@@ -29,7 +22,8 @@ export default function ProfilePage(){
         name: '',
         email: '',
         phoneNumber: '',
-        date: ''
+        date: '',
+        image: ''
     })
     
     const [ inputs, setInputs ] = useState({ // notifica la visibilidad de los 'input'
@@ -54,10 +48,6 @@ export default function ProfilePage(){
             .then((response)=> setData(response.data))
             setRefresh(false)
     }, [refresh])
-
-    useEffect(()=> {
-        console.log(image);
-    }, [image])
 
     function submitChange(response, name) {        // cuando se actualizan los errores, realiza el PUT, limpia el input
         axios.put(`http://localhost:3001/users/${_id}`, response)
@@ -98,7 +88,13 @@ export default function ProfilePage(){
                         response = response.date.toISOString().slice(0, 10)
                         submitChange({ date: response }, name)},
                         (error)=> setErrors({...errors, [name]: error.message}))
-                    break;                    
+                    break;
+                case 'image':
+                    const formData = new FormData()
+                    formData.append('images', values.image)
+                    axios.put(`http://localhost:3001/users/${_id}`, formData)
+                    setInputs({...inputs, image: false})
+                    setValues({...values, image: ''})
                 default:
                     break;
             }
@@ -109,7 +105,7 @@ export default function ProfilePage(){
         const { value, name } = event.target
         if (name === 'images'){
             const file = event.target.files[0]
-            setImage(file)
+            setValues({...values, image: file})
             setInputs({...inputs, image: true})
         } else {
             setValues({...values, [name]: value})
@@ -125,17 +121,9 @@ export default function ProfilePage(){
         }
     }
 
-    function handleImageClick(event){
+    function handleImageClick(){
         const imageInput = document.getElementById('imageInput')
         imageInput.click()
-    }
-
-    function handleSubmitImage(){
-        const formData = new FormData()
-        formData.append('images', image)
-        axios.put(`http://localhost:3001/users/${_id}`, formData)
-        setInputs({...inputs, image: false})
-        setImage([])
     }
 
     return <main
@@ -143,18 +131,18 @@ export default function ProfilePage(){
         <section className="m-[2rem] flex flex-row justify-center gap-x-[6rem]">
             <div className='relative'
                 onMouseEnter={handleMouse} onMouseLeave={handleMouse}>
-                <Image className='flex w-[200px] h-[200px]'
+                <Image className='flex w-[200px] h-[200px]' // imagen de perfil
                     src={profileImage} width={200} height={200} id={'imageViewer'} atl={'profile'}/>
                 { hover ? 
-                    <Image className="w-[25px] h-[25px] top-0 left-0 absolute cursor-pointer opacity-50"
+                    <Image className="w-[25px] h-[25px] top-0 left-0 absolute cursor-pointer opacity-50" // boton edit
                         src={editIcon} alt={'username'} width={300} height={300} name={'edit'}
                         onClick={handleImageClick}/>
                     :
                     <></>}
-                { image && image.name ?
+                { inputs.image ?
                     <Image className="w-[18px] h-[18px] top-[10px] relative cursor-pointer opacity-50"
                     src={check} alt={'check'} width={300} height={300} // botón 'check image'
-                    onClick={handleSubmitImage} name={'image'}/>
+                    onClick={handleOnClick} name={'image'}/>
                     :
                     <></> }
             </div>
