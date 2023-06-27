@@ -26,8 +26,7 @@ export default function UserMenu({ user }) {
 	const handleClick = async (e) => {
 		if (session) {
 			try {
-				await signOut('google');
-				localStorage.removeItem('user');
+				await signOut({ callbackUrl: '/login' });
 				notify('Logging out ...');
 				setTimeout(() => {
 					router.push('/login');
@@ -36,18 +35,18 @@ export default function UserMenu({ user }) {
 				console.log('Sign out error:', error);
 			}
 		} else {
-			localStorage.removeItem('user');
 			notify('Logging out ...');
 			setTimeout(() => {
 				router.push('/login');
 			}, 3000);
 		}
+		localStorage.removeItem('user');
 	};
 
 	return (
 		<div onMouseEnter={openMenu} onMouseLeave={closeMenu} className='relative '>
 			<Image
-				className=' flex block pb-[0.4rem] self-center'
+				className='flexblock pb-[0.4rem] self-center'
 				src={userBanner}
 				alt={'user'}
 				width={40}
