@@ -7,29 +7,24 @@ import axios from "axios"
 import { userSchema, emailSchema, phoneNumberSchema, dateSchema } from './validations'
 
 export default function ProfilePage(){
-    const user = JSON.parse(window.localStorage.getItem('user'))
     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
-    const { _id, name, email, phoneNumber, date } = user.data
-    const lsDataEntry = Object.entries({ name, email, phoneNumber, date }) // data del localStorage como 'entry'
-// <<<<<<< HEAD
-//     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
-//     const profileImage = user.data.image
-// =======
 
     const [ hover, setHover ] = useState(false)
 
-    const [ image, setImage ] = useState([])
-// >>>>>>> 2cea507e28a09d5ac7f7821cbf13f8c69beb0f00
-    
-    const [ data, setData ] = useState(null) // response de la petición del usuario
+    const [ userId, setUserId ]= useState(null)
+
+    const [ data, setData ] = useState(null)
     const dataEntry = Object.entries(data ? { name: data.name, email: data.email,
         phoneNumber: data.phoneNumber, date: data.date} : {})
-    const profileImage = data ? data.image : {}
+    const profileImage = data ? data.image[0] : {}
+
     const [ values, setValues ] = useState({ // values de los inputs
         name: '',
         email: '',
         phoneNumber: '',
-        date: ''
+        date: '',
+        image: [],
+        imageName: ''
     })
     
     const [ inputs, setInputs ] = useState({ // notifica la visibilidad de los 'input'
@@ -44,27 +39,35 @@ export default function ProfilePage(){
         name:'',
         email: '',
         phoneNumber: '',
-        date: ''
+        date: '',
+        image: ''
     })
 
     const [ refresh, setRefresh ] = useState({})        // refresca la pagina luego de que la peticion PUT sea exitosa
 
+    
+    useEffect(()=> {
+        const user = JSON.parse(localStorage.getItem('user'))
+        if (user && user.data){
+            setUserId(user.data._id)
+        }
+    })
+
     useEffect(()=> {        // pide la información del usuario con '_id' de localStorage
-            axios.get(`http://localhost:3001/users/${_id}`)
+        if (userId){
+            axios.get(`http://localhost:3001/users/${userId}`)
             .then((response)=> setData(response.data))
             setRefresh(false)
-    }, [refresh])
-
-    useEffect(()=> {
-        console.log(image);
-    }, [image])
-
-    function submitChange(response, name) {        // cuando se actualizan los errores, realiza el PUT, limpia el input
-        axios.put(`http://localhost:3001/users/${_id}`, response)
+        }
+    }, [refresh, userId])
+    
+    function submitChange(response, name) {        // cuando se resuelven los errores, se realiza el PUT
+        axios.put(`http://localhost:3001/users/${userId}`, response)
         .then((response)=>{
-            setRefresh(response)
+            setRefresh(response) // pide la información actualizada del usuario
             setErrors({...errors, [name]: ''}) // limpia los errors
             setValues({...values, [name]: ''}) // limpia el input
+            setValues({ ...values, imageName: '' })
             setInputs({...inputs, [name]: !inputs[name]}) // esconde el input
         })
     }
@@ -98,7 +101,10 @@ export default function ProfilePage(){
                         response = response.date.toISOString().slice(0, 10)
                         submitChange({ date: response }, name)},
                         (error)=> setErrors({...errors, [name]: error.message}))
-                    break;                    
+                    break;
+                case 'image':
+                    const response = { images: [values.image]}
+                    submitChange(response, name)
                 default:
                     break;
             }
@@ -108,8 +114,9 @@ export default function ProfilePage(){
     function handleOnChange(event){
         const { value, name } = event.target
         if (name === 'images'){
-            const file = event.target.files[0]
-            setImage(file)
+            const { name } = document.getElementById('imageInput').files[0]
+            const file = Array.from(event.target.files)
+            setValues({...values, image: file[0], imageName: name })
             setInputs({...inputs, image: true})
         } else {
             setValues({...values, [name]: value})
@@ -125,17 +132,9 @@ export default function ProfilePage(){
         }
     }
 
-    function handleImageClick(event){
+    function handleImageClick(){
         const imageInput = document.getElementById('imageInput')
         imageInput.click()
-    }
-
-    function handleSubmitImage(){
-        const formData = new FormData()
-        formData.append('images', image)
-        axios.put(`http://localhost:3001/users/${_id}`, formData)
-        setInputs({...inputs, image: false})
-        setImage([])
     }
 
     return <main
@@ -143,44 +142,46 @@ export default function ProfilePage(){
         <section className="m-[2rem] flex flex-row justify-center gap-x-[6rem]">
             <div className='relative'
                 onMouseEnter={handleMouse} onMouseLeave={handleMouse}>
-                <Image className='flex w-[200px] h-[200px]'
+                <Image className='flex w-[200px] h-[200px]' // imagen de perfil
                     src={profileImage} width={200} height={200} id={'imageViewer'} atl={'profile'}/>
                 { hover ? 
-                    <Image className="w-[25px] h-[25px] top-0 left-0 absolute cursor-pointer opacity-50"
+                    <Image className="w-[25px] h-[25px] top-0 left-0 absolute cursor-pointer opacity-50" // boton edit
                         src={editIcon} alt={'username'} width={300} height={300} name={'edit'}
                         onClick={handleImageClick}/>
                     :
                     <></>}
-                { image && image.name ?
+                { inputs.image ? <>
                     <Image className="w-[18px] h-[18px] top-[10px] relative cursor-pointer opacity-50"
-                    src={check} alt={'check'} width={300} height={300} // botón 'check image'
-                    onClick={handleSubmitImage} name={'image'}/>
+                        src={check} alt={'check'} width={300} height={300} // botón 'check image'
+                        onClick={handleOnClick} name={'image'}/>
+                    <label>{values.imageName}</label>
+                    </>
                     :
                     <></> }
             </div>
-            <input className="relative top-[2rem] hidden"
+            <input className={`relative top-[2rem] hidden`}
                 id={'imageInput'} type='file' name='images' onChange={handleOnChange}></input>
             <div className="flex flex-col justify-left">
-                { lsDataEntry.map((dat, index)=>{ // mapea los datos, los inputs y los errors
+                { dataEntry?.map((prop, index)=>{ // mapea los datos, los inputs y los errors
                     return (
                     <div className="flex flex-col m-[0.5rem]" key={index}>
                         <label
                         >{fields[index]}</label>
                         <div className="flex flex-row relative right-[20px] items-center">
                             {
-                                !inputs[dat[0]] ? <>
+                                !inputs[prop[0]] ? <>
                                     <Image className="w-[18px] h-[18px] relative right-[10px] cursor-pointer opacity-50"
                                         src={editIcon} alt={'username'} width={300} height={300} // botón 'edit'
-                                        onClick={handleOnClick} name={dat[0]}/>
+                                        onClick={handleOnClick} name={prop[0]}/>
                                     <h1>{data ? dataEntry[index][1] : ''}</h1></>
                                     : <>
                                     <Image className="w-[18px] h-[18px] relative right-[10px] cursor-pointer opacity-50"
                                         src={check} alt={'username'} width={300} height={300} // botón 'check'
-                                        onClick={handleOnClick} name={dat[0]}/>
-                                    <input className="border w-[15rem]" value={values[dat[0]]}
-                                        type={dat[0] === 'date' ? 'date': 'text'} placeholder={dataEntry[index][1]} name={dat[0]}
+                                        onClick={handleOnClick} name={prop[0]}/>
+                                    <input className="border w-[15rem]" value={values[prop[0]]}
+                                        type={prop[0] === 'date' ? 'date': 'text'} placeholder={dataEntry[index][1]} name={prop[0]}
                                         onChange={handleOnChange}/>
-                                    <h3 className="text-red-500 text-[12px] absolute left-[18rem] w-[15rem]">{errors[dat[0]]}</h3></>
+                                    <h3 className="text-red-500 text-[12px] absolute left-[18rem] w-[15rem]">{errors[prop[0]]}</h3></>
                             }
                         </div>
                     </div>)

@@ -1,10 +1,11 @@
 'use client'
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import offerts from '../public/accesories.jpg';
+import offerts from '../public/ofertas.jpg';
 import hombres from '../public/hombresbanner.png';
-import women from '../public/header.jpg';
-import children from  '../public/kids.jpg';
+import women from '../public/women_model.jpg';
+import children from  '../public/infantil.jpg';
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function CarouselBanner() {
@@ -18,7 +19,7 @@ export default function CarouselBanner() {
       setCurrentIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
-    }, 3000); // Cambia el valor "3000" para ajustar la duración de cambio de imagen
+    }, 5000); // Cambia el valor "3000" para ajustar la duración de cambio de imagen
 
     return () => {
       clearInterval(interval);
@@ -36,9 +37,10 @@ export default function CarouselBanner() {
   const styles = {
     carouselContainer: {
       position: "relative",
-      width: "100%",
+      width: "100%", // Ajusta el ancho del carrusel según tus necesidades
       height: "0",
-      paddingBottom: "56.25%", // Aspect ratio of 16:9 (Change as per your desired aspect ratio)
+      paddingBottom: "30%", // Ajusta el valor de acuerdo al aspect ratio deseado
+      margin: "0 auto", // Centra el carrusel horizontalmente
     },
     slideItem: {
       position: "absolute",
@@ -51,6 +53,7 @@ export default function CarouselBanner() {
       justifyContent: "center",
       opacity: isImageLoaded ? 1 : 0,
       transition: "opacity 0.5s",
+      objectFit: "contain", // Muestra la imagen completa en lugar de recortarla
     },
   };
 
@@ -68,7 +71,7 @@ export default function CarouselBanner() {
           <div style={{ position: "relative", width: "100%", height: "100%" }}>
             <Image
               onLoad={handleImageLoad}
-              className="absolute inset-0 w-full h-full object-cover bottom-0"
+              className="absolute inset-0 w-full h-full bottom-0"
               src={selectedImage}
               alt="image"
               layout="fill"
@@ -78,9 +81,4 @@ export default function CarouselBanner() {
       </AnimatePresence>
     </section>
   );
-}   
-
-
-
-
-
+}
