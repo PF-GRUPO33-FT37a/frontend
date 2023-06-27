@@ -27,7 +27,7 @@ export default function CheckoutPage() {
     // setStripePromise(loadStripe('pk_test_51NLR6uLcLCj2IYBvkClOWECjiBqzYZeLetrIKGc9QlEeC2tJQKMq12enElgMR9lJzingQYbAq09DR5Z8XmjRpEwp00xG9VyEUi'))
 
     const getMyCart = () => { // extrae localStorage y almacena en estado "products"
-        const myCartLocal = window.localStorage.getItem("myCart")
+        const myCartLocal = localStorage.getItem("myCart")
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         setProducts(myCart)
@@ -57,12 +57,15 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
-        getMyCart()
-        console.log(products);
+        const myCartLocal = localStorage.getItem("myCart")
+        const myCart = JSON.parse(myCartLocal)
+        if(myCart.length>0){
+        setProducts(myCart)
+        console.log(products);}
     }, [])
 
     useEffect(() => {
-        window.localStorage.setItem('myCart', JSON.stringify(products))
+        localStorage.setItem('myCart', JSON.stringify(products))
     }, [products])
 
     const getClientSecret = async (amount) => {

@@ -56,7 +56,7 @@ export default function ProductDetail() {
 
     const addMyCart = () => {
         console.log('estoy');
-        const myCartLocal = window.localStorage.getItem('myCart')
+        const myCartLocal = window.localStorage.getItem('myCart')||""
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
@@ -74,7 +74,7 @@ export default function ProductDetail() {
 
     const goBuy = () => {
         console.log('estoy');
-        const myCartLocal = window.localStorage.getItem('myCart')
+        const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)

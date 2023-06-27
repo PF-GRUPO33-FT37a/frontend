@@ -42,7 +42,7 @@ export default function LoginPage() {
         let url = (`password=${login.password}&email=${login.email}`)
         try {
             const response = await axios(`http://localhost:3001/users/login?${url}`)
-            window.localStorage.setItem('user', JSON.stringify({
+            localStorage.setItem('user', JSON.stringify({
                 data: response.data,
                 validated: false
             }))

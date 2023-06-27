@@ -47,7 +47,7 @@ export default function ProductCard({ product }) {
 
     const addMyCart = () => {
         console.log(product.cant);
-        const myCartLocal = window.localStorage.getItem('myCart')
+        const myCartLocal = window.localStorage.getItem('myCart')||""
         const myCartParse = JSON.parse(myCartLocal)
         const productFind = myCartParse.find(prod => (prod._id === product._id) && (prod.cant === cant))
         if (!productFind) {

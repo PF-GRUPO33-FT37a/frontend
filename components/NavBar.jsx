@@ -15,26 +15,34 @@ import axios from 'axios';
 
 export default function NavBar() {
 	const [search, setSearch] = useState('');
+	const [userData, setUserData] = useState({})
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const userData = JSON.parse(window.localStorage.getItem('user'));
+	// const userData = JSON.parse(localStorage.getItem('user'));
 	const { data: session } = useSession();
 
+
+	useEffect(()=>{
+		let data = JSON.parse(localStorage.getItem('user'));
+		if(data && data.data)
+		setUserData(data)
+	},[])
+
 	useEffect(() => {
-		const myCartLocal = window.localStorage.getItem('myCart');
+		const myCartLocal = window.localStorage.getItem('myCart')||"";
 		if (!myCartLocal) {
 			window.localStorage.setItem('myCart', JSON.stringify([]));
 		}
 	}, []);
 
-	useEffect(async () => {
+	const getUser = async() =>{
 		if (session) {
 			const email = session.user.email;
 			const response = await axios.get(
 				`http://localhost:3001/users/auth/${email}`,
 			);
 			console.log(response);
-			window.localStorage.setItem(
+			localStorage.setItem(
 				'user',
 				JSON.stringify({
 					data: response.data,
@@ -42,6 +50,10 @@ export default function NavBar() {
 				}),
 			);
 		}
+	}
+
+	useEffect(() => {
+		getUser()
 	}, []);
 
 	const pathname = usePathname();

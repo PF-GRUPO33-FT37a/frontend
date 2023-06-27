@@ -27,7 +27,7 @@ export default function UserMenu({ user }) {
 		if (session) {
 			try {
 				await signOut('google');
-				localStorage.removeItem('user');
+				localStorage.setItem('user',JSON.stringify({}));
 				notify('Logging out ...');
 				setTimeout(() => {
 					router.push('/login');
@@ -36,7 +36,7 @@ export default function UserMenu({ user }) {
 				console.log('Sign out error:', error);
 			}
 		} else {
-			localStorage.removeItem('user');
+			localStorage.setItem('user',JSON.stringify({}));
 			notify('Logging out ...');
 			setTimeout(() => {
 				router.push('/login');
