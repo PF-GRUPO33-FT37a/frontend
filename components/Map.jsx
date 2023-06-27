@@ -62,10 +62,10 @@ export default function Map() {
 		height: '400px',
 	};
 
-	const center = {
-		lat: 4.722365,
-		lng: -74.065015,
-	};
+	// const center = {
+	// 	lat: 4.722365,
+	// 	lng: -74.065015,
+	// };
 
 	const markers = [
 		{
@@ -85,6 +85,7 @@ export default function Map() {
 	];
 
 	const [activeMarker, setActiveMarker] = useState(markers[0]);
+	const [center, setCenter] = useState(markers[0].position);
 
 	const handleMarkerClick = (marker) => {
 		setActiveMarker(marker);
@@ -92,14 +93,19 @@ export default function Map() {
 
 	const handleListItemClick = (marker) => {
 		setActiveMarker(marker);
+		setCenter(marker.position);
 	};
 
 	return (
 		<LoadScript googleMapsApiKey={key}>
 			<div>
-				<ul>
+				<ul style={{ listStyleType: 'none', padding: 0 }}>
 					{markers.map((marker, index) => (
-						<li key={index} onClick={() => handleListItemClick(marker)}>
+						<li
+							key={index}
+							style={{ cursor: 'pointer', margin: '5px 0' }}
+							onClick={() => handleListItemClick(marker)}
+						>
 							{marker.label}
 						</li>
 					))}
