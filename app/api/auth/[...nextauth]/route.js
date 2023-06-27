@@ -19,8 +19,9 @@ export const authOptions = {
 			await customAuth({ user });
 			return true;
 		},
-		async signOut(callbackUrl) {
-			return NextAuth.signOut({ callbackUrl });
+		async signOut({ session, redirect }) {
+			destroyCookie(null, 'next-auth.session-token');
+			return redirect('/login');
 		},
 	},
 };

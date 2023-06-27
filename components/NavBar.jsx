@@ -27,20 +27,24 @@ export default function NavBar() {
 		}
 	}, []);
 
-	useEffect(async () => {
-		if (session) {
-			const email = session.user.email;
-			const response = await axios.get(
-				`http://localhost:3001/users/auth/${email}`,
-			);
-			localStorage.setItem(
-				'user',
-				JSON.stringify({
-					data: response.data,
-					validated: false,
-				}),
-			);
-		}
+	useEffect(() => {
+		const fetchData = async () => {
+			if (session) {
+				const email = session.user.email;
+				const response = await axios.get(
+					`http://localhost:3001/users/auth/${email}`,
+				);
+				localStorage.setItem(
+					'user',
+					JSON.stringify({
+						data: response.data,
+						validated: false,
+					}),
+				);
+			}
+		};
+
+		fetchData();
 	}, []);
 
 	const pathname = usePathname();
