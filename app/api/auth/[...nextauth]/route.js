@@ -19,6 +19,9 @@ export const authOptions = {
 			await customAuth({ user });
 			return true;
 		},
+		async signOut(callbackUrl) {
+			return NextAuth.signOut({ callbackUrl });
+		},
 	},
 };
 const handler = NextAuth(authOptions);

@@ -17,7 +17,7 @@ export default function NavBar() {
 	const [search, setSearch] = useState('');
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const userData = localStorage.getItem('user');
+	const userData = JSON.parse(localStorage.getItem('user'));
 	const { data: session } = useSession();
 
 	useEffect(() => {
@@ -33,7 +33,6 @@ export default function NavBar() {
 			const response = await axios.get(
 				`http://localhost:3001/users/auth/${email}`,
 			);
-			console.log(response);
 			localStorage.setItem(
 				'user',
 				JSON.stringify({
@@ -88,7 +87,7 @@ export default function NavBar() {
 					value={search}
 				/>
 				<div className='flex items-center gap-x-[2rem]'>
-					{userData ? (
+					{userData && userData.data ? (
 						<UserMenu />
 					) : (
 						<Link href={'/login'}>Register/Login</Link>
