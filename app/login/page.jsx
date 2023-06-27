@@ -169,12 +169,12 @@ export default function LoginPage() {
 							>
 								Sign in
 							</button>
-							{/* <Link
+							<Link
 								href={'#'}
 								className='font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[50%] mx-[auto] text-center shadow-md shadow-[#11111180]'
 							>
 								Google
-							</Link> */}
+							</Link>
 							<GoogleSignInButton />
 						</form>
 					</div>
