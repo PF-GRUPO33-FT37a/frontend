@@ -23,7 +23,7 @@ export default function UserMenu({user}) {
         setIsOpen(false);
     };
     const handleClick = () => {
-        localStorage.setItem('user',JSON.stringify({}))
+        window.localStorage.setItem('user',JSON.stringify({}))
         notify('Logging out ...')
         
     }

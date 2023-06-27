@@ -17,13 +17,13 @@ export default function NavBar() {
 	const [search, setSearch] = useState('');
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const userData = JSON.parse(localStorage.getItem('user'));
+	const userData = JSON.parse(window.localStorage.getItem('user'));
 	const { data: session } = useSession();
 
 	useEffect(() => {
-		const myCartLocal = localStorage.getItem('myCart');
+		const myCartLocal = window.localStorage.getItem('myCart');
 		if (!myCartLocal) {
-			localStorage.setItem('myCart', JSON.stringify([]));
+			window.localStorage.setItem('myCart', JSON.stringify([]));
 		}
 	}, []);
 
@@ -34,7 +34,7 @@ export default function NavBar() {
 				`http://localhost:3001/users/auth/${email}`,
 			);
 			console.log(response);
-			localStorage.setItem(
+			window.localStorage.setItem(
 				'user',
 				JSON.stringify({
 					data: response.data,

@@ -56,14 +56,14 @@ export default function ProductDetail() {
 
     const addMyCart = () => {
         console.log('estoy');
-        const myCartLocal = localStorage.getItem('myCart')
+        const myCartLocal = window.localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
         if (!product) {
             productDetail[0].cant = 1;
             const newCart = [...myCart, productDetail[0]]
-            localStorage.setItem('myCart', JSON.stringify(newCart))
+            window.localStorage.setItem('myCart', JSON.stringify(newCart))
             notify('Add to Cart')
         } else {
             notifyError('Already added to cart')
@@ -74,14 +74,14 @@ export default function ProductDetail() {
 
     const goBuy = () => {
         console.log('estoy');
-        const myCartLocal = localStorage.getItem('myCart')
+        const myCartLocal = window.localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
         if (!product) {
             productDetail[0].cant = 1;
             const newCart = [...myCart, productDetail[0]]
-            localStorage.setItem('myCart', JSON.stringify(newCart))
+            window.localStorage.setItem('myCart', JSON.stringify(newCart))
             notify('Add to Cart')
         } else {
             notifyError('Already added to cart')

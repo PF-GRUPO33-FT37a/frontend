@@ -14,7 +14,7 @@ export default function ConfirmatedPage (){
     })
 
     useEffect(()=>{
-        localStorage.setItem('myCart',JSON.stringify([]))
+        window.localStorage.setItem('myCart',JSON.stringify([]))
     },[])
     return (
         <main className="pt-[10rem] min-h-[100vh]">

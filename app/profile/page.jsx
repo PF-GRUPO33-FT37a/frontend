@@ -7,7 +7,7 @@ import axios from "axios"
 import { userSchema, emailSchema, phoneNumberSchema, dateSchema } from './validations'
 
 export default function ProfilePage(){
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(window.localStorage.getItem('user'))
     const fields = [ 'Nombre de usuario', 'Correo electrónico', 'Teléfono', 'Fecha de nacimiento']
     const { _id, name, email, phoneNumber, date } = user.data
     const lsDataEntry = Object.entries({ name, email, phoneNumber, date }) // data del localStorage como 'entry'
