@@ -4,17 +4,17 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import axios from "axios";
+import Swal from "sweetalert2";
+
+import Image from "next/image"
+// import confirm from '../../public/tiendajaja.jpg'
+import confirm from '../../public/tiendaRopa2.jpg'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Autenticate(){
     
-    const notify = (message) => {
-		toast.success(message, {
-			autoClose: 2000,
-		});
-	};
 
     const notifyError = (message) => toast.error(message);
 
@@ -23,10 +23,12 @@ export default function Autenticate(){
     const [user, setUser] = useState()
 
     useEffect(()=>{
-        let user =JSON.parse(localStorage.getItem('user'));
-        if(user && user.data){
-            setUser(user.data)
-        }
+        let userEmail =JSON.parse(localStorage.getItem('userEmail'));
+        if(userEmail && userEmail.length>0){
+        axios.get(`http://localhost:3001/users/auth/${userEmail}`)
+        .then((response)=>{
+            setUser(response.data)
+        })}
     },[])
 
     useEffect(()=>{
@@ -37,25 +39,29 @@ export default function Autenticate(){
                     data:response.data,
                     validated: true
                 }))
-                notify("You were successfully logged in")
-                setTimeout(() => router.push('/'), 3000)
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'Profile activation done',
+                    icon: 'success',
+                    confirmButtonText: '<a href="http://localhost:3000/">Continue</a>'
+                })
             })
             .catch((err)=>{
-                notifyError(err.message)
-            })
-            // localStorage.setItem('user',JSON.stringify({
-            //     data:user,
-            //     validated: true
-            // }))
-            // notify("You were successfully logged in")
-            // setTimeout(() => router.push('/'), 3000)
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo completar la acción.',
+                    icon: 'error',
+                    confirmButtonText:'<a href="http://localhost:3000/">Aceptar</a>'
+                  });
+            }) 
         }
     },[user])
 
     return(
         <div>
-            <p>algo</p>
-            <ToastContainer />
+             <Image src={confirm} alt="img" width={1200} height={1200}
+                className="w-[100%] object-cover  h-[75vh]"
+                />
         </div>
     )
 }
