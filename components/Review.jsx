@@ -16,7 +16,7 @@ export default function Review({ data }){
         })
     }, [])
     
-    return <div className="flex flex-col border p-[1rem] rounded-xl gap-y-[0.8rem]">
+    return <div className="flex flex-col border p-[1rem] rounded-xl gap-y-[0.8rem] w-[75%]">
         { user.length !== 0 ? <>
             <div className="flex flex-row gap-x-[1rem]">
                 <Image className="w-[3rem] h-[3rem] rounded-full" alt='image'
@@ -27,7 +27,7 @@ export default function Review({ data }){
                 </div>
             </div>
             <div>
-                <p>{comment}</p>
+                <p className="p-[0.5rem]">{comment}</p>
             </div>
             </>
         :
