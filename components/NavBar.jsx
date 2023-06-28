@@ -35,6 +35,7 @@ export default function NavBar() {
 		}
 	}, []);
 
+
 	useEffect(() => {
 		const fetchData = async () => {
 			if (session) {
@@ -51,7 +52,6 @@ export default function NavBar() {
 				);
 			}
 		};
-
 		fetchData();
 	}, []);
 

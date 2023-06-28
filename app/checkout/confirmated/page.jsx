@@ -4,16 +4,16 @@ import Image from "next/image"
 import confirm from '../../../public/confirmated.jpg'
 import { useEffect } from "react"
  
-export default function ConfirmatedPage (){
-    Swal.fire({
-        title: 'Successful purchase!',
-        text: 'Review the purchase data we sent to your email address',
-        icon: 'success',
-        confirmButtonText: '<a href="http://localhost:3000/">Continue</a>'
-        
-    })
 
+export default function ConfirmatedPage (){
     useEffect(()=>{
+        Swal.fire({
+            title: 'Successful purchase!',
+            text: 'Review the purchase data we sent to your email address',
+            icon: 'success',
+            confirmButtonText: '<a href="http://localhost:3000/">Continue</a>'
+            
+        })
         localStorage.setItem('myCart',JSON.stringify([]))
     },[])
     return (
