@@ -58,10 +58,8 @@ export default function Autenticate(){
     },[user])
 
     return(
-        <div>
-             <Image src={confirm} alt="img" width={1200} height={1200}
-                className="w-[100%] object-cover  h-[75vh]"
-                />
+        <div className="flex items-center justify-center h-screen">
+            <Image src={confirm} alt="img" className="w-full h-full object-cover" />
         </div>
     )
 }
