@@ -31,7 +31,7 @@ export default function NavBar() {
 	useEffect(() => {
 		const myCartLocal = localStorage.getItem('myCart');
 		if (!myCartLocal) {
-			window.localStorage.setItem('myCart', JSON.stringify([]));
+			localStorage.setItem('myCart', JSON.stringify([]));
 		}
 	}, []);
 
