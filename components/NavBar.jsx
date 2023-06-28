@@ -35,25 +35,24 @@ export default function NavBar() {
 		}
 	}, []);
 
-	const getUser = async() =>{
-		if (session) {
-			const email = session.user.email;
-			const response = await axios.get(
-				`http://localhost:3001/users/auth/${email}`,
-			);
-			console.log(response);
-			localStorage.setItem(
-				'user',
-				JSON.stringify({
-					data: response.data,
-					validated: false,
-				}),
-			);
-		}
-	}
-
 	useEffect(() => {
-		getUser()
+		const fetchData = async () => {
+			if (session) {
+				const email = session.user.email;
+				const response = await axios.get(
+					`http://localhost:3001/users/auth/${email}`,
+				);
+				localStorage.setItem(
+					'user',
+					JSON.stringify({
+						data: response.data,
+						validated: false,
+					}),
+				);
+			}
+		};
+
+		fetchData();
 	}, []);
 
 	const pathname = usePathname();
