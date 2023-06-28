@@ -15,12 +15,12 @@ import Review from "./Review";
 
 export default function ProductDetail() {
     const router = useRouter()
-
+    
     const [productDetail, setProductDetail] = useState([])
     const [currentImg, setCurrentImage] = useState("")
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [loading, setLoading] = useState(true)
-
+    
     const notify = (message) => {
         toast.success(message, {
             autoClose: 2000,
@@ -28,12 +28,15 @@ export default function ProductDetail() {
     };
 
     const notifyError = (message) => toast.error(message);
-
+    
     const path = usePathname()
     const idPath = path.split('/').pop()
     const [detail, setDetail] = useState({});
-    const [ reviews, setReviews ] = useState([]);
-
+    const [ reviews, setReviews ] = useState([])
+    const average = reviews.length ? 
+        (reviews.reduce((acc, review) => acc + +(review.ratings), 0) / reviews.length).toFixed(1) : 0
+    const stars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
+    
     const getDetail = async () => {
         const response = await axios(`http://localhost:3001/products/${idPath}`)
         const arrayProduct = response.data
@@ -205,16 +208,24 @@ export default function ProductDetail() {
                     </section>
                     <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
                         <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
-                        {reviews.length ? 
-                        <div className="flex flex-row gap-x-[0.5rem]">
-                            <h1 className="flex text-[3.8rem] text-yellow-500 self-baseline">4.2</h1>
-                            <h1 className="flex text-[1.5rem] text-yellow-500 self-baseline">★ ★ ★ ★ ☆</h1>
-                            <h1 className="flex text-[1rem] w-fit h-fit self-baseline">(7 reviews)</h1>
+                        {reviews.length ? <>
+                        <div className="flex justify-between w-[80%]">
+                            <div className="flex gap-x-[0.5rem]">
+                                <h1 className="flex text-[3.8rem] text-yellow-500 self-baseline"
+                                >{average}</h1>
+                                <h1 className="flex text-[1.5rem] text-yellow-500 self-baseline"
+                                >{stars}</h1>
+                                <h1 className="flex text-[1rem] w-fit h-fit self-baseline"
+                                >{'(' + reviews.length + ' reviews)'}</h1>
+                            </div>
                         </div>
+                        <div className="flex flex-col gap-y-[0.8rem]">
+                            {reviews.map((review)=> <Review data={review}/>)}
+                        </div>
+                        </>
                         :
                         <h1>No reviews for this product yet, write one!</h1>
                         }
-                        { reviews?.map((review)=> <Review data={review}/>)}
                     </section>
                     </>
             }
