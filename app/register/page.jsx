@@ -59,10 +59,7 @@ export default function RegisterPage() {
                             setTimeout(() => setFormularioSend(false), 5000);
                             try {
                                 const response = await axios.post("http://localhost:3001/users", values);
-                                localStorage.setItem('user', JSON.stringify({
-                                    data: response.data,
-                                    validated: false
-                                }))
+                                localStorage.setItem('userEmail', JSON.stringify(response.data.email))
                                 console.log(response);
                                 notify("User created successfully, check your email to activate your account");
                             } catch (error) {
