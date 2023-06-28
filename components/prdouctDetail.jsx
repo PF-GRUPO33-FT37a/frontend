@@ -64,7 +64,7 @@ export default function ProductDetail() {
         if (!product) {
             productDetail[0].cant = 1;
             const newCart = [...myCart, productDetail[0]]
-            localStorage.setItem('myCart', JSON.stringify(newCart))
+            window.localStorage.setItem('myCart', JSON.stringify(newCart))
             notify('Add to Cart')
         } else {
             notifyError('Already added to cart')

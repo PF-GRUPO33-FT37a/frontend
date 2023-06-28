@@ -42,15 +42,19 @@ export default function LoginPage() {
 		let url = `password=${login.password}&email=${login.email}`;
 		try {
 			const response = await axios(`http://localhost:3001/users/login?${url}`);
-			localStorage.setItem(
-				'user',
-				JSON.stringify({
-					data: response.data,
-					validated: false,
-				}),
-			);
-			notify('You were successfully logged in');
-			setTimeout(() => router.push('/'), 3000);
+			if(response.data.validated){
+				localStorage.setItem(
+					'user',
+					JSON.stringify({
+						data: response.data,
+						validated: true,
+					}),
+				);
+				notify('You were successfully logged in');
+				setTimeout(() => router.push('/'), 3000);
+			}else{
+				notifyError('Unauthenticated user, check your email to confirm your account')
+			}
 		} catch (error) {
 			notifyError(error.message);
 		}
@@ -169,12 +173,6 @@ export default function LoginPage() {
 							>
 								Sign in
 							</button>
-							<Link
-								href={'#'}
-								className='font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[50%] mx-[auto] text-center shadow-md shadow-[#11111180]'
-							>
-								Google
-							</Link>
 							<GoogleSignInButton />
 						</form>
 					</div>

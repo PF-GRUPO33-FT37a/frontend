@@ -10,19 +10,20 @@ const GoogleLogin = () => {
 		e.preventDefault;
 		await signIn('google');
 	};
+
+	if (session) {
+		router.push('/');
+	}
+
 	return (
 		<div>
-			{session ? (
-				router.push('/')
-			) : (
-				<a
-					href='#'
-					onClick={handleClick}
-					className='font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[50%] mx-[auto] shadow-md shadow-[#11111180]'
-				>
-					Continue With Google
-				</a>
-			)}
+			<a
+				href='#'
+				onClick={handleClick}
+				className='font-semibold text-[1rem] py-[0.4rem] px-[2rem] bg-black text-white rounded-[1rem] w-[50%] mx-[auto] shadow-md shadow-[#11111180]'
+			>
+				Continue With Google
+			</a>
 		</div>
 	);
 };

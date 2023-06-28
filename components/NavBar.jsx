@@ -15,10 +15,18 @@ import axios from 'axios';
 
 export default function NavBar() {
 	const [search, setSearch] = useState('');
+	const [userData, setUserData] = useState({})
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const userData = JSON.parse(localStorage.getItem('user'));
+	// const userData = JSON.parse(localStorage.getItem('user'));
 	const { data: session } = useSession();
+
+
+	useEffect(()=>{
+		let data = JSON.parse(localStorage.getItem('user'));
+		if(data && data.data)
+		setUserData(data)
+	},[])
 
 	useEffect(() => {
 		const myCartLocal = localStorage.getItem('myCart');

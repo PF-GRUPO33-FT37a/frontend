@@ -4,12 +4,20 @@ import CardHistoryPurchase from "@/components/cardHistoryPurchase"
 import axios from "axios"
 
 export default function PurchaseHistory(){
-    const user = JSON.parse(localStorage.getItem('user'))
-    console.log(user)
+    // const user = JSON.parse(window.localStorage.getItem('user'))
+    // console.log(user)
 
+    const [user, setUser] = useState()
     const [getUser, setGetUser] = useState();
     const [localUser, setLocalUser] = useState();
     
+    useEffect(()=>{
+        const user = JSON.parse(window.localStorage.getItem('user'))
+        if (user && user.data){
+            setUser(user)
+        }
+    },[])
+
     useEffect(()=>{
         const userId = user.data._id
         axios.get(`http://localhost:3001/users/${userId}`)
@@ -17,12 +25,13 @@ export default function PurchaseHistory(){
     },[])
 
     useEffect(()=>{
-        const user = JSON.parse(localStorage.getItem('user'))
+        const userinfo = JSON.parse(window.localStorage.getItem('user'))
         console.log(user)
+        if(userinfo&&userinfo.data){
         user.data = getUser;
         localStorage.setItem('user', JSON.stringify(user));
         console.log({ESTEESELUSUARIOKAPO:getUser})
-        setLocalUser(user)
+        setLocalUser(user)}
     },[getUser])
 
     return( 
