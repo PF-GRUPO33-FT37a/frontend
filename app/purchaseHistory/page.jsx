@@ -19,12 +19,15 @@ export default function PurchaseHistory(){
     },[])
 
     useEffect(()=>{
+        if(user && user.data){
         const userId = user.data._id
         axios.get(`http://localhost:3001/users/${userId}`)
         .then((response)=>setGetUser(response.data))
+        }
     },[])
 
     useEffect(()=>{
+        if(user && user.data){
         const userinfo = JSON.parse(window.localStorage.getItem('user'))
         console.log(user)
         if(userinfo&&userinfo.data){
@@ -32,6 +35,7 @@ export default function PurchaseHistory(){
         localStorage.setItem('user', JSON.stringify(user));
         console.log({ESTEESELUSUARIOKAPO:getUser})
         setLocalUser(user)}
+        }
     },[getUser])
 
     return( 

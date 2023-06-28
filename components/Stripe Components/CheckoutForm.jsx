@@ -6,14 +6,23 @@ import axios from "axios";
 import Swal from "sweetalert2";
 // import 'sweetalert2/src/sweetalert2.scss'
 
-export default function CheckoutForm({ products }) {
+export default function CheckoutForm({ productos }) {
     const stripe = useStripe()
     const elements = useElements()
+    const totalPay = useSelector(state => state.products.totalPay)
 
 
     const [message, setMessage] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [email, setEmail] = useState('')
+    const [data, setData] = useState({})
+    const [dataPurchase, setDataPurchase] = useState({
+        idUser: "",
+        amount: 0,
+        products: [],
+        date: "",
+        status: "",
+    })
     // const myCart = useSelector(state => state.courses.my_cart);
     // const addPurchase = async(email) =>{
     //     const response = await axios.post('http://localhost:3001/purchase',email)
@@ -29,7 +38,6 @@ export default function CheckoutForm({ products }) {
                 return;
             }
 
-
             setIsProcessing(true)
 
             console.log(email);
@@ -37,7 +45,10 @@ export default function CheckoutForm({ products }) {
             try {
                 const response = await axios.post('http://localhost:3001/purchase', { email: email })
                 console.log(response);
-                
+
+                const responseTrans = await axios.post('http://localhost:3001/transactions', dataPurchase)
+                console.log(responseTrans);
+
                 const { error } = await stripe.confirmPayment({
                     elements,
                     confirmParams: {
@@ -47,8 +58,8 @@ export default function CheckoutForm({ products }) {
                 })
                 console.log(error);
                 setIsProcessing(false)
-    
-                
+
+
             } catch (error) {
                 console.log(error);
             }
@@ -71,14 +82,49 @@ export default function CheckoutForm({ products }) {
 
 
     useEffect(() => {
+        setData(productos)
+        console.log(productos);
         const userData = localStorage.getItem('user')
-        if(userData){
+        if (userData) {
+            setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:totalPay}))
             const data = JSON.parse(userData)
             setEmail(data.data.email)
+            const date = new Date()
+            setDataPurchase(prevDataPurchase=>({...prevDataPurchase,date:date}))
+            setDataPurchase(prevDataPurchase => ({ ...prevDataPurchase, idUser: data.data._id }))
+
+
+            // productos?.map(prod => {
+            //     prod?.cantSelect?.map(can => {
+            //         setDataPurchase(prevDataPurchase => ({
+            //             ...prevDataPurchase,
+            //             products: [
+            //                 ...prevDataPurchase.products,
+            //                 { productId: prod._id, size: can.size, cant: can.cant }
+            //             ]
+            //         }));
+            //     });
+            // });
+            const arrayProducts = productos?.map(prod =>{
+                return prod?.cantSelect?.map(can=>{
+                    return {productId:prod._id,size:can.size,cant:can.cant}
+                })
+            })
+            .flat()
+            console.log(arrayProducts);
+            setDataPurchase(prevDataPurchase=>({
+                ...prevDataPurchase,
+                products:arrayProducts
+            }))
         }
 
+    }, [productos])
+
+    useEffect(() => {
     }, [])
     console.log(email);
+    console.log(dataPurchase);
+    console.log(totalPay);
 
     return (
         <form id="payment-form" onSubmit={handleSubmit} className="w-[80%] mx-[auto]">
