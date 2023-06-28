@@ -56,7 +56,7 @@ export default function ProductDetail() {
 
     const addMyCart = () => {
         console.log('estoy');
-        const myCartLocal = window.localStorage.getItem('myCart')||""
+        const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart);
         const product = myCart.find(prod => prod._id === productDetail[0]._id)
@@ -81,7 +81,7 @@ export default function ProductDetail() {
         if (!product) {
             productDetail[0].cant = 1;
             const newCart = [...myCart, productDetail[0]]
-            window.localStorage.setItem('myCart', JSON.stringify(newCart))
+            localStorage.setItem('myCart', JSON.stringify(newCart))
             notify('Add to Cart')
         } else {
             notifyError('Already added to cart')
