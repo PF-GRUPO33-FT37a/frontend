@@ -29,61 +29,65 @@ export default function PurchaseHistory(){
     useEffect(()=>{
         if (user && user.data){
             const userinfo = JSON.parse(window.localStorage.getItem('user'))
-            console.log(user)
-            if(userinfo&&userinfo.data){
-            user.data = getUser;
-            localStorage.setItem('user', JSON.stringify(user));
-            console.log({ESTEESELUSUARIOKAPO:getUser})
-            setLocalUser(user)}
+            if (userinfo && userinfo.data){
+                user.data = getUser;
+                console.log(user); //
+                localStorage.setItem('user', JSON.stringify(user));
+                setLocalUser(user)
+            }
         }
     },[getUser])
 
     return( 
-        <main className="flex flex-col pt-[9rem] min-h-[100vh] bg-gray-100 p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto">
-        {localUser && localUser.data && localUser.data.purchaseHistory ? (
-            user.data.purchaseHistory.map((purchase, index) => {
-            return (
-                <div key={index}>
-                <hr className="border-1 border-black" />
-                <div>
-                    <p>Date of purchase: {purchase.date}</p>
-                    <p>Total amount: {purchase.amount}</p>
-                    <hr />
-                    <br className="w-full" />
-                </div>
-                <div className="flex">
-                    {purchase.products.map((product, index) => {
-                        if (index === 0) {
-                            return (
-                            <div key={index} className="ml-auto">
-                                <CardHistoryPurchase
-                                product={product.productId}
-                                size={product.size}
-                                cant={product.cant}
-                                />
+        <main className="pt-[9rem] min-h-[100vh] w-[70%] p-8 mx-auto">
+            <section className="mt-[4rem] mb-[4rem] flex flex-col  justify-center gap-y-[2.5rem]">
+                <h1 className="text-[1.8rem]">Purchase history</h1>
+                {localUser && localUser.data && localUser.data.purchaseHistory ? (
+                    user.data.purchaseHistory.map((purchase, index) => {
+                        return (
+                            <div key={index} className="bg-gray-100 rounded-lg shadow-md">
+                            <div>
+                                <p>Date of purchase: {purchase.date}</p>
+                                <p>Total amount: {purchase.amount
+                                    .toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</p>
+                                <hr />
+                                <br className="w-full" />
                             </div>
-                            );
-                        } else {
-                            return (
-                            <div key={index}>
-                                <CardHistoryPurchase
-                                product={product.productId}
-                                size={product.size}
-                                cant={product.cant}
-                                />
+                            <div className="flex">
+                                {purchase.products.map((product, index) => {
+                                    if (index === 0) {
+                                        return (
+                                        <div key={index} className="ml-[1rem]">
+                                            <CardHistoryPurchase
+                                            product={product.productId}
+                                            size={product.size}
+                                            cant={product.cant}
+                                            />
+                                        </div>
+                                        );
+                                    } else {
+                                        return (
+                                        <div key={index}>
+                                            <CardHistoryPurchase
+                                            product={product.productId}
+                                            size={product.size}
+                                            cant={product.cant}
+                                            />
+                                        </div>
+                                        );
+                                    }
+                                })}
                             </div>
-                            );
-                        }
-                    })}
-                </div>
-                <hr className="border-1 border-black my-1" />
-                <br className="w-full" />
-                </div>
-            );
-            })
-        ) : (
+                            <hr/>
+                            <br className="w-full" />
+                            </div>
+                        )
+                    })
+                ) 
+            :
             <span>loading...</span>
-        )}
+            }
+            </section>
         </main>
     )
 }
