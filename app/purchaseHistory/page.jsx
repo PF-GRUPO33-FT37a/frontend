@@ -19,19 +19,23 @@ export default function PurchaseHistory(){
     },[])
 
     useEffect(()=>{
-        const userId = user.data._id
-        axios.get(`http://localhost:3001/users/${userId}`)
-        .then((response)=>setGetUser(response.data))
-    },[])
+        if (user && user.data){
+            const userId = user.data._id
+            axios.get(`http://localhost:3001/users/${userId}`)
+            .then((response)=>setGetUser(response.data))
+        }
+    },[user])
 
     useEffect(()=>{
-        const userinfo = JSON.parse(window.localStorage.getItem('user'))
-        console.log(user)
-        if(userinfo&&userinfo.data){
-        user.data = getUser;
-        localStorage.setItem('user', JSON.stringify(user));
-        console.log({ESTEESELUSUARIOKAPO:getUser})
-        setLocalUser(user)}
+        if (user && user.data){
+            const userinfo = JSON.parse(window.localStorage.getItem('user'))
+            console.log(user)
+            if(userinfo&&userinfo.data){
+            user.data = getUser;
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log({ESTEESELUSUARIOKAPO:getUser})
+            setLocalUser(user)}
+        }
     },[getUser])
 
     return( 
@@ -49,27 +53,27 @@ export default function PurchaseHistory(){
                 </div>
                 <div className="flex">
                     {purchase.products.map((product, index) => {
-                    if (index === 0) {
-                        return (
-                        <div key={index} className="ml-auto">
-                            <CardHistoryPurchase
-                            product={product.productId}
-                            size={product.size}
-                            cant={product.cant}
-                            />
-                        </div>
-                        );
-                    } else {
-                        return (
-                        <div key={index}>
-                            <CardHistoryPurchase
-                            product={product.productId}
-                            size={product.size}
-                            cant={product.cant}
-                            />
-                        </div>
-                        );
-                    }
+                        if (index === 0) {
+                            return (
+                            <div key={index} className="ml-auto">
+                                <CardHistoryPurchase
+                                product={product.productId}
+                                size={product.size}
+                                cant={product.cant}
+                                />
+                            </div>
+                            );
+                        } else {
+                            return (
+                            <div key={index}>
+                                <CardHistoryPurchase
+                                product={product.productId}
+                                size={product.size}
+                                cant={product.cant}
+                                />
+                            </div>
+                            );
+                        }
                     })}
                 </div>
                 <hr className="border-1 border-black my-1" />
