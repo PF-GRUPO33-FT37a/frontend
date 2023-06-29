@@ -2,92 +2,124 @@
 import { useState, useEffect } from "react"
 import CardHistoryPurchase from "@/components/cardHistoryPurchase"
 import axios from "axios"
+import Image from "next/image"
 
-export default function PurchaseHistory(){
+export default function PurchaseHistory() {
     // const user = JSON.parse(window.localStorage.getItem('user'))
     // console.log(user)
 
     const [user, setUser] = useState()
     const [getUser, setGetUser] = useState();
     const [localUser, setLocalUser] = useState();
-    
+
+    useEffect(() => {
+        const userLocal = JSON.parse(window.localStorage.getItem('user'))
+        console.log(userLocal);
+        if (userLocal) {
+            setUser(userLocal)
+        }
+        console.log(user);
+    }, [])
+
     useEffect(()=>{
-        const user = JSON.parse(window.localStorage.getItem('user'))
         if (user && user.data){
             setUser(user)
         }
-    },[])
+    }, [user])
 
-    useEffect(()=>{
-        if (user && user.data){
-            const userId = user.data._id
-            axios.get(`http://localhost:3001/users/${userId}`)
-            .then((response)=>setGetUser(response.data))
+    useEffect(() => {
+        if (getUser) {
+
+            user.data = getUser;
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log({ ESTEESELUSUARIOKAPO: getUser })
+            setLocalUser(user)
+
         }
-    },[user])
+    }, [getUser, user, localUser])
 
-    useEffect(()=>{
-        if (user && user.data){
-            const userinfo = JSON.parse(window.localStorage.getItem('user'))
-            if (userinfo && userinfo.data){
-                user.data = getUser;
-                console.log(user); //
-                localStorage.setItem('user', JSON.stringify(user));
-                setLocalUser(user)
-            }
-        }
-    },[getUser])
+    console.log(localUser);
 
-    return( 
-        <main className="pt-[9rem] min-h-[100vh] w-[70%] p-8 mx-auto">
-            <section className="mt-[4rem] mb-[4rem] flex flex-col  justify-center gap-y-[2.5rem]">
-                <h1 className="text-[1.8rem]">Purchase history</h1>
-                {localUser && localUser.data && localUser.data.purchaseHistory ? (
-                    user.data.purchaseHistory.map((purchase, index) => {
-                        return (
-                            <div key={index} className="bg-gray-100 rounded-lg shadow-md">
-                            <div>
-                                <p>Date of purchase: {purchase.date}</p>
-                                <p>Total amount: {purchase.amount
-                                    .toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</p>
-                                <hr />
-                                <br className="w-full" />
-                            </div>
-                            <div className="flex">
-                                {purchase.products.map((product, index) => {
-                                    if (index === 0) {
+    return (
+        <main className="flex  pt-[9rem] min-h-[100vh] bg-gray-100  rounded-lg shadow-md w-full">
+            <div className="w-[20%] bg-white"></div>
+            <div className="w-[80%] p-[2rem]">
+
+                {
+                    (localUser && localUser?.data && localUser?.data?.purchaseHistory)
+                        ?
+                        (
+
+                            <table className="w-[100%] ">
+                                <thead>
+                                    <tr>
+                                        <th className="py-2 px-4 border-[1px] ">img_product</th>
+                                        <th className="py-2 px-4 border-[1px] ">name</th>
+                                        <th className="py-2 px-4 border-[1px] ">cant</th>
+                                        <th className="py-2 px-4 border-[1px] ">ammount</th>
+                                        <th className="py-2 px-4 border-[1px] ">date</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="">
+
+                                {
+                                    user?.data?.purchaseHistory?.map((purchase, index) => {
                                         return (
-                                        <div key={index} className="ml-[1rem]">
-                                            <CardHistoryPurchase
-                                            product={product.productId}
-                                            size={product.size}
-                                            cant={product.cant}
-                                            />
-                                        </div>
+                                            // <div key={index} className="flex">
+                                            //     <div className="flex">
+                                            //         {purchase?.products?.map((product, index) => {
+                                            //             return (
+                                            //                 <div key={index} className="ml-auto">
+                                            //                     <CardHistoryPurchase
+                                            //                         product={product.productId}
+                                            //                         size={product.size}
+                                            //                         cant={product.cant}
+                                            //                     />
+                                            //                 </div>
+                                            //             );
+                                            //         })}
+                                            //     </div>
+                                            //     <hr className="border-1 border-black" />
+                                            //     <div>
+                                            //         <p>Date of purchase: {purchase.date}</p>
+                                            //         <p>Total amount: {purchase.amount}</p>
+                                            //         <hr />
+                                            //         <br className="w-full" />
+                                            //     </div>
+                                            //     <hr className="border-1 border-black my-1" />
+                                            //     <br className="w-full" />
+                                            // </div>
+                                            <tr key={index} className="py-[1rem]">
+                                                <td className="w-[5%] text-center py-[1rem]">
+                                                    <Image
+                                                        className="w-[50%] mx-[auto] "
+                                                        src={purchase?.products[0]?.productId?.images[0]} alt="img" width={200} height={200} />
+                                                </td>
+                                                <td className="text-center py-[1rem]">
+                                                    <h2>{purchase?.products[0]?.productId?.name}</h2>
+                                                    
+                                                </td>
+                                                <td className="w-[5%] text-center py-[1rem]">
+                                                    <span> {(purchase?.products.reduce((acu, cant) => {
+                                                        return acu + cant.cant
+                                                    }, 0
+                                                    ))} </span>
+                                                </td>
+                                                <td className="w-[5%] text-center py-[1rem]">
+                                                    <span>$ {purchase?.amount}</span>
+                                                </td>
+                                                <td className="text-center py-[1rem] w-[25%]">
+                                                    <span>{purchase?.date}</span>
+                                                </td>
+                                            </tr>
                                         );
-                                    } else {
-                                        return (
-                                        <div key={index}>
-                                            <CardHistoryPurchase
-                                            product={product.productId}
-                                            size={product.size}
-                                            cant={product.cant}
-                                            />
-                                        </div>
-                                        );
-                                    }
-                                })}
-                            </div>
-                            <hr/>
-                            <br className="w-full" />
-                            </div>
-                        )
-                    })
-                ) 
-            :
+                                    })}
+                            </tbody>
+                        </table>
+            ) :
             <span>loading...</span>
-            }
-            </section>
-        </main>
+}
+        </div>
+        </main >
     )
 }
