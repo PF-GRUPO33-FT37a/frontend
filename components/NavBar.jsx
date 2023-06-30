@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import logo from '../public/logocommerce.png';
+import logo from '../public/logo.png';
 import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
