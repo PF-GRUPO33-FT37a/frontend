@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react"
 import Link from "next/link";
 import SkeletonDetail from "./SkeletonComponents/SkeletonDetail";
-import Review from "./Review";
+import ContainerReviews from "./ContainerReviews";
 
 export default function ProductDetail() {
     const router = useRouter()
@@ -33,9 +33,6 @@ export default function ProductDetail() {
     const idPath = path.split('/').pop()
     const [detail, setDetail] = useState({});
     const [ reviews, setReviews ] = useState([])
-    const average = reviews.length ? 
-        (reviews.reduce((acc, review) => acc + +(review.ratings), 0) / reviews.length).toFixed(1) : 0
-    const stars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
     
     const getDetail = async () => {
         const response = await axios(`http://localhost:3001/products/${idPath}`)
@@ -208,24 +205,7 @@ export default function ProductDetail() {
                     </section>
                     <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
                         <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
-                        {reviews.length ? <>
-                        <div className="flex justify-between w-[80%]">
-                            <div className="flex gap-x-[0.5rem]">
-                                <h1 className="flex text-[3.8rem] text-yellow-500 self-baseline"
-                                >{average}</h1>
-                                <h1 className="flex text-[1.5rem] text-yellow-500 self-baseline"
-                                >{stars}</h1>
-                                <h1 className="flex text-[1rem] w-fit h-fit self-baseline"
-                                >{'(' + reviews.length + ' reviews)'}</h1>
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-y-[0.8rem]">
-                            {reviews.map((review)=> <Review data={review}/>)}
-                        </div>
-                        </>
-                        :
-                        <h1>No reviews for this product yet, write one!</h1>
-                        }
+                        <ContainerReviews reviews={reviews}/>
                     </section>
                     </>
             }
