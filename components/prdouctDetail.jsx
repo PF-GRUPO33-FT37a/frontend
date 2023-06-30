@@ -37,6 +37,7 @@ export default function ProductDetail() {
     const getDetail = async () => {
         const response = await axios(`http://localhost:3001/products/${idPath}`)
         const arrayProduct = response.data
+        console.log(arrayProduct); //
         getReviews(arrayProduct[0])
         setProductDetail(arrayProduct)
         const imgBase = arrayProduct[0].images[0]
@@ -205,7 +206,7 @@ export default function ProductDetail() {
                     </section>
                     <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
                         <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
-                        <ContainerReviews reviews={reviews}/>
+                        <ContainerReviews productId={productDetail[0]._id} reviews={reviews}/>
                     </section>
                     </>
             }

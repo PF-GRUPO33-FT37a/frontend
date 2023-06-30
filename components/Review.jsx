@@ -5,7 +5,6 @@ import { useState, useEffect } from "react"
 export default function Review({ data }){
     const { UserID, ratings, comment, StoreID, ProductID } = data
     const stars = '★'.repeat(+ratings) + '☆'.repeat(5 - +ratings)
-    console.log(UserID) //
 
     const [ user, setUser ] = useState([])
 
