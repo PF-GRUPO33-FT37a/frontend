@@ -1,7 +1,16 @@
+'use client'
 import Image from 'next/image';
 import logo from '../public/logo-white.png';
+import { useState } from 'react';
 
 export default function Footer() {
+
+	const [datForm, setDataForm] = useState()
+
+	const onChange = (event) =>{
+		
+	}
+
 	function openPopup() {
 		document.getElementById("popup").style.display = "block";
 	  }

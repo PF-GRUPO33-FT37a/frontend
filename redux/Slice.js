@@ -94,12 +94,12 @@ export const getProducts = (gender, category) => async (dispatch) => {
   }
 };
 
-export const getFilterProducts = (gender, category, brand, color, name) => async (dispatch) => {
+export const getFilterProducts = (gender, category, brand, color, name, price) => async (dispatch) => {
   dispatch(getProductsStart());
   try {
     let url = "http://localhost:3001/products";
-    if ((gender && category) || (brand || color || name)) {
-      const query = { gender, category, brand, color, name };
+    if ((gender && category) || (brand || color || name || price)) {
+      const query = { gender, category, brand, color, name, price };
       const queryString = Object.entries(query)
         .filter(([_, value]) => value)
         .map(([key, value]) => `${key}=${value}`)
