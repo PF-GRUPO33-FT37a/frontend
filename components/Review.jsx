@@ -12,12 +12,11 @@ export default function Review({ data }){
         axios.get(`http://localhost:3001/users/${UserID}`)
         .then(response => {
             setUser(response.data)
-            console.log(user) //
         })
     }, [])
     
-    return <div className="flex flex-col border p-[1rem] rounded-xl gap-y-[0.8rem]">
-        { user.length !== 0 ? <>
+    return <div className="flex flex-col border p-[1rem] rounded-xl gap-y-[0.8rem] w-[75%]">
+        { user && user._id ? <>
             <div className="flex flex-row gap-x-[1rem]">
                 <Image className="w-[3rem] h-[3rem] rounded-full" alt='image'
                 src={user.image[0]} width={400} height={400}/>
@@ -27,7 +26,7 @@ export default function Review({ data }){
                 </div>
             </div>
             <div>
-                <p>{comment}</p>
+                <p className="p-[0.5rem]">{comment}</p>
             </div>
             </>
         :

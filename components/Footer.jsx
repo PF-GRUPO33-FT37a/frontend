@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import logo from '../public/logowhite.png';
+import logo from '../public/logo-white.png';
 
 export default function Footer() {
 	function openPopup() {
