@@ -21,9 +21,18 @@ export default function PurchaseHistory() {
         console.log(user);
     }, [])
 
-    useEffect(()=>{
-        if (user && user.data){
-            setUser(user)
+    const addGetUser = async (userId) => {
+        const response = await axios.get(`http://localhost:3001/users/${userId}`)
+        console.log(response.data);
+        setGetUser(response.data)
+    }
+
+    useEffect(() => {
+        console.log(user);
+        if (user && user.data) {
+            addGetUser(user.data._id)
+            // axios.get(`http://localhost:3001/users/${userId}`)
+            // .then((response)=>setGetUser(response.data))
         }
     }, [user])
 
