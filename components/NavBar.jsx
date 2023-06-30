@@ -81,7 +81,7 @@ export default function NavBar() {
 	};
 
 	useEffect(() => {
-		if(search==null){
+		if(search==null && pathname.includes('/search')){
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
