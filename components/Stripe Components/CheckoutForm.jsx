@@ -23,11 +23,22 @@ export default function CheckoutForm({ productos }) {
         date: "",
         status: "",
     })
+
+    const [addressData, setAddressData] = useState({
+    })
     // const myCart = useSelector(state => state.courses.my_cart);
     // const addPurchase = async(email) =>{
     //     const response = await axios.post('http://localhost:3001/purchase',email)
     //     console.log(response);
     //  }
+    const handleAddressChange = (event) =>{
+        setAddressData({
+            ...addressData,
+            [event.elementType] : event.value
+        })
+        ;
+    }
+    console.log(addressData)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +54,7 @@ export default function CheckoutForm({ productos }) {
             console.log(email);
 
             try {
-                const response = await axios.post('http://localhost:3001/purchase', { email: email })
+                const response = await axios.post('http://localhost:3001/purchase', { data: {email: email ,dataPurchase:dataPurchase,addressData:addressData}})
                 console.log(response);
 
                 const responseTrans = await axios.post('http://localhost:3001/transactions', dataPurchase)
@@ -90,7 +101,11 @@ export default function CheckoutForm({ productos }) {
             const data = JSON.parse(userData)
             setEmail(data.data.email)
             const date = new Date()
-            setDataPurchase(prevDataPurchase=>({...prevDataPurchase,date:date}))
+            const options = {
+                timeZoneName: "short",
+              };
+              const formattedDate = date.toLocaleString("en-US", options);
+            setDataPurchase(prevDataPurchase=>({...prevDataPurchase,date:formattedDate}))
             setDataPurchase(prevDataPurchase => ({ ...prevDataPurchase, idUser: data.data._id }))
 
 
@@ -107,7 +122,7 @@ export default function CheckoutForm({ productos }) {
             // });
             const arrayProducts = productos?.map(prod =>{
                 return prod?.cantSelect?.map(can=>{
-                    return {productId:prod._id,size:can.size,cant:can.cant}
+                    return {productId:prod._id,name:prod.name,size:can.size,cant:can.cant,price:prod.price*100,amount:((prod.price*100)*can.cant)}
                 })
             })
             .flat()
@@ -129,7 +144,8 @@ export default function CheckoutForm({ productos }) {
     return (
         <form id="payment-form" onSubmit={handleSubmit} className="w-[80%] mx-[auto]">
             <PaymentElement />
-            <AddressElement options={{ mode: 'billing' }} />
+            <AddressElement options={{ mode: 'billing' }}
+            onChange={handleAddressChange} />
             <button className="py-[0.4rem]  px-[0.8rem] text-white bg-[#F8662B] mt-[1rem] rounded-[0.8rem]" disabled={isProcessing} id="submit">
                 <span className="" id="button-text">
                     {isProcessing ? "Processing ... " : "Pay now"}

@@ -80,7 +80,6 @@ export default function ProductCard({ product }) {
         } else {
             notifyError('Already added to cart')
         }
-
     }
 
     const resCant = () => {
@@ -94,60 +93,7 @@ export default function ProductCard({ product }) {
 
     }
 
-    // const handleCheckSize = (event) => {
-    //     const { checked, name ,value} = event.target
-    //     const index = parseInt(name)
-    //     if (checked) {
-    //         if(sizeCheck.length === 0){
-    //             setSizeCheck([index]);
-    //             // setCantSelect([{index:index,cant:1,size:value}]);
-    //             setCantSelect([{size:value,cant:1,}]);
-
-    //         } else {
-    //             setSizeCheck([...sizeCheck,index])
-    //             // setCantSelect([...cantSelect,{index:index, cant:1,size:value}])
-    //             setCantSelect([...cantSelect,{size:value,cant:1,}])
-    //         }
-    //         // setCantSelect([...sizeCheck, {index,cant:1}]);
-            
-    //     } else {
-    //         const newArray = sizeCheck.filter(size => size !== index)
-    //         setSizeCheck(newArray);
-    //         const newArrayCant = cantSelect.filter(cant => cant.size !== value)
-    //         setCantSelect(newArrayCant);
-    //     }
-    // }
-
-    // const handleSumCantSelect = (index,size,stock) =>{
-    //     console.log(index);
-    //     console.log(size);
-    //     console.log(stock);
-    //     console.log(sizeCheck);
-    //     const newSumSelect = cantSelect.map(sum=>{
-    //         if(sum.index === index){
-    //             console.log(sum.cant);
-    //             if(sum.cant < stock){
-    //                 return {...sum, cant : sum.cant +1, size:size}
-    //             }
-    //         }
-    //     return sum
-    //     })
-    //     setCantSelect(newSumSelect)  
-    // }
-
-    // const handleResCantSelect = (index,size,stock) =>{
-    //     const newResSelect = cantSelect.map(res=>{
-    //         if(res.index === index){
-    //             console.log(res.cant);
-    //             if(res.cant > 1){
-    //                 return {...res, cant : res.cant - 1,size:size}
-    //             }
-    //         }
-    //     return res
-    //     })
-    //     setCantSelect(newResSelect)
-    // }
-    // console.log(cantSelect);
+    
 
     const handleCantSelected = (size) =>{
         console.log(size);
@@ -336,3 +282,58 @@ export default function ProductCard({ product }) {
         </Tippy>
     )
 }
+
+// const handleCheckSize = (event) => {
+    //     const { checked, name ,value} = event.target
+    //     const index = parseInt(name)
+    //     if (checked) {
+    //         if(sizeCheck.length === 0){
+    //             setSizeCheck([index]);
+    //             // setCantSelect([{index:index,cant:1,size:value}]);
+    //             setCantSelect([{size:value,cant:1,}]);
+
+    //         } else {
+    //             setSizeCheck([...sizeCheck,index])
+    //             // setCantSelect([...cantSelect,{index:index, cant:1,size:value}])
+    //             setCantSelect([...cantSelect,{size:value,cant:1,}])
+    //         }
+    //         // setCantSelect([...sizeCheck, {index,cant:1}]);
+            
+    //     } else {
+    //         const newArray = sizeCheck.filter(size => size !== index)
+    //         setSizeCheck(newArray);
+    //         const newArrayCant = cantSelect.filter(cant => cant.size !== value)
+    //         setCantSelect(newArrayCant);
+    //     }
+    // }
+
+    // const handleSumCantSelect = (index,size,stock) =>{
+    //     console.log(index);
+    //     console.log(size);
+    //     console.log(stock);
+    //     console.log(sizeCheck);
+    //     const newSumSelect = cantSelect.map(sum=>{
+    //         if(sum.index === index){
+    //             console.log(sum.cant);
+    //             if(sum.cant < stock){
+    //                 return {...sum, cant : sum.cant +1, size:size}
+    //             }
+    //         }
+    //     return sum
+    //     })
+    //     setCantSelect(newSumSelect)  
+    // }
+
+    // const handleResCantSelect = (index,size,stock) =>{
+    //     const newResSelect = cantSelect.map(res=>{
+    //         if(res.index === index){
+    //             console.log(res.cant);
+    //             if(res.cant > 1){
+    //                 return {...res, cant : res.cant - 1,size:size}
+    //             }
+    //         }
+    //     return res
+    //     })
+    //     setCantSelect(newResSelect)
+    // }
+    // console.log(cantSelect);
