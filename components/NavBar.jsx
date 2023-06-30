@@ -14,7 +14,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 
 export default function NavBar() {
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState(null);
 	const [userData, setUserData] = useState({})
 	const router = useRouter();
 	const dispatch = useDispatch();
@@ -57,31 +57,32 @@ export default function NavBar() {
 
 	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname.includes('products')) {
+		if (!pathname.includes('/search')) {
 			setSearch('');
 		}
 	}, [pathname]);
 
 	const debouncedSearch = useCallback(
 		debounce((searchTerm) => {
-			if (searchTerm.length > 0) {
-				router.push('/search');
-				dispatch(searchProducts(searchTerm));
-			}
-		}, 500),
+			router.push('/search');
+			dispatch(searchProducts(searchTerm));
+			// 	router.push('/search');
+			// 	dispatch(searchProducts(searchTerm));
+		}, 1000),
 		[],
 	);
 
 	const handleChange = (event) => {
 		const searchTerm = event.target.value;
 		setSearch(searchTerm);
-		if (pathname.includes(search)) {
-			debouncedSearch(searchTerm);
-		}
+		debouncedSearch(searchTerm);
+		// if (pathname.includes('/search')) {
+		// 	debouncedSearch(searchTerm);
+		// }
 	};
 
 	useEffect(() => {
-		if ((!search || search == '') && pathname.includes('search')) {
+		if(search==null){
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
