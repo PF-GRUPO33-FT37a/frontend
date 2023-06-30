@@ -1,33 +1,19 @@
 import Review from "./Review";
-import { useState } from "react";
+import ReviewPoster from "./ReviewPoster/ReviewPoster";
+import { useEffect, useState } from "react";
 
-export default function ContainerReviews({ reviews }){
+export default function ContainerReviews({ reviews, productId }){
     const average = reviews.length ? 
         (reviews.reduce((acc, review) => acc + +(review.ratings), 0) / reviews.length).toFixed(1) : 0
     const averageStars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
+    const [ user, setUser ] = useState()
 
-    const [ stars, setStars ] = useState(['☆', '☆', '☆', '☆', '☆'])
-    const [ ratingStars, setRatingStars ] = useState(['☆', '☆', '☆', '☆', '☆'])
-
-    function handleMouseEnter(event){
-        const { id } = event.target
-        let newStars = []
-        newStars = stars.map((star, index) =>
-            parseInt(id[5]) >= index + 1 ? '★' : '☆')
-        setStars(newStars)
-    }
-
-    function handleMouseLeave(){
-        setStars(ratingStars)
-    }
-
-    function handleClick(event){
-        const { id } = event.target
-        let newStars = []
-        newStars = stars.map((star, index) =>
-            parseInt(id[5]) >= index + 1 ? '★' : '☆')
-        setRatingStars(newStars)
-    }
+    useEffect(()=> {
+        const user = JSON.parse(localStorage.getItem('user'))
+        if (user && user.data){
+            setUser(user.data)
+        }
+    }, [])
 
     return <div className="flex flex-col gap-y-[2.2rem]">
         {reviews.length ?
@@ -44,28 +30,7 @@ export default function ContainerReviews({ reviews }){
             :
             <h1>No reviews for this product yet!</h1>
         }
-        <div className="flex flex-col border p-[1rem] rounded-xl gap-y-[0.8rem] w-[75%]">
-            <div className="flex text-[1.3rem] gap-x-[0.5rem] cursor-pointer w-fit" onMouseLeave={handleMouseLeave}>
-                <h1 onMouseEnter={handleMouseEnter} id='star_1'
-                onClick={handleClick}>
-                    {stars[0]}</h1>
-                <h1 onMouseEnter={handleMouseEnter} id='star_2'
-                onClick={handleClick}>
-                    {stars[1]}</h1>
-                <h1 onMouseEnter={handleMouseEnter} id='star_3'
-                onClick={handleClick}>
-                    {stars[2]}</h1>
-                <h1 onMouseEnter={handleMouseEnter} id='star_4'
-                onClick={handleClick}>
-                    {stars[3]}</h1>
-                <h1 onMouseEnter={handleMouseEnter} id='star_5'
-                onClick={handleClick}>
-                    {stars[4]}</h1>
-            </div>
-            <input className="border-red-400" placeholder="Write a review ..."/>
-            <button className="w-[3.8rem] h-[1.8rem] text-white bg-red-400"
-            >Post</button>
-        </div>
+        <ReviewPoster productId={productId} userId={user ? user._id : {}}/> {/* falta validar la entrega del producto para postear la review*/}
         {reviews.length ?
             <div className="flex flex-col gap-y-[0.8rem] content-center">
                 {reviews.map((review)=> <Review data={review}/>)}

@@ -12,9 +12,8 @@ export default function ProfilePage(){
         else if (view === 'purchase_history')
             return <>PURCHASE HISTORY</>
     }
-    console.log(view); //
 
-    return <main className='flex pt-[9rem] min-h-[90vh] min-w-[90vh]'>
+    return <main className='flex relative pt-[8.2rem] min-h-[90vh] min-w-[90vh]'>
             <UserMenu setView={setView}/>
         <div className="pl-[4rem]">
             {showView(view)}

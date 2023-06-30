@@ -44,7 +44,7 @@ export default function UserMenu({ setView}) {
 				<li	className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
 					id='purchase_history' onClick={handleButtonClicks}>Purchase history
 				</li>
-				<hr className='border-gray-400'/>
+				<hr className='border-gray-200'/>
 				<li className='hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer'
 					onClick={handleClick}
 					>Log out
