@@ -5,6 +5,7 @@ import check from '../../public/check.png'
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { userSchema, emailSchema, phoneNumberSchema, dateSchema } from './validations'
+import { FormData } from "node-fetch"
 
 export default function UserProfile(){
 
@@ -104,8 +105,9 @@ export default function UserProfile(){
                         (error)=> setErrors({...errors, [name]: error.message}))
                     break;
                 case 'image':
-                    const response = { images: [values.image]}
-                    submitChange(response, name)
+                    // const formData = new FormData
+                    // formData.append('images', [values.image])
+                    submitChange({images: [values.name]}, name)
                 default:
                     break;
             }
@@ -153,7 +155,7 @@ export default function UserProfile(){
                 <Image className="w-[18px] h-[18px] top-[10px] relative cursor-pointer opacity-50"
                     src={check} alt={'check'} width={300} height={300} // botón 'check image'
                     onClick={handleOnClick} name={'image'}/>
-                <label>{values.imageName}</label>
+                <label className="relative left-[2rem] bottom-[0.6rem]">{values.imageName}</label>
                 </>
                 :
                 <></> }
