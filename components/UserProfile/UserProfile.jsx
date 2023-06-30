@@ -63,7 +63,7 @@ export default function UserProfile(){
     }, [refresh, userId])
     
     function submitChange(response, name) {        // cuando se resuelven los errores, se realiza el PUT
-        axios.put(`http://localhost:3001/users/${userId}`, response)
+        axios.put(`http://localhost:3001/users/${data._id}`, response)
         .then((response)=>{
             setRefresh(response) // pide la información actualizada del usuario
             setErrors({...errors, [name]: ''}) // limpia los errors
@@ -104,8 +104,9 @@ export default function UserProfile(){
                         (error)=> setErrors({...errors, [name]: error.message}))
                     break;
                 case 'image':
-                    const response = { images: [values.image]}
-                    submitChange(response, name)
+                    const formData = new FormData
+                    formData.append('images', values.image)
+                    submitChange(formData, name)
                 default:
                     break;
             }
@@ -141,8 +142,8 @@ export default function UserProfile(){
     return <section className="m-[4rem] flex flex-row justify-center gap-x-[6rem]">
         <div className='relative'
             onMouseEnter={handleMouse} onMouseLeave={handleMouse}>
-            <Image className='flex w-[200px] h-[200px]' // imagen de perfil
-                src={profileImage} width={200} height={200} id={'imageViewer'} atl={'profile'}/>
+            <Image className='flex w-[200px] h-[200px] border-[1px]' // imagen de perfil
+                src={profileImage} width={200} height={200} id={'imageViewer'} alt={'profile'}/>
             { hover ? 
                 <Image className="w-[25px] h-[25px] top-0 left-0 absolute cursor-pointer opacity-50" // boton edit
                     src={editIcon} alt={'username'} width={300} height={300} name={'edit'}
@@ -153,7 +154,7 @@ export default function UserProfile(){
                 <Image className="w-[18px] h-[18px] top-[10px] relative cursor-pointer opacity-50"
                     src={check} alt={'check'} width={300} height={300} // botón 'check image'
                     onClick={handleOnClick} name={'image'}/>
-                <label>{values.imageName}</label>
+                <label className="relative left-[2rem] bottom-[0.6rem]">{values.imageName}</label>
                 </>
                 :
                 <></> }
