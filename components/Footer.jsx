@@ -1,14 +1,24 @@
 'use client'
 import Image from 'next/image';
+import FormContactUs from './FormContactUs';
 import logo from '../public/logo-white.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Footer() {
 
-	const [datForm, setDataForm] = useState()
+	const [dataForm, setDataForm] = useState({
+		name:"",
+		email:"",
+		message:""
+	})
 
-	const onChange = (event) =>{
-		
+	useEffect(()=>{
+		console.log(dataForm)
+	},[dataForm])
+
+	const onChange = (e) =>{
+		setDataForm({ ...dataForm, [e.target.name]: e.target.value });
 	}
 
 	function openPopup() {
@@ -17,6 +27,15 @@ export default function Footer() {
 	  
 	  function closePopup() {
 		document.getElementById("popup").style.display = "none";
+	  }
+
+	  const handleSubmit = (event) =>{
+		event.preventDefault()
+		axios.post('http://localhost:3001/contactUs', dataForm)
+		.then((response)=>{
+			alert("perfecto")
+			closePopup()
+		})
 	  }
 	return (
 		<footer className='bg-black min-h-[40vh] text-white  p-[2rem] '>
@@ -58,7 +77,7 @@ export default function Footer() {
 							placeholder="Message"
 							/>
 						</div>
-						<button className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem]">
+						<button className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem]" >
 							Suscribirse
 						</button>
 						</form>
@@ -86,38 +105,11 @@ export default function Footer() {
 
 					<div id="popup" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
 					<div className="bg-white p-6 rounded-md max-w-md mx-auto" style={{ marginTop: '150px' }}>
-						<form>
-							<span onClick={closePopup} className='text-black cursor-pointer ml-auto self-center'>x</span>
-						<h2 className="mb-4 text-lg font-bold text-center text-black">Contact Us</h2>
-						<div className="mb-4">
-							<label htmlFor="email" className="block mb-2 text-black">Email:</label>
-							<input
-							type="email"
-							id="email"
-							name="email"
-							className="w-full p-2 border border-gray-300 rounded-md"
-							placeholder='E-mail'
-							/>
-						</div>
-						<div className="mb-4">
-							<label htmlFor="message" className="block mb-2 text-black">Message:</label>
-							<textarea
-								id="message"
-								name="message"
-								rows="4"
-								className="w-full p-2 border border-gray-300 rounded-md text-black" // Agrega la clase "text-black"
-								placeholder='Message'
-							/>
-							</div>
-						<button
-							type="submit"
-							className="bg-blue-500 text-white py-2 px-4 rounded-md"
-						>
-							Send
-						</button>
-						</form>
+					<span onClick={closePopup} className='text-black cursor-pointer ml-auto self-center'>x</span>
+					<h2 className="mb-4 text-lg font-bold text-center text-black">Contact Us</h2>
+						<FormContactUs/>
 						<span
-						className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 cursor-pointer"
+						className="block top-0 right-0 mt-2 mr-2 text-red cursor-pointer"
 						onClick={closePopup}
 						>
 						&times;
