@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux"
 import { addArrayPrice } from "@/redux/Slice"
 export default function SummaryCard({ product,
     // handleCantChange,
-    handleDeleteProductCart, sumCount, restCount }) {
+    handleDeleteProductCart, sumCount, restCount, addSizeProduct }) {
 
     const [cant, setCant] = useState(product.cant)
     const [summaryProduct, setSummaryProduct] = useState(product)
@@ -37,6 +37,16 @@ export default function SummaryCard({ product,
         dispatch(addArrayPrice({id:product._id,priceTotal:cantTotal * product.price}))
     },[cantTotal])
 
+    const handleAddSize = (id,prod) =>{
+        const newArray = addSize.filter(product=>{
+            product.size !== prod.size
+        })
+
+        setAddSize(newArray)
+        
+        addSizeProduct(id,prod)
+    }
+
     return (
         <div>
             <div className="relative flex gap-x-[1rem] pb-[1rem] pt-[0.8rem] px-[0.4rem] border-[#F8652A] border-b-[2px]">
@@ -52,11 +62,14 @@ export default function SummaryCard({ product,
                     <div className="flex gap-x-[0.4rem] ">
                         {
                             addSize?.map((prod, index) => {
-                                return (
-                                    <span
-                                        className="bg-[#DCDCDC] px-[0.4rem] rounded-[0.2rem] text-[0.6rem] cursor-pointer"
-                                        key={index}>{prod.size}</span>
-                                )
+                                if(prod.stock > 0){
+                                    return (
+                                        <span
+                                            onClick={()=>{handleAddSize(product._id,prod)}}
+                                            className="bg-[#DCDCDC] px-[0.4rem] rounded-[0.2rem] text-[0.6rem] cursor-pointer hover:bg-[#a1a1a1]"
+                                            key={index}>{prod.size}</span>
+                                    )
+                                }
                             })
                         }
                     </div>

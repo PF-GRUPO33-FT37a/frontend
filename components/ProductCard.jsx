@@ -29,6 +29,8 @@ export default function ProductCard({ product }) {
     const [priceModify, setPriceModify] = useState(product.price)
     const [sizeCheck, setSizeCheck] = useState([])
     const [cantSelect,setCantSelect] = useState([{cant: 0, index: 0, size: ""}])
+    
+    const [sizes,setSize] = useState(0)
 
     // const [productos, setProductos] = useState([])
 
@@ -123,6 +125,14 @@ export default function ProductCard({ product }) {
         setCantSelect(newArray)
     }
 
+
+    const handleSumActiveCart = (value) =>{
+        setSize(sizes+1)
+    }
+    const handleResActiveCart = (value) =>{
+        setSize(sizes-1)
+    }
+
     useEffect(() => {
 
     }, [cant, sizeCheck,cantSelect])
@@ -209,6 +219,8 @@ export default function ProductCard({ product }) {
                                                     stock={size.stock}
                                                     handleCantSelected={handleCantSelected}
                                                     handleResSelected={handleResSelected}
+                                                    handleSumActiveCart={handleSumActiveCart}
+                                                    handleResActiveCart={handleResActiveCart}
                                                     />
                                                     // <div key={index} className="flex items-center gap-x-[0.4rem]">
                                                     //     <input onChange={handleCheckSize} type="checkbox" name={index} value={size.size} id="" />
@@ -241,7 +253,7 @@ export default function ProductCard({ product }) {
                                     <></>
                             }
                             {
-                                ((product?.stock > 0) && (cantSelect.length > 0))
+                                (sizes > 0)
                                     ?
                                     <span
                                         onClick={addMyCart}
