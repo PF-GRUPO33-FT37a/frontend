@@ -4,17 +4,19 @@ import loginImg from '../../public/login.jpg';
 import logo from '../../public/logocommerce.png';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from '@/components/nextauth/googleLogin';
+import { useSession } from 'next-auth/react';
 
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
 	const router = useRouter();
+	const { data: session } = useSession();
 
 	const notify = (message) => {
 		toast.success(message, {
@@ -37,13 +39,58 @@ export default function LoginPage() {
 		}));
 	};
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				if (session) {
+					const email = session.user.email;
+					const response = await axios.get(
+						`http://localhost:3001/users/auth/${email}`,
+					);
+					console.log(response.data);
+					if (response.data.validated && response.data.isActive) {
+						localStorage.setItem(
+							'user',
+							JSON.stringify({
+								data: response.data,
+								validated: true,
+							}),
+						);
+						notify('You were successfully logged in');
+						setTimeout(() => router.push('/'), 3000);
+					} else if (response.data.isActive) {
+						notifyError(
+							'Unauthenticated user, check your email to confirm your account',
+						);
+					} else {
+						Swal.fire({
+							title: 'Error',
+							text: 'Deactivated user, contact FashionFinds support team',
+							icon: 'error',
+							confirmButtonText: '<a href="http://localhost:3000/">Aceptar</a>',
+						});
+					}
+				}
+			} catch (error) {
+				Swal.fire({
+					title: 'Error',
+					text: 'Deactivated user, contact FashionFinds support team',
+					icon: 'error',
+					confirmButtonText: '<a href="http://localhost:3000/">Aceptar</a>',
+				});
+			}
+		};
+
+		fetchData();
+	}, [session]);
+
 	// <<<<<<< HEAD
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		let url = `password=${login.password}&email=${login.email}`;
 		try {
 			const response = await axios(`http://localhost:3001/users/login?${url}`);
-			if(response.data.validated && response.data.isActive){
+			if (response.data.validated && response.data.isActive) {
 				localStorage.setItem(
 					'user',
 					JSON.stringify({
@@ -53,25 +100,25 @@ export default function LoginPage() {
 				);
 				notify('You were successfully logged in');
 				setTimeout(() => router.push('/'), 3000);
-			}
-			 else if (response.data.isActive){
-				notifyError('Unauthenticated user, check your email to confirm your account')
-			}
-			else{
+			} else if (response.data.isActive) {
+				notifyError(
+					'Unauthenticated user, check your email to confirm your account',
+				);
+			} else {
 				Swal.fire({
 					title: 'Error',
 					text: 'Deactivated user, contact FashionFinds support team',
 					icon: 'error',
-					confirmButtonText:'<a href="http://localhost:3000/">Aceptar</a>'
-				  });
+					confirmButtonText: '<a href="http://localhost:3000/">Aceptar</a>',
+				});
 			}
 		} catch (error) {
 			Swal.fire({
 				title: 'Error',
 				text: 'Deactivated user, contact FashionFinds support team',
 				icon: 'error',
-				confirmButtonText:'<a href="http://localhost:3000/">Aceptar</a>'
-			  });
+				confirmButtonText: '<a href="http://localhost:3000/">Aceptar</a>',
+			});
 		}
 	};
 	// =======
