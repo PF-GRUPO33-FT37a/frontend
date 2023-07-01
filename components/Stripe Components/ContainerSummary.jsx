@@ -2,29 +2,46 @@
 import Image from "next/image";
 import SummaryCard from "./SummaryCard";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTotalPay } from "@/redux/Slice";
 
-export default function ContainerSummary({ products, handleCantChange, handleDeleteProductCart }) {
+export default function ContainerSummary({ products,
+    //  handleCantChange,
+      handleDeleteProductCart, restCount,sumCount}) {
 
     const [totalSum, setTotalSum] = useState(0)
     const [myCartLocal, setMyCartLocal] = useState()
     const dispatch = useDispatch()
+    const arrayPrice = useSelector(state => state.products.arrayPrice)
+    const [totalPay,setTotalPay] = useState(0)
 
 
     useEffect(() => {
         console.log('hola');
         setMyCartLocal(products)
+        console.log(products);
     }, [products])
 
+    // useEffect(()=>{
+    //     const total = myCartLocal?.reduce((acu, producto) => {
+    //         return acu + (producto.price * producto.cant)
+    //     }, 0)
+    //     setTotalSum(total)
+    //     dispatch(addTotalPay(total))
+        
+    // },[myCartLocal])
+
     useEffect(()=>{
-        const total = myCartLocal?.reduce((acu, producto) => {
-            return acu + (producto.price * producto.cant)
-        }, 0)
-        setTotalSum(total)
+        console.log(arrayPrice);
+        const total = arrayPrice?.reduce((acu,producto)=>{
+            console.log(producto.priceTotal);
+            return acu + producto.priceTotal
+        },0)
+        console.log(total);
+        setTotalPay(total)
         dispatch(addTotalPay(total))
         
-    },[myCartLocal])
+    },[arrayPrice])
 
 
 
@@ -37,8 +54,12 @@ export default function ContainerSummary({ products, handleCantChange, handleDel
                         <SummaryCard
                             key={index}
                             product={prod}
-                            handleCantChange={handleCantChange}
+                            // handleCantChange={handleCantChange}
                             handleDeleteProductCart={handleDeleteProductCart}
+                            // handleCantSelected={handleCantSelected}
+                            // handleResSelected={handleResSelected}
+                            restCount={restCount}
+                            sumCount={sumCount}
                             />
                     )
                 })
@@ -54,7 +75,7 @@ export default function ContainerSummary({ products, handleCantChange, handleDel
             </div>
             <div className="flex justify-between pt-[1rem] border-[#F8652A] border-t-[1px]">
                 <h2 className="text-white">Total:</h2>
-                <h2 className="text-[#F8652A]">$ {totalSum}</h2>
+                <h2 className="text-[#F8652A]">$ {totalPay}</h2>
             </div>
 
             </div>

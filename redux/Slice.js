@@ -11,7 +11,8 @@ export const Slice = createSlice({
     productsSearch: [],
     nameSearch: "",
     renderProducts: [],
-    totalPay: 0
+    totalPay: 0,
+    arrayPrice: []
   },
   reducers: {
     getProductsStart: (state) => {
@@ -53,6 +54,12 @@ export const Slice = createSlice({
     },
     addTotalPay: (state, action) => {
       state.totalPay = action.payload;
+    },
+    addArrayPrice: (state, action) => {
+      console.log(action.payload.id);
+      const newArray = state.arrayPrice.filter(price => price.id !== action.payload.id)
+      console.log(newArray);
+      state.arrayPrice = [...newArray,action.payload]
     }
   },
 });
@@ -64,7 +71,8 @@ export const { getProductsStart,
   clearRender, clearSearch,
   searchProductsSuccess,
   productsRenderPerPage,
-  addTotalPay } = Slice.actions;
+  addTotalPay,
+  addArrayPrice } = Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
   dispatch(getProductsStart());
@@ -86,12 +94,12 @@ export const getProducts = (gender, category) => async (dispatch) => {
   }
 };
 
-export const getFilterProducts = (gender, category, brand, color, name) => async (dispatch) => {
+export const getFilterProducts = (gender, category, brand, color, name, price) => async (dispatch) => {
   dispatch(getProductsStart());
   try {
     let url = "http://localhost:3001/products";
-    if ((gender && category) || (brand || color || name)) {
-      const query = { gender, category, brand, color, name };
+    if ((gender && category) || (brand || color || name || price)) {
+      const query = { gender, category, brand, color, name, price };
       const queryString = Object.entries(query)
         .filter(([_, value]) => value)
         .map(([key, value]) => `${key}=${value}`)

@@ -21,9 +21,15 @@ export default function Home() {
 					alt='img-header'
 					width={1500}
 					height={1500}
+					routes={[
+						{ name: "Hombres", route: "/products/hombres" },
+						{ name: "Mujeres", route: "/products/female" },
+						{ name: "Niños", route: "/products/children" },
+					  ]}
 				/>
 				<h2 className='absolute text-white font-bold text-[2rem] top-[2rem] left-[4rem] bg-[#90909050] py-[1rem] px-[1.4rem] rounded-[1rem]'>
 					Empieza tu negocio
+				
 				</h2>
 			</div>
 			<br />

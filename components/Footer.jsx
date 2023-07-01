@@ -1,7 +1,42 @@
+'use client'
 import Image from 'next/image';
-import logo from '../public/logowhite.png';
+import FormContactUs from './FormContactUs';
+import logo from '../public/logo-white.png';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Footer() {
+
+	const [dataForm, setDataForm] = useState({
+		name:"",
+		email:"",
+		message:""
+	})
+
+	useEffect(()=>{
+		console.log(dataForm)
+	},[dataForm])
+
+	const onChange = (e) =>{
+		setDataForm({ ...dataForm, [e.target.name]: e.target.value });
+	}
+
+	function openPopup() {
+		document.getElementById("popup").style.display = "block";
+	  }
+	  
+	  function closePopup() {
+		document.getElementById("popup").style.display = "none";
+	  }
+
+	  const handleSubmit = (event) =>{
+		event.preventDefault()
+		axios.post('http://localhost:3001/contactUs', dataForm)
+		.then((response)=>{
+			alert("perfecto")
+			closePopup()
+		})
+	  }
 	return (
 		<footer className='bg-black min-h-[40vh] text-white  p-[2rem] '>
 			<div className='flex justify-around'>
@@ -26,14 +61,26 @@ export default function Footer() {
 							primera compra* <br />
 							Recibí las mejores promociones y novedades del mundo de la moda
 						</p>
-						<div className='flex gap-x-[1rem] mb-[1rem]'>
+						<div className='flex gap-x-[1rem] mb-[1rem] justify-start' >
+						<form className="flex flex-col justify-start rounded-[0.6rem]">
+						<div className="flex gap-x-[1rem] mb-[0.6rem]">
 							<input
-								className='text-black rounded-[0.6rem] py-[0.4rem] pl-[1rem]'
-								type='text'
+							className="text-black rounded-[0.6rem] py-[0.6rem] pl-[1rem]"
+							type="e-mail"
+							name="email"
+							placeholder="Email"
 							/>
-							<button className='rounded-[0.6rem] bg-[#909090] py-[0.4rem] px-[1rem]'>
-								Suscribete
-							</button>
+							<input
+							className="text-black rounded-[0.6rem] py-[0.6rem] pl-[1rem]"
+							type="text"
+							name="message"
+							placeholder="Message"
+							/>
+						</div>
+						<button className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem]" >
+							Suscribirse
+						</button>
+						</form>
 						</div>
 					</div>
 
@@ -43,14 +90,32 @@ export default function Footer() {
 				</div>
 
 				<div className='flex w-[70%] justify-around'>
-					<article className='flex flex-col gap-y-[0.6rem]'>
-						<h3 className='underline'>Info</h3>
-						<span className='text-[0.8rem]'>About</span>
-						<span className='text-[0.8rem]'>Contact Us</span>
-						<span className='text-[0.8rem]'>Privacy Policy</span>
-						<span className='text-[0.8rem]'>Terms</span>
+				<article className="flex flex-col gap-y-2">
+					<h3 className="underline">Info</h3>
+					<span className="text-sm">About</span>
+					<span
+						className="text-sm text-blue-500 cursor-pointer"
+						onClick={openPopup}
+					>
+						Contact Us
+					</span>
+					<span className="text-sm">Privacy Policy</span>
+					<span className="text-sm">Terms</span>
 					</article>
 
+					<div id="popup" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+					<div className="bg-white p-6 rounded-md max-w-md mx-auto" style={{ marginTop: '150px' }}>
+					<span onClick={closePopup} className='text-black cursor-pointer ml-auto self-center'>x</span>
+					<h2 className="mb-4 text-lg font-bold text-center text-black">Contact Us</h2>
+						<FormContactUs/>
+						<span
+						className="block top-0 right-0 mt-2 mr-2 text-red cursor-pointer"
+						onClick={closePopup}
+						>
+						&times;
+						</span>
+					</div>
+					</div>
 					<article className='flex flex-col gap-y-[0.6rem]'>
 						<h3 className='underline'>Products</h3>
 						<span className='text-[0.8rem]'>Zapatillas</span>

@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from '@/components/nextauth/googleLogin';
 
+import Swal from "sweetalert2";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -42,7 +43,7 @@ export default function LoginPage() {
 		let url = `password=${login.password}&email=${login.email}`;
 		try {
 			const response = await axios(`http://localhost:3001/users/login?${url}`);
-			if(response.data.validated){
+			if(response.data.validated && response.data.isActive){
 				localStorage.setItem(
 					'user',
 					JSON.stringify({
@@ -52,11 +53,25 @@ export default function LoginPage() {
 				);
 				notify('You were successfully logged in');
 				setTimeout(() => router.push('/'), 3000);
-			}else{
+			}
+			 else if (response.data.isActive){
 				notifyError('Unauthenticated user, check your email to confirm your account')
 			}
+			else{
+				Swal.fire({
+					title: 'Error',
+					text: 'Deactivated user, contact FashionFinds support team',
+					icon: 'error',
+					confirmButtonText:'<a href="http://localhost:3000/">Aceptar</a>'
+				  });
+			}
 		} catch (error) {
-			notifyError(error.message);
+			Swal.fire({
+				title: 'Error',
+				text: 'Deactivated user, contact FashionFinds support team',
+				icon: 'error',
+				confirmButtonText:'<a href="http://localhost:3000/">Aceptar</a>'
+			  });
 		}
 	};
 	// =======
