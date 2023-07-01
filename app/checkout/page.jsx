@@ -7,6 +7,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js'
 import { CardElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Stripe Components/CheckoutForm";
+import { useRouter } from "next/navigation";
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_KEY_PUBLIC}`); // estado "products"
 
@@ -15,16 +16,25 @@ export default function CheckoutPage() {
 
     const [products, setProducts] = useState()
     const [clientSecret, setClientSecret] = useState("");
-    const amount = useSelector(state => state.products.totalPay)
+    const totalPay = useSelector(state => state.products.totalPay)
+    const desc = useSelector(state => state.products.desc)
+    const cupon = useSelector(state=> state.products.cupon)
+
+    const router = useRouter()
 
     const [sizeCheck, setSizeCheck] = useState([])
     const [cantSelect, setCantSelect] = useState([])
+    const [amount,setAmount] = useState(totalPay)
 
     const getMyCart = () => { // extrae localStorage y almacena en estado "products"
         const myCartLocal = localStorage.getItem("myCart")
         const myCart = JSON.parse(myCartLocal)
-        console.log(myCart);
+        console.log(myCart.lenght);
+        if(!myCart){
+            router.push('/')
+        }
         setProducts(myCart)
+        
     }
 
     // const addMyCart = () => {
@@ -60,6 +70,26 @@ export default function CheckoutPage() {
     //         notifyError('Already added to cart')
     //     }
     // }
+
+    const addSizeProduct = (id,prod) =>{
+        const {size} = prod
+        console.log(prod);
+        setProducts(prevProducts =>{
+                return prevProducts.map(producto=>{
+                    if(producto._id === id){
+                        return {
+                            ...producto,
+                            cantSelect:[...producto.cantSelect,{size,cant:1}]
+                        }
+                    }
+                    return producto
+                })
+            
+        })
+            
+        
+    }
+
     const restCount = (id, size, stock, cant) => {
         console.log('entre');
         setProducts(prevProducts => {
@@ -176,14 +206,28 @@ export default function CheckoutPage() {
 
 
     useEffect(() => {
+        if(cupon){
+            setAmount(totalPay - desc)
+        }else {
+            setAmount(totalPay)
+        }
         getMyCart()
         console.log(products);
-    }, [])
+        
+    }, [cupon,totalPay])
 
     useEffect(() => {
         console.log('hola');
         console.log(products);
-        localStorage.setItem('myCart', JSON.stringify(products))
+        if(products){
+            localStorage.setItem('myCart', JSON.stringify(products))
+        }
+
+        const myCartLocal = localStorage.getItem("myCart")
+        const myCart = JSON.parse(myCartLocal)
+        if(myCart.length === 0){
+            router.push('/')
+        }
     }, [products])
 
     const getClientSecret = async (amount) => {
@@ -198,6 +242,7 @@ export default function CheckoutPage() {
 
 
     useEffect(() => {
+        console.log(amount);
         if (amount > 0) {
             getClientSecret(amount)
         }
@@ -225,6 +270,7 @@ export default function CheckoutPage() {
                         // handleResSelected={handleResSelected}
                         restCount={restCount}
                         sumCount={sumCount}
+                        addSizeProduct={addSizeProduct}
                     />
                 </div>
             </section>
