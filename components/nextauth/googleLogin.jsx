@@ -2,36 +2,18 @@
 
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
 
 const GoogleLogin = () => {
 	const { data: session } = useSession();
 	const router = useRouter();
-	const notify = (message) => {
-		toast.success(message, {
-			autoClose: 2000,
-		});
-	};
-
-	const notifyError = (message) => toast.error(message);
 
 	const handleClick = async (e) => {
-		try {
-			e.preventDefault;
-			await signIn('google');
-		} catch (error) {
-			router.push('/login');
-			notifyError('Please log in using your email and password');
-		}
+		e.preventDefault;
+		await signIn('google');
 	};
-
-	if (session) {
-		router.push('/');
-	}
 
 	return (
 		<div>
-			<ToastContainer />
 			<a
 				href='#'
 				onClick={handleClick}
