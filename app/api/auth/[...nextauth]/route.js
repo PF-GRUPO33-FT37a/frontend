@@ -21,6 +21,7 @@ export const authOptions = {
 		},
 		async signOut({ redirect }) {
 			destroyCookie(null, 'next-auth.session-token');
+			destroyCookie(null, 'next-auth.csrf-token');
 			return redirect('/login');
 		},
 	},

@@ -6,14 +6,11 @@ import { useRouter } from 'next/navigation';
 const GoogleLogin = () => {
 	const { data: session } = useSession();
 	const router = useRouter();
+
 	const handleClick = async (e) => {
 		e.preventDefault;
 		await signIn('google');
 	};
-
-	if (session) {
-		router.push('/');
-	}
 
 	return (
 		<div>

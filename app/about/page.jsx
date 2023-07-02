@@ -6,6 +6,7 @@ import egPage2 from '../../public/egPage2.png';
 import egPage3 from '../../public/egPage3.png';
 import { motion } from 'framer-motion';
 import Map from '@/components/Map';
+import FormContactUs from '@/components/FormContactUs';
 
 export default function About() {
 	const images = [egPage1, egPage2, egPage3];
@@ -56,7 +57,7 @@ export default function About() {
 				</h2>
 				<div className='flex flex-row justify-around'>
 					{images.map((image, index) => (
-						<motion.div whileHover={{ opacity: 0.5 }}>
+						<motion.div key={index} whileHover={{ opacity: 0.5 }}>
 							<Image
 								className='object-cover w-[16rem] h-[12rem] rounded-[1rem] border shadow-lg'
 								src={image}
@@ -66,7 +67,15 @@ export default function About() {
 					))}
 				</div>
 				<Map />
-				
+				<div>
+					<br/>
+				<motion.h2
+						className='text-[3.4rem] font-semibold text-center pb-[2rem]'
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+					>Contact Us</motion.h2>
+					<FormContactUs/>
+				</div>
 			</section>
 		</main>
 	);

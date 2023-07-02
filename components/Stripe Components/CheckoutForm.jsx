@@ -10,6 +10,8 @@ export default function CheckoutForm({ productos }) {
     const stripe = useStripe()
     const elements = useElements()
     const totalPay = useSelector(state => state.products.totalPay)
+    const desc = useSelector(state=> state.products.desc)
+    const cupon = useSelector(state=> state.products.cupon)
 
 
     const [message, setMessage] = useState(null);
@@ -97,7 +99,12 @@ export default function CheckoutForm({ productos }) {
         console.log(productos);
         const userData = localStorage.getItem('user')
         if (userData) {
-            setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:totalPay}))
+            if(cupon){
+                const priceDesc = totalPay - desc
+                setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:priceDesc,cpDesc:1,desc:desc}))
+            }else{
+                setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:totalPay,cpDesc:0}))
+            }
             const data = JSON.parse(userData)
             setEmail(data.data.email)
             const date = new Date()
@@ -133,7 +140,7 @@ export default function CheckoutForm({ productos }) {
             }))
         }
 
-    }, [productos])
+    }, [productos,cupon])
 
     useEffect(() => {
     }, [])

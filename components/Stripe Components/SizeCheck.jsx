@@ -34,7 +34,8 @@ export default function SizeCheck({ summaryProduct, id, size, cant, restCount, s
 
     }, [cant, checked])
     console.log(cant);
-    console.log(stock)
+    console.log(stock);
+    console.log(summaryProduct)
     return (
         <div className="flex items-center gap-x-[1rem]">
             <div className="flex gap-x-[0.4rem]">
