@@ -8,6 +8,7 @@ export default function ReviewPoster({ productId, userId }){
     const [ rating, setRating ] = useState(0)
     const [ error, setError ] = useState('')
 
+
     function handleMouseEnter(event){
         const { id } = event.target
         let newStars = []

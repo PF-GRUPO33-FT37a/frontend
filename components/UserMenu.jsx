@@ -2,9 +2,11 @@
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function UserMenu({ setView}) {
 	const { data: session } = useSession();
+	const router = useRouter()
 	const notify = (message) => {
 		toast.success(message, {
 			autoClose: 2000,

@@ -37,6 +37,7 @@ export default function NavBar() {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			console.log('session' + session); //
 			if (session) {
 				const email = session.user.email;
 				const response = await axios.get(
