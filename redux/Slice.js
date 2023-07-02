@@ -12,6 +12,8 @@ export const Slice = createSlice({
     nameSearch: "",
     renderProducts: [],
     totalPay: 0,
+    desc:0,
+    cupon:false,
     arrayPrice: []
   },
   reducers: {
@@ -55,13 +57,17 @@ export const Slice = createSlice({
     },
     addTotalPay: (state, action) => {
       state.totalPay = action.payload;
+      state.desc = Math.round(action.payload*0.15)
+    },
+    changeCupon:(state,action)=>{
+      state.cupon = action.payload
     },
     addArrayPrice: (state, action) => {
       console.log(action.payload.id);
       const newArray = state.arrayPrice.filter(price => price.id !== action.payload.id)
       console.log(newArray);
       state.arrayPrice = [...newArray,action.payload]
-    }
+    },
   },
 });
 
@@ -73,7 +79,9 @@ export const { getProductsStart,
   searchProductsSuccess,
   productsRenderPerPage,
   addTotalPay,
-  addArrayPrice } = Slice.actions;
+  changeCupon,
+  addArrayPrice,
+ } = Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
   dispatch(getProductsStart());
