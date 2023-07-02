@@ -93,6 +93,8 @@ export default function ProductDetail() {
         getDetail()
     }, [idPath])
 
+
+    console.log(productDetail[0]);
     return (
         <main className="min-h-[100vh] pt-[9rem]">
             {
@@ -144,13 +146,25 @@ export default function ProductDetail() {
                                 </div>
                                 <h3>Talles</h3>
                                 <select
+
                                     name="" id="" className="text-black p-[0.6rem] w-[100%] text-center">
 
                                     <option value="" selected disabled>Elegir talle</option>
-                                    <option value="">38</option>
-                                    <option value="">39</option>
-                                    <option value="">40</option>
-                                    <option value="">41</option>
+                                    {
+                                        productDetail[0]?.size?.map((size,index)=>{
+                                            if(size.stock > 0 ){
+                                                return(
+                                                <option key={index} value={size.size}>
+                                                    {size.size}</option>   
+                                                )
+                                            }else{
+                                                return (
+                                                    <option key={index} value=""disabled>
+                                                    {size.size}</option>  
+                                                )
+                                            }
+                                        })
+                                    }
                                 </select>
                                 {
                                     (productDetail[0]?.stock > 0)
@@ -168,7 +182,7 @@ export default function ProductDetail() {
                                         :
 
                                         <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
-                                            <span className="text-white p-[0.6rem] w-[100%] text-center bg-red-400 font-bold cursor-pointer">Sold Out</span>
+                                            <span className="text-white p-[0.6rem] w-[100%] text-center bg-red-400 font-bold cursor-default">Sold Out</span>
                                             <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
                                         </div>
 
