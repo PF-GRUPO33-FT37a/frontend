@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from "react"
 import CardHistoryPurchase from "@/components/cardHistoryPurchase"
+import SkeletonPurchaseHistory from "@/components/SkeletonComponents/SkeletonPurchaseHistory"
 import axios from "axios"
 import Image from "next/image"
 
@@ -11,6 +12,7 @@ export default function PurchaseHistory() {
     const [user, setUser] = useState()
     const [getUser, setGetUser] = useState();
     const [localUser, setLocalUser] = useState();
+    const [imgProducts, setImgProducts] = useState([]);
 
     useEffect(() => {
         const userLocal = JSON.parse(window.localStorage.getItem('user'))
@@ -47,6 +49,7 @@ export default function PurchaseHistory() {
         }
     }, [getUser, user, localUser])
 
+
     console.log(localUser);
 
     return (
@@ -62,11 +65,13 @@ export default function PurchaseHistory() {
                             <table className="w-[100%] ">
                                 <thead>
                                     <tr>
+                                        <th className="py-2 px-4 border-[1px] ">id_transaction</th>
                                         <th className="py-2 px-4 border-[1px] ">img_product</th>
-                                        <th className="py-2 px-4 border-[1px] ">name</th>
+                                        <th className="py-2 px-4 border-[1px] text-start ">Description</th>
+                                        <th className="py-2 px-4 border-[1px] ">Price</th>
                                         <th className="py-2 px-4 border-[1px] ">cant</th>
-                                        <th className="py-2 px-4 border-[1px] ">ammount</th>
                                         <th className="py-2 px-4 border-[1px] ">date</th>
+                                        <th className="py-2 px-4 border-[1px] ">ammount</th>
                                     </tr>
                                 </thead>
                                 <tbody className="">
@@ -99,26 +104,73 @@ export default function PurchaseHistory() {
                                             //     <br className="w-full" />
                                             // </div>
                                             <tr key={index} className="py-[1rem]">
-                                                <td className="w-[5%] text-center py-[1rem]">
-                                                    <Image
-                                                        className="w-[50%] mx-[auto] "
-                                                        src={purchase?.products[0]?.productId?.images[0]} alt="img" width={200} height={200} />
+                                                <td className="w-[5%] text-center py-[1rem] font-light text-[0.5rem]">
+                                                    <div>
+                                                        <h2>{purchase._id}</h2>
+                                                    </div>
                                                 </td>
-                                                <td className="text-center py-[1rem]">
-                                                    <h2>{purchase?.products[0]?.productId?.name}</h2>
+                                                <td className="w-[20%] text-center py-[1rem]">
+                                                    <div className="flex gap-x-[0.4rem]">
+                                                    {
+                                                        purchase?.products.map((product,index)=>{
+                                                            
+                                                            return(
+                                                                <div  key={index} className="relative w-[20%]">
+                                                                    {/* <span className="absolute">{`size ${product.size}`}</span> */}
+                                                                    <Image
+                                                                        className="w-[100%] mx-[auto] "
+                                                                        src={product?.productId?.images[0]} alt="img" width={200} height={200} />
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                    </div>
+                                                    {/* <Image
+                                                        className="w-[50%] mx-[auto] "
+                                                        src={purchase?.products[0]?.productId?.images[0]} alt="img" width={200} height={200} /> */}
+                                                </td>
+                                                <td className="text-start py-[1rem] font-light text-[0.7rem]">
+                                                <div>
+                                                    {
+                                                        purchase?.products.map((product,index)=>{
+                                                            return(
+                                                                <h2 key={index}>{`${product?.productId?.name} - size ${product?.size}`}</h2>
+                                                            )
+                                                        })
+                                                    }
+                                                    </div>
+                                                    
                                                     
                                                 </td>
-                                                <td className="w-[5%] text-center py-[1rem]">
-                                                    <span> {(purchase?.products.reduce((acu, cant) => {
-                                                        return acu + cant.cant
-                                                    }, 0
-                                                    ))} </span>
+                                                <td className="w-[5%] text-center py-[1rem] font-light text-[0.7rem]">
+                                                    <div>
+                                                        {
+                                                            purchase?.products.map((product,index) =>{
+                                                                return (
+                                                                    <h2 key={index}>{`$${product?.productId?.price.toFixed(2)}`}</h2>
+                                                                )
+
+                                                            })
+                                                        }
+                                                    </div>
                                                 </td>
-                                                <td className="w-[5%] text-center py-[1rem]">
-                                                    <span>$ {purchase?.amount}</span>
+                                                <td className="w-[5%] text-center py-[1rem] font-light text-[0.7rem]">
+                                                    <div>
+                                                        {
+                                                            purchase?.products.map((product,index) =>{
+                                                                return (
+                                                                    <h2 key={index}>{`${product?.cant}`}</h2>
+                                                                )
+
+                                                            })
+                                                        }
+                                                    </div>
                                                 </td>
-                                                <td className="text-center py-[1rem] w-[25%]">
+                                                <td className="text-center py-[1rem] w-[5%] font-light text-[0.7rem]">
                                                     <span>{purchase?.date}</span>
+                                                </td>
+                                                <td className="w-[10%] text-center py-[1rem]">
+                                                    <span>$ {purchase?.amount.toFixed(2)}</span>
                                                 </td>
                                             </tr>
                                         );
@@ -126,7 +178,7 @@ export default function PurchaseHistory() {
                             </tbody>
                         </table>
             ) :
-            <span>loading...</span>
+            <SkeletonPurchaseHistory/>
 }
         </div>
         </main >

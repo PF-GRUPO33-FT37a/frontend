@@ -101,7 +101,7 @@ export default function CheckoutForm({ productos }) {
         if (userData) {
             if(cupon){
                 const priceDesc = totalPay - desc
-                setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:priceDesc,cpDesc:1}))
+                setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:priceDesc,cpDesc:1,desc:desc}))
             }else{
                 setDataPurchase(prevDataPurchase=>({...prevDataPurchase,amount:totalPay,cpDesc:0}))
             }
