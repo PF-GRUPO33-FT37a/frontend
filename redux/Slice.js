@@ -6,7 +6,7 @@ export const Slice = createSlice({
   initialState: {
     allProducts: [],
     isLoading: false,
-    error: null,
+    error: false,
     filterProducts: [],
     productsSearch: [],
     nameSearch: "",
@@ -19,11 +19,11 @@ export const Slice = createSlice({
       state.isLoading = true;
       state.filterProducts = []
       state.renderProducts = []
-      state.error = null;
+      state.error = false;
     },
     getProductsSuccess: (state, action) => {
       state.isLoading = false;
-      state.filterProducts = []
+      state.filterProducts = [];
       state.allProducts = action.payload;
     },
     getProductsFilterSuccess: (state, action) => {
@@ -50,7 +50,8 @@ export const Slice = createSlice({
     },
     getProductsFailure: (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
+      state.error = true;
+      console.log('ACA KAPO """"""""""""""""""""""""""""')
     },
     addTotalPay: (state, action) => {
       state.totalPay = action.payload;
@@ -113,6 +114,7 @@ export const getFilterProducts = (gender, category, brand, color, name, price) =
     dispatch(clearRender())
     dispatch(getProductsFilterSuccess(allProducts));
   } catch (error) {
+    console.log('ESTOESLOQUEBUSCASKAPO')
     dispatch(getProductsFailure(error.message));
   }
 };
@@ -131,6 +133,7 @@ export const searchProducts = (name) => async (dispatch) => {
     dispatch(clearSearch())
     dispatch(searchProductsSuccess({ allProducts: allProducts, name: name }));
   } catch (error) {
+    console.log('ACA')
     dispatch(getProductsFailure(error.message));
   }
 };
