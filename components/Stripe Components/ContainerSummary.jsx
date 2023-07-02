@@ -33,6 +33,19 @@ export default function ContainerSummary({ products,
         }
     }   
 
+    useEffect(()=>{
+        if(cpActive){
+            setCpActive(true)
+            const priceDesc = totalPriceGlobal - desc
+            setTotalPay(priceDesc)
+            dispatch(changeCupon(true)) 
+        }else{
+            setCpActive(false)
+            setTotalPay(totalPriceGlobal)
+            dispatch(changeCupon(false))
+        }
+    },[totalPriceGlobal])
+
 
     useEffect(() => {
         setMyCartLocal(products)
@@ -92,7 +105,7 @@ export default function ContainerSummary({ products,
                 <h2 className="text-white" >$ {totalPriceGlobal}</h2>
             </div>
             {
-                (cupon === 1)
+                (cupon > 0)
                 ?
             <div className="flex justify-between">
                 <div className="flex gap-x-[0.2rem]">
