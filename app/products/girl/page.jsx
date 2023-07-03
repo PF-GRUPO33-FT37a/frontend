@@ -1,10 +1,8 @@
 'use client'
-import kids from '../../public/kids.jpg'
-import male from '../../public/male.jpg'
-import female from '../../public/female.jpg'
-import accesories from '../../public/accesorios.jpg'
-import boys from '../../public/nino.jpg'
-import girls from '../../public/nina.jpg'
+import childrenShoes from '../../../public/childrenShoes.jpg'
+import childrenHoodie from '../../../public/childrenHoodie.jpg'
+import childrenShirt from '../../../public/childrenShirt.jpg'
+import childrenTrouser from '../../../public/childrenTrouser.jpg'
 import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -16,35 +14,25 @@ export default function ProductsPage() {
 
     const image = [
         {
-            title: "Male",
-            img: male,
-            link:'products/hombres'
+            title: "Shoes",
+            img: childrenShoes,
+            link:'products/girl/shoes'
         },
         {
-            title: "Female",
-            img: female,
-            link:'products/female'
+            title: "Hoodies",
+            img: childrenHoodie,
+            link:'products/girl/sweatshirt'
         },
         {
-            title: "Kids",
-            img: kids,
-            link:'products/children'
+            title: "T-Shirts",
+            img: childrenShirt,
+            link:'products/girl/shirt'
         },
         {
-            title: "Accesories",
-            img: accesories,
-            link:'products/children'
+            title: "Pants",
+            img: childrenTrouser,
+            link:'products/girl/pants'
         },
-        {
-            title: "Boys",
-            img: boys,
-            link:'products/boy'
-        },
-        {
-            title: "Girls",
-            img: girls,
-            link:'products/girl'
-        }
     ]
 
     const handleMouseEnter = (index) => {

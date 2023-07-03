@@ -243,6 +243,8 @@ export default function FormProducts() {
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="child">Child</option>
+                <option value="boy">Boy</option>
+                <option value="girl">Girl</option>
               </select>
               {formik.errors.gender && (
                 <div className="absolute text-red-500 text-sm">{formik.errors.gender}</div>
