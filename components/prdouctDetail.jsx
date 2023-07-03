@@ -20,19 +20,22 @@ export default function ProductDetail() {
     const [currentImg, setCurrentImage] = useState("")
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [loading, setLoading] = useState(true)
+    const [refresh, setRefresh] = useState()
     
     const notify = (message) => {
         toast.success(message, {
             autoClose: 2000,
         });
     };
-
+    
     const notifyError = (message) => toast.error(message);
     
     const path = usePathname()
     const idPath = path.split('/').pop()
     const [detail, setDetail] = useState({});
     const [ reviews, setReviews ] = useState([])
+    const average = productDetail[0]?.rating || null
+    const averageStars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
     
     const getDetail = async () => {
         const response = await axios(`http://localhost:3001/products/${idPath}`)
@@ -91,7 +94,7 @@ export default function ProductDetail() {
 
     useEffect(() => {
         getDetail()
-    }, [idPath])
+    }, [idPath, refresh])
 
 
     console.log(productDetail[0]);
@@ -136,10 +139,20 @@ export default function ProductDetail() {
                                         <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.brand}</h2>
                                         <p>{productDetail[0]?.name}</p>
                                     </div>
+                                    { average ? 
+                                        <div className="flex gap-x-[0.4rem]">
+                                            <h1 className="flex text-[1.5rem] text-blue-500 self-baseline"
+                                            >{averageStars}</h1>
+                                            <h1 className="flex text-[1rem] self-center"
+                                            >({average})</h1>
+                                        </div>
+                                        : <></>
+                                    }
                                     <div className="flex flex-col gap-y-[0.6rem]">
-                                        <span>Vendido por (persona)</span>
                                         <div>
-                                            <h2 className="font-bold text-[1.4rem]">$ {productDetail[0]?.price}</h2>
+                                            <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.price
+                                            .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                                            .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</h2>
                                             <span>ver cuotas</span>
                                         </div>
                                     </div>
@@ -220,7 +233,7 @@ export default function ProductDetail() {
                     </section>
                     <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
                         <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
-                        <ContainerReviews productId={productDetail[0]._id} reviews={reviews}/>
+                        <ContainerReviews productId={productDetail[0]._id} reviews={reviews} setRefresh={setRefresh}/>
                     </section>
                     </>
             }
