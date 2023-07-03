@@ -1,14 +1,12 @@
 'use client'
 import { useState, useEffect } from "react"
-import CardHistoryPurchase from "@/components/cardHistoryPurchase"
-import SkeletonPurchaseHistory from "@/components/SkeletonComponents/SkeletonPurchaseHistory"
+// import CardHistoryPurchase from "@/components/cardHistoryPurchase"
+// import SkeletonPurchaseHistory from "@/components/SkeletonComponents/SkeletonPurchaseHistory"
+import SkeletonPurchaseHistory from "../SkeletonComponents/SkeletonPurchaseHistory"
 import axios from "axios"
 import Image from "next/image"
 
-export default function PurchaseHistoryPage() {
-    // const user = JSON.parse(window.localStorage.getItem('user'))
-    // console.log(user)
-
+export default function PurchaseHistory(){
     const [user, setUser] = useState()
     const [getUser, setGetUser] = useState();
     const [localUser, setLocalUser] = useState();
@@ -53,9 +51,9 @@ export default function PurchaseHistoryPage() {
     console.log(localUser);
 
     return (
-        <main className="flex  pt-[9rem] min-h-[100vh] bg-gray-100  rounded-lg shadow-md w-full">
-            <div className="w-[20%] bg-white"></div>
-            <div className="w-[80%] p-[2rem]">
+        <main className="flex  min-h-[100vh] bg-gray-100  rounded-lg shadow-md w-full">
+            
+            <div className="w-[100%] p-[2rem]">
 
                 {
                     (localUser && localUser?.data && localUser?.data?.purchaseHistory)
