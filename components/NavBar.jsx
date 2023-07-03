@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import logo from '../public/logo.png';
+import logo from '../public/logocommerce.png';
 import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
-import userBanner from '../public/userBanner.png';
+import UserMenu from './UserMenu';
 import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
@@ -14,18 +14,15 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 
 export default function NavBar() {
-	const [search, setSearch] = useState(null);
-	const [userData, setUserData] = useState({})
+	const [search, setSearch] = useState('');
+	const [userData, setUserData] = useState({});
 	const router = useRouter();
 	const dispatch = useDispatch();
-	// const userData = JSON.parse(localStorage.getItem('user'));
-	const { data: session } = useSession();
 
-	useEffect(()=>{
+	useEffect(() => {
 		let data = JSON.parse(localStorage.getItem('user'));
-		if(data && data.data)
-		setUserData(data)
-	},[])
+		if (data && data.data) setUserData(data);
+	}, []);
 
 	useEffect(() => {
 		const myCartLocal = localStorage.getItem('myCart');
@@ -34,55 +31,33 @@ export default function NavBar() {
 		}
 	}, []);
 
-
-	useEffect(() => {
-		const fetchData = async () => {
-			console.log('session' + session); //
-			if (session) {
-				const email = session.user.email;
-				const response = await axios.get(
-					`http://localhost:3001/users/auth/${email}`,
-				);
-				localStorage.setItem(
-					'user',
-					JSON.stringify({
-						data: response.data,
-						validated: false,
-					}),
-				);
-			}
-		};
-		fetchData();
-	}, []);
-
 	const pathname = usePathname();
 	useEffect(() => {
-		if (!pathname.includes('/search')) {
+		if (pathname.includes('products')) {
 			setSearch('');
 		}
 	}, [pathname]);
 
 	const debouncedSearch = useCallback(
 		debounce((searchTerm) => {
-			router.push('/search');
-			dispatch(searchProducts(searchTerm));
-			// 	router.push('/search');
-			// 	dispatch(searchProducts(searchTerm));
-		}, 1000),
+			if (searchTerm.length > 0) {
+				router.push('/search');
+				dispatch(searchProducts(searchTerm));
+			}
+		}, 500),
 		[],
 	);
 
 	const handleChange = (event) => {
 		const searchTerm = event.target.value;
 		setSearch(searchTerm);
-		debouncedSearch(searchTerm);
-		// if (pathname.includes('/search')) {
-		// 	debouncedSearch(searchTerm);
-		// }
+		if (pathname.includes(search)) {
+			debouncedSearch(searchTerm);
+		}
 	};
 
 	useEffect(() => {
-		if(search==null && pathname.includes('/search')){
+		if ((!search || search == '') && pathname.includes('search')) {
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
@@ -101,14 +76,7 @@ export default function NavBar() {
 				/>
 				<div className='flex items-center gap-x-[2rem]'>
 					{userData && userData.data ? (
-						<Link href='/profile'>
-							<Image
-							className='flexblock pb-[0.4rem] self-center'
-							src={userBanner}
-							alt={'user'}
-							width={40}
-							height={40}/>
-						</Link>
+						<UserMenu />
 					) : (
 						<Link href={'/login'}>Register/Login</Link>
 					)}

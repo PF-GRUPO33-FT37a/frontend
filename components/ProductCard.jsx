@@ -4,10 +4,13 @@ import 'tippy.js/dist/tippy.css';
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import sold from "../public/soldout.png"
+import { addTotalPay } from "@/redux/Slice";
 
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import SizeSelected from "./productCard/SizeSelected";
+import { useDispatch } from "react-redux";
+
 
 export default function ProductCard({ product }) {
     const average = product.rating || null
@@ -24,6 +27,7 @@ export default function ProductCard({ product }) {
 
     const route = useRouter()
     const path = usePathname()
+    const dispatch = useDispatch()
 
 
     const [toolTip, setTooltip] = useState({})
@@ -59,6 +63,7 @@ export default function ProductCard({ product }) {
         const productFind = myCartParse.find(prod => (prod._id === product._id) && (prod.cant === cant))
         if (!productFind) {
             if (myCartParse.length === 0) {
+                dispatch(addTotalPay(0))
                 const cantzero = cantSelect.shift()
                 localStorage.setItem('myCart', JSON.stringify([{ ...product, cant: cant, cantSelect: cantSelect }]))
                 notify('Add to Cart')
@@ -183,7 +188,7 @@ export default function ProductCard({ product }) {
                         <div className="w-[90%] mx-[auto] flex flex-col gap-y-[0.6rem]" >
                             <h2 className="font-bold">{product?.brand}</h2>
                             <p>{product?.name}</p>
-                            {
+                            {/* {
                                 (product?.stock > 0)
                                     ?
                                     <div className="flex gap-x-[1rem]">
@@ -202,7 +207,7 @@ export default function ProductCard({ product }) {
                                     </div>
                                     :
                                     <></>
-                            }
+                            } */}
 
                             <span
 
