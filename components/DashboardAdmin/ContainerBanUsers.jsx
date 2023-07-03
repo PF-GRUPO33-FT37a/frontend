@@ -35,19 +35,19 @@ export default function ContainerUsers() {
 			},
 		}));
 
-		setUserData((prevUserData) => {
-			const updatedData = prevUserData.map((user) => {
-				if (user._id === userId) {
-					return {
-						...user,
-						[propertyName]: value,
-					};
-				}
-				return user;
-			});
-			setCurrentPage(pageIndex);
-			return updatedData;
-		});
+		// setUserData((prevUserData) => {
+		// 	const updatedData = prevUserData.map((user) => {
+		// 		if (user._id === userId) {
+		// 			return {
+		// 				...user,
+		// 				[propertyName]: value,
+		// 			};
+		// 		}
+		// 		return user;
+		// 	});
+		// 	setCurrentPage(pageIndex);
+		// 	return updatedData;
+		// });
 	};
 
 	const saveChanges = async () => {
@@ -66,12 +66,13 @@ export default function ContainerUsers() {
 	const data = useMemo(() => userData, [userData]);
 	const filteredData = useMemo(() => {
 		if (searchTerm === '') {
-			return data;
+			return data.filter((user) => user.isActive === false);
 		} else {
 			return data.filter(
 				(user) =>
-					user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-					user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+					(user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+						user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
+					user.isActive === false,
 			);
 		}
 	}, [data, searchTerm]);
