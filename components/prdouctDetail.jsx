@@ -9,17 +9,24 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
 import { useEffect, useState } from "react"
+import { addTotalPay } from "@/redux/Slice";
 import Link from "next/link";
 import SkeletonDetail from "./SkeletonComponents/SkeletonDetail";
 import ContainerReviews from "./ContainerReviews";
+import SizeSelected from "./productCard/SizeSelected";
+import { useDispatch } from "react-redux";
 
 export default function ProductDetail() {
     const router = useRouter()
+    const dispatch= useDispatch()
     
     const [productDetail, setProductDetail] = useState([])
     const [currentImg, setCurrentImage] = useState("")
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [loading, setLoading] = useState(true)
+    const [sizeSelect,setSizeSelect] = useState("")
+    const [cantSelect, setCantSelect] = useState()
+    const [cart,setCart] = useState()
     
     const notify = (message) => {
         toast.success(message, {
@@ -45,6 +52,12 @@ export default function ProductDetail() {
         setLoading(false)
     }
 
+    const handleSelect = (event) =>{
+        console.log(event.target.value);
+        setSizeSelect(event.target.value)
+        setCantSelect({size:event.target.value,cant:1})
+    }
+
     const getReviews = async (product)=> {
         const response = await axios.get(`http://localhost:3001/reviews/search?product=${product._id}`)
         setReviews(response.data)
@@ -61,14 +74,32 @@ export default function ProductDetail() {
     const addMyCart = () => {
         const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
-        const product = myCart.find(prod => prod._id === productDetail[0]._id)
-        if (!product) {
-            productDetail[0].cant = 1;
-            const newCart = [...myCart, productDetail[0]]
-            window.localStorage.setItem('myCart', JSON.stringify(newCart))
-            notify('Add to Cart')
-        } else {
-            notifyError('Already added to cart')
+        if (Array.isArray(myCart)) {
+            // Acceder a la propiedad .length
+            const arrayLength = myCart.length;
+            console.log(arrayLength);
+          } else {
+            console.log("El valor almacenado no es un array válido.");
+          }          
+          
+        console.log(myCart.length);
+        console.log(myCart);
+
+        if(myCart.length === 0){
+            console.log('entre');
+            dispatch(addTotalPay(0))
+            window.localStorage.setItem('myCart', JSON.stringify([{...productDetail[0],cantSelect:[cantSelect]}]))
+        }
+        else{
+            const product = myCart.find(prod => prod._id === productDetail[0]._id)
+            if (!product) {
+                productDetail[0].cant = 1;
+                const newCart = [...myCart, {...productDetail[0],cantSelect:[cantSelect]}]
+                window.localStorage.setItem('myCart', JSON.stringify(newCart))
+                notify('Add to Cart')
+            } else {
+                notifyError('Already added to cart')
+            }
         }
 
 
@@ -91,8 +122,14 @@ export default function ProductDetail() {
 
     useEffect(() => {
         getDetail()
+        const myCartLocal = localStorage.getItem('myCart')
+        const myCart = JSON.parse(myCartLocal)
+        setCart(myCart)
     }, [idPath])
 
+
+    console.log(productDetail[0]);
+    console.log(cart);
     return (
         <main className="min-h-[100vh] pt-[9rem]">
             {
@@ -144,13 +181,25 @@ export default function ProductDetail() {
                                 </div>
                                 <h3>Talles</h3>
                                 <select
+                                    onChange={handleSelect}
                                     name="" id="" className="text-black p-[0.6rem] w-[100%] text-center">
 
                                     <option value="" selected disabled>Elegir talle</option>
-                                    <option value="">38</option>
-                                    <option value="">39</option>
-                                    <option value="">40</option>
-                                    <option value="">41</option>
+                                    {
+                                        productDetail[0]?.size?.map((size,index)=>{
+                                            if(size.stock > 0 ){
+                                                return(
+                                                <option key={index} value={size.size}>
+                                                    {size.size}</option>   
+                                                )
+                                            }else{
+                                                return (
+                                                    <option key={index} value=""disabled>
+                                                    {size.size}</option>  
+                                                )
+                                            }
+                                        })
+                                    }
                                 </select>
                                 {
                                     (productDetail[0]?.stock > 0)
@@ -159,17 +208,26 @@ export default function ProductDetail() {
                                             <span
                                                 onClick={goBuy}
                                                 className="text-white p-[0.6rem] w-[100%] text-center bg-[#FA8B61] hover:bg-[#F8652A] font-bold cursor-pointer">Comprar</span>
-                                            <span
-                                                onClick={addMyCart}
-                                                className="text-[#F8652A] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#E9E9ED]">Agregar a carrito</span>
+                                                {
+                                                    cantSelect
+                                                    ?
+                                                    <span
+                                                        onClick={addMyCart}
+                                                        className="text-[#F8652A] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#E9E9ED]">Agregar a carrito</span>
+                                                        :
+                                                        <span
+                                                        className="text-[#11111180] p-[0.6rem] w-[100%] text-center border-[1px] border-[#11111180] cursor-default ">Agregar a carrito</span>
+                                                }
                                             <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
                                         </div>
 
                                         :
 
                                         <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
-                                            <span className="text-white p-[0.6rem] w-[100%] text-center bg-red-400 font-bold cursor-pointer">Sold Out</span>
-                                            <span className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
+                                            <span className="text-white p-[0.6rem] w-[100%] text-center bg-red-400 font-bold cursor-default">Sold Out</span>
+                                            <span 
+                                            onClick={addMyCart}
+                                            className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
                                         </div>
 
 

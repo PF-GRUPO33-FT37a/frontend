@@ -4,10 +4,13 @@ import 'tippy.js/dist/tippy.css';
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import sold from "../public/soldout.png"
+import { addTotalPay } from "@/redux/Slice";
 
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import SizeSelected from "./productCard/SizeSelected";
+import { useDispatch } from "react-redux";
+
 
 export default function ProductCard({ product }) {
 
@@ -22,6 +25,7 @@ export default function ProductCard({ product }) {
 
     const route = useRouter()
     const path = usePathname()
+    const dispatch = useDispatch()
 
 
     const [toolTip, setTooltip] = useState({})
@@ -29,6 +33,8 @@ export default function ProductCard({ product }) {
     const [priceModify, setPriceModify] = useState(product.price)
     const [sizeCheck, setSizeCheck] = useState([])
     const [cantSelect,setCantSelect] = useState([{cant: 0, index: 0, size: ""}])
+    
+    const [sizes,setSize] = useState(0)
 
     // const [productos, setProductos] = useState([])
 
@@ -55,6 +61,7 @@ export default function ProductCard({ product }) {
         const productFind = myCartParse.find(prod => (prod._id === product._id) && (prod.cant === cant))
         if (!productFind) {
             if (myCartParse.length === 0) {
+                dispatch(addTotalPay(0))
                 const cantzero = cantSelect.shift()
                 localStorage.setItem('myCart', JSON.stringify([{ ...product, cant: cant, cantSelect: cantSelect }]))
                 notify('Add to Cart')
@@ -123,6 +130,14 @@ export default function ProductCard({ product }) {
         setCantSelect(newArray)
     }
 
+
+    const handleSumActiveCart = (value) =>{
+        setSize(sizes+1)
+    }
+    const handleResActiveCart = (value) =>{
+        setSize(sizes-1)
+    }
+
     useEffect(() => {
 
     }, [cant, sizeCheck,cantSelect])
@@ -171,7 +186,7 @@ export default function ProductCard({ product }) {
                         <div className="w-[90%] mx-[auto] flex flex-col gap-y-[0.6rem]" >
                             <h2 className="font-bold">{product?.brand}</h2>
                             <p>{product?.name}</p>
-                            {
+                            {/* {
                                 (product?.stock > 0)
                                     ?
                                     <div className="flex gap-x-[1rem]">
@@ -190,7 +205,7 @@ export default function ProductCard({ product }) {
                                     </div>
                                     :
                                     <></>
-                            }
+                            } */}
 
                             <span
 
@@ -209,6 +224,8 @@ export default function ProductCard({ product }) {
                                                     stock={size.stock}
                                                     handleCantSelected={handleCantSelected}
                                                     handleResSelected={handleResSelected}
+                                                    handleSumActiveCart={handleSumActiveCart}
+                                                    handleResActiveCart={handleResActiveCart}
                                                     />
                                                     // <div key={index} className="flex items-center gap-x-[0.4rem]">
                                                     //     <input onChange={handleCheckSize} type="checkbox" name={index} value={size.size} id="" />
@@ -241,7 +258,7 @@ export default function ProductCard({ product }) {
                                     <></>
                             }
                             {
-                                ((product?.stock > 0) && (cantSelect.length > 0))
+                                (sizes > 0)
                                     ?
                                     <span
                                         onClick={addMyCart}
