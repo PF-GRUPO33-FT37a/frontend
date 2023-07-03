@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import logo from '../../public/logocommerce.png';
-import ContainerUsers from '@/components/DashboardAdmin/ContainerUsers';
 import SideBar from '@/components/DashboardAdmin/SideBar';
 
 export default function AdminPage() {
