@@ -61,23 +61,20 @@ export default function NavBar() {
 		}
 	}, [pathname]);
 
-	const debouncedSearch = useCallback(
-		debounce((searchTerm) => {
-			router.push('/search');
-			dispatch(searchProducts(searchTerm));
-			// 	router.push('/search');
-			// 	dispatch(searchProducts(searchTerm));
-		}, 1000),
-		[],
-	);
 
 	const handleChange = (event) => {
 		const searchTerm = event.target.value;
 		setSearch(searchTerm);
-		debouncedSearch(searchTerm);
+		
 		// if (pathname.includes('/search')) {
 		// 	debouncedSearch(searchTerm);
 		// }
+	};
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			dispatch(searchProducts(search));
+			router.push('/search');
+		}
 	};
 
 	useEffect(() => {
@@ -95,6 +92,7 @@ export default function NavBar() {
 				<input
 					className='bg-[#90909050] w-[45%] p-[0.6rem] rounded-[1rem]  pl-[1rem]'
 					type='text'
+					onKeyPress={handleKeyPress}
 					onChange={handleChange}
 					value={search}
 				/>
