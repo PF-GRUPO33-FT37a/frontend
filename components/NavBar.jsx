@@ -5,7 +5,7 @@ import logo from '../public/logocommerce.png';
 import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
-import UserMenu from './UserMenu';
+import userBanner from '../public/userBanner.png';
 import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
@@ -76,7 +76,14 @@ export default function NavBar() {
 				/>
 				<div className='flex items-center gap-x-[2rem]'>
 					{userData && userData.data ? (
-						<UserMenu />
+						<Link href='/profile'>
+							<Image
+							className='flexblock pb-[0.4rem] self-center'
+							src={userBanner}
+							alt={'user'}
+							width={40}
+							height={40}/>
+						</Link>
 					) : (
 						<Link href={'/login'}>Register/Login</Link>
 					)}

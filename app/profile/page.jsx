@@ -13,7 +13,7 @@ export default function ProfilePage(){
             return <>PURCHASE HISTORY</>
     }
 
-    return <main className='flex relative pt-[8.2rem] min-h-[90vh] min-w-[90vh]'>
+    return <main className='flex relative pt-[9rem] min-h-[90vh] min-w-[90vh]'>
             <UserMenu setView={setView}/>
         <div className="pl-[4rem]">
             {showView(view)}
