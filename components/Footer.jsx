@@ -4,6 +4,8 @@ import FormContactUs from './FormContactUs';
 import logo from '../public/logo-white.png';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
+import stripe from '../public/stripeblack.png'
 
 export default function Footer() {
 
@@ -62,7 +64,7 @@ export default function Footer() {
 							Recibí las mejores promociones y novedades del mundo de la moda
 						</p>
 						<div className='flex gap-x-[1rem] mb-[1rem] justify-start' >
-						<form className="flex flex-col justify-start rounded-[0.6rem]">
+						<form className="flex justify-start rounded-[0.6rem]">
 						<div className="flex gap-x-[1rem] mb-[0.6rem]">
 							<input
 							className="text-black rounded-[0.6rem] py-[0.6rem] pl-[1rem]"
@@ -70,12 +72,12 @@ export default function Footer() {
 							name="email"
 							placeholder="Email"
 							/>
-							<input
+							{/* <input
 							className="text-black rounded-[0.6rem] py-[0.6rem] pl-[1rem]"
 							type="text"
 							name="message"
 							placeholder="Message"
-							/>
+							/> */}
 						</div>
 						<button className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem]" >
 							Suscribirse
@@ -87,6 +89,7 @@ export default function Footer() {
 					<span className='text-[0.8rem]'>
 						© 2023 Online Shop | e-commerce Inc.
 					</span>
+					<Image src={stripe} alt='logo-stripe' width={150} height={100}/>
 				</div>
 
 				<div className='flex w-[70%] justify-around'>
@@ -118,12 +121,10 @@ export default function Footer() {
 					</div>
 					<article className='flex flex-col gap-y-[0.6rem]'>
 						<h3 className='underline'>Products</h3>
-						<span className='text-[0.8rem]'>Zapatillas</span>
-						<span className='text-[0.8rem]'>Buzos</span>
-						<span className='text-[0.8rem]'>Jeans</span>
-						<span className='text-[0.8rem]'>Remeras</span>
-						<span className='text-[0.8rem]'>Gorras</span>
-						<span className='text-[0.8rem]'>Relojes</span>
+						<Link href={'/products/hombres'} className='text-[0.8rem]'>Male</Link>
+						<Link href={'/products/female'} className='text-[0.8rem]'>Female</Link>
+						<Link href={'/products/boy'} className='text-[0.8rem]'>Boy</Link>
+						<Link href={'/products/girl'} className='text-[0.8rem]'>Girl</Link>
 					</article>
 
 					<article className='flex flex-col gap-y-[0.6rem]'>
@@ -135,6 +136,7 @@ export default function Footer() {
 						<span className='text-[0.8rem]'>MasterCard</span>
 						<span className='text-[0.8rem]'>Naranja</span>
 						<span className='text-[0.8rem]'>American Express</span>
+						
 					</article>
 
 					<article className='flex flex-col gap-y-[0.6rem]'>

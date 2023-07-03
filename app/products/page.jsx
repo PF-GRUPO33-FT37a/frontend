@@ -25,16 +25,16 @@ export default function ProductsPage() {
             img: female,
             link:'products/female'
         },
-        {
-            title: "Kids",
-            img: kids,
-            link:'products/children'
-        },
-        {
-            title: "Accesories",
-            img: accesories,
-            link:'products/children'
-        },
+        // {
+        //     title: "Kids",
+        //     img: kids,
+        //     link:'products/children'
+        // },
+        // {
+        //     title: "Accesories",
+        //     img: accesories,
+        //     link:'products/children'
+        // },
         {
             title: "Boys",
             img: boys,
