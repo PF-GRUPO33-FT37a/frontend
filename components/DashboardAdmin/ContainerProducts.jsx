@@ -1,12 +1,12 @@
 'use client';
 import axios from 'axios';
 import { useState, useEffect, useMemo } from 'react';
-import { useTable, useSortBy, usePagination } from 'react-table';
+import { useTable, useSortBy, usePagination, useCell } from 'react-table';
 
 export default function ContainerProducts() {
 	const [productData, setProductData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
-	const [pendingChanges, setPendingChanges] = useState([]);
+	const [editedValues, setEditedValues] = useState({});
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -20,13 +20,116 @@ export default function ContainerProducts() {
 
 		fetchUsers();
 	}, []);
-
 	const data = useMemo(() => productData, [productData]);
+	const filteredData = useMemo(() => {
+		if (searchTerm === '') {
+			return data;
+		} else {
+			return data.filter((user) =>
+				user.name.toLowerCase().includes(searchTerm.toLowerCase()),
+			);
+		}
+	}, [data, searchTerm]);
+	const handleSearch = (e) => {
+		setSearchTerm(e.target.value);
+	};
+
+	const EditableCell = ({
+		value: initialValue,
+		row: { index },
+		column: { id },
+		updateData,
+	}) => {
+		const [value, setValue] = useState(initialValue);
+		const [size, setSize] = useState(initialValue[0]?.size);
+		const [stock, setStock] = useState(initialValue[0]?.stock);
+		const [loadedImages, setLoadedImages] = useState(initialValue);
+
+		const handleImageUpload = (e) => {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+
+			reader.onload = (event) => {
+				const imageUrl = event.target.result;
+				setLoadedImages([...loadedImages, imageUrl]);
+			};
+
+			reader.readAsDataURL(file);
+		};
+
+		const onChange = (e) => {
+			setValue(e.target.value);
+		};
+
+		const onChangeSize = (e) => {
+			setSize(e.target.value);
+		};
+
+		const onChangeStock = (e) => {
+			setStock(e.target.value);
+		};
+
+		const onBlur = () => {
+			updateData(index, id, value);
+		};
+
+		const onBlurSize = () => {
+			updateData(index, id, { size, stock });
+		};
+
+		useEffect(() => {
+			setValue(initialValue);
+		}, [initialValue]);
+		if (id === 'size') {
+			return (
+				<div>
+					{Array.isArray(value) &&
+						value.map((s, idx) => (
+							<div key={idx}>
+								Size:
+								<input
+									type='text'
+									value={s.size}
+									onChange={onChangeSize}
+									onBlur={onBlurSize}
+								/>
+								<br />
+								Stock:
+								<input
+									type='number'
+									value={s.stock}
+									onChange={onChangeStock}
+									onBlur={onBlurSize}
+								/>
+							</div>
+						))}
+				</div>
+			);
+		} else if (id === 'images') {
+			return (
+				<div>
+					{value.map((image) => (
+						<img
+							className='w-14 h-14'
+							key={id}
+							src={image}
+							alt={`Image ${id}`}
+						/>
+					))}
+					<input type='file' onChange={handleImageUpload} />
+				</div>
+			);
+		}
+
+		return <input value={value} onChange={onChange} onBlur={onBlur} />;
+	};
+
 	const columns = useMemo(
 		() => [
 			{
 				Header: 'Product',
 				accessor: 'name',
+				Cell: EditableCell,
 				canSort: true,
 				sortType: (rowA, rowB, columnId) => {
 					const valueA = rowA.values[columnId] || '';
@@ -38,62 +141,19 @@ export default function ContainerProducts() {
 				Header: 'Size',
 				accessor: 'size',
 				canSort: true,
-				Cell: ({ value, row }) => {
-					return (
-						<div>
-							Size: {value[0].size}
-							<br />
-							{/* stock: {value[0].stock} */}
-							Stock:{' '}
-							<input
-								type='number'
-								value={value[0].stock}
-								onChange={(e) =>
-									updateProduct(row.original._id, value.stock, e.target.value)
-								}
-							/>
-						</div>
-					);
-				},
+				Cell: EditableCell,
 			},
 			{
 				Header: 'Images',
 				accessor: 'images',
-				Cell: ({ row }) => {
-					const images = row.original.images;
-					return images.map((image, index) => (
-						<img
-							className='w-14 h-14'
-							key={index}
-							src={image}
-							alt={`Image ${index}`}
-						/>
-					));
-				},
+				Cell: EditableCell,
 				canSort: false,
 			},
 			{
 				Header: 'Price',
 				accessor: 'price',
 				canSort: true,
-				Cell: ({ row }) => {
-					const id = row.original._id;
-					const pendigChange = pendingChanges.find(
-						(change) => change.id === id,
-					);
-					const value = pendigChange ? pendigChange.value : row.original.price;
-
-					return (
-						<input
-							className='border-transparent'
-							type='text'
-							onChange={(e) =>
-								updatePendingChange(row.original._id, 'price', e.target.value)
-							}
-							value={value}
-						/>
-					);
-				},
+				Cell: EditableCell,
 			},
 			{
 				Header: 'Stock',
@@ -107,11 +167,7 @@ export default function ContainerProducts() {
 					<select
 						value={row.original.isActive}
 						onChange={(e) =>
-							updateProduct(
-								row.original._id,
-								'isActive',
-								e.target.value === 'true',
-							)
+							updateProduct(row.original._id, 'isActive', e.target.value)
 						}
 						className='block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
 					>
@@ -127,18 +183,76 @@ export default function ContainerProducts() {
 				},
 			},
 		],
-		[pendingChanges],
+		[],
 	);
 
-	const filteredData = useMemo(() => {
-		if (searchTerm === '') {
-			return data;
+	// const updateProduct = (productId, propertyName, value) => {
+	// 	if (propertyName === 'size') {
+	// 		setEditedValues((prevValues) => ({
+	// 			...prevValues,
+	// 			[productId]: {
+	// 				...prevValues[productId],
+	// 				size: {
+	// 					size: value.size,
+	// 					stock: value.stock,
+	// 				},
+	// 			},
+	// 		}));
+	// 	} else {
+	// 		setEditedValues((prevValues) => ({
+	// 			...prevValues,
+	// 			[productId]: {
+	// 				...prevValues[productId],
+	// 				[propertyName]: value,
+	// 			},
+	// 		}));
+	// 	}
+	// };
+	const updateProduct = (productId, propertyName, value) => {
+		if (propertyName === 'size') {
+			setEditedValues((prevValues) => ({
+				...prevValues,
+				[productId]: {
+					...prevValues[productId],
+					size: {
+						size: value.size,
+						stock: value.stock,
+					},
+				},
+			}));
+		} else if (propertyName === 'images') {
+			setEditedValues((prevValues) => ({
+				...prevValues,
+				[productId]: {
+					...prevValues[productId],
+					images: value,
+				},
+			}));
 		} else {
-			return data.filter((user) =>
-				user.name.toLowerCase().includes(searchTerm.toLowerCase()),
-			);
+			setEditedValues((prevValues) => ({
+				...prevValues,
+				[productId]: {
+					...prevValues[productId],
+					[propertyName]: value,
+				},
+			}));
 		}
-	}, [data, searchTerm]);
+	};
+	console.log(editedValues);
+	const saveChanges = async () => {
+		try {
+			for (const productId of Object.keys(editedValues)) {
+				const updates = editedValues[productId];
+				console.log(updates);
+				await axios.put(`http://localhost:3001/products/${productId}`, updates);
+			}
+			console.log('Changes saved successfully!');
+			// setEditedValues({});
+			// window.location.reload();
+		} catch (error) {
+			console.error('Error saving changes:', error);
+		}
+	};
 
 	const {
 		getTableProps,
@@ -161,82 +275,14 @@ export default function ContainerProducts() {
 			columns,
 			data: filteredData,
 			initialState: { pageIndex: 0, pageSize: 5 },
+			updateData: (rowIndex, columnId, value) => {
+				const productId = filteredData[rowIndex]._id;
+				updateProduct(productId, columnId, value);
+			},
 		},
 		useSortBy,
 		usePagination,
 	);
-
-	const handleSearch = (e) => {
-		setSearchTerm(e.target.value);
-	};
-
-	const updateProduct = async (productId, propertyName, value) => {
-		try {
-			const updates = { [propertyName]: value };
-			await axios.put(`http://localhost:3001/products/${productId}`, updates);
-			setProductData((prevData) =>
-				prevData.map((product) => {
-					if (product._id === productId) {
-						return {
-							...product,
-							[propertyName]: value,
-						};
-					}
-					return product;
-				}),
-			);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const updatePendingChange = (productId, propertyName, value) => {
-		const change = { productId, propertyName, value };
-		setPendingChanges((prevChanges) => {
-			const updatedChanges = [...prevChanges];
-			const existingChangeIndex = updatedChanges.findIndex(
-				(change) => change.productId === productId,
-			);
-
-			if (existingChangeIndex !== -1) {
-				updatedChanges[existingChangeIndex] = change;
-			} else {
-				updatedChanges.push(change);
-			}
-
-			return updatedChanges;
-		});
-	};
-
-	const applyPendingChange = async (productId) => {
-		const pendingChange = pendingChanges.find(
-			(change) => change.productId === productId,
-		);
-
-		if (pendingChange) {
-			const { propertyName, value } = pendingChange;
-			try {
-				const updates = { [propertyName]: value };
-				await axios.put(`http://localhost:3001/products/${productId}`, updates);
-				setProductData((prevData) =>
-					prevData.map((product) => {
-						if (product._id === productId) {
-							return {
-								...product,
-								[propertyName]: value,
-							};
-						}
-						return product;
-					}),
-				);
-				setPendingChanges((prevChanges) =>
-					prevChanges.filter((change) => change.productId !== productId),
-				);
-			} catch (error) {
-				console.error('Error applying change:', error);
-			}
-		}
-	};
 
 	return (
 		<div className='w-11/12 mx-auto py-14'>
@@ -296,7 +342,7 @@ export default function ContainerProducts() {
 						})}
 					</tbody>
 				</table>
-				<button onClick={applyPendingChange}>Save Changes</button>
+				<button onClick={saveChanges}>Save Changes</button>
 				<div className='flex justify-evenly'>
 					<button onClick={() => previousPage()} disabled={!canPreviousPage}>
 						prev
