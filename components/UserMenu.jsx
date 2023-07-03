@@ -19,7 +19,7 @@ export default function UserMenu({ setView}) {
 				await signOut({ callbackUrl: '/login' });
 				notify('Logging out ...');
 				setTimeout(() => {
-					router.push('/login');
+					router.push('/');
 				}, 3000);
 			} catch (error) {
 				console.log('Sign out error:', error);
@@ -38,13 +38,16 @@ export default function UserMenu({ setView}) {
 		setView(id)
 	}
 	return (
-		<div className='relative w-[18%] shadow-xl'>
+		<div className='relative w-[100%] shadow-xl'>
 			<ul className='bg-white flex flex-col'>
 				<li className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
 					id='profile' onClick={handleButtonClicks}>Account profile
 				</li>
 				<li	className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
 					id='purchase_history' onClick={handleButtonClicks}>Purchase history
+				</li>
+				<li	className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
+					id='create' onClick={handleButtonClicks}>Create product
 				</li>
 				<hr className='border-gray-200'/>
 				<li className='hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer'

@@ -41,10 +41,14 @@ export default function ProductCard({ product }) {
     // const [productos, setProductos] = useState([])
 
     const handleOnClick = (id) => {
-        path.includes('/children/pants') && route.push(`/products/children/pants/${id}`)
-        path.includes('/children/shirt') && route.push(`/products/children/shirt/${id}`)
-        path.includes('/children/shoes') && route.push(`/products/children/shoes/${id}`)
-        path.includes('/children/sweatshirt') && route.push(`/products/children/sweatshirt/${id}`)
+        path.includes('/boy/pants') && route.push(`/products/boy/pants/${id}`)
+        path.includes('/boy/shirt') && route.push(`/products/boy/shirt/${id}`)
+        path.includes('/boy/shoes') && route.push(`/products/boy/shoes/${id}`)
+        path.includes('/boy/sweatshirt') && route.push(`/products/boy/sweatshirt/${id}`)
+        path.includes('/girl/pants') && route.push(`/products/girl/pants/${id}`)
+        path.includes('/girl/shirt') && route.push(`/products/girl/shirt/${id}`)
+        path.includes('/girl/shoes') && route.push(`/products/girl/shoes/${id}`)
+        path.includes('/girl/sweatshirt') && route.push(`/products/girl/sweatshirt/${id}`)
         path.includes('/female/hoodie') && route.push(`/products/female/hoodie/${id}`)
         path.includes('/female/pants') && route.push(`/products/female/pants/${id}`)
         path.includes('/female/shoes') && route.push(`/products/female/shoes/${id}`)
