@@ -21,8 +21,12 @@ export default function FormContactUs(){
 		event.preventDefault()
 		axios.post('http://localhost:3001/contactUs', dataForm)
 		.then((response)=>{
-			alert("perfecto")
-			closePopup()
+			alert("sended message")
+            setDataForm({
+                name:"",
+                email:"",
+                message:""
+            })
 		})
 	  }
 
