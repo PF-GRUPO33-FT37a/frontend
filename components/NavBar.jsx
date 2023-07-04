@@ -5,7 +5,7 @@ import logo from '../public/logo.png';
 import cart from '../public/cart.png';
 import Link from 'next/link';
 import Menu from './Menu/Menu';
-import UserMenu from './UserMenu';
+import userBanner from '../public/userBanner.png';
 import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
