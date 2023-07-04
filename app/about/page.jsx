@@ -32,47 +32,30 @@ export default function About() {
           >
             About Us
           </motion.h2>
-          <motion.h3
-            className='text-[1.4rem]'
+          <motion.div
+            className='bg-white rounded-lg shadow-lg p-6'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Somos un grupo de estudiantes con conocimientos previos en anteriores proyectos que buscamos desarrollar este nuevo producto digital
-            donde podamos ofrecer una gran variedad de artículos confiables y de excelente calidad. Este proyecto fue creado pensando en hacer un
-            e-commerce a escala global donde los usuarios puedan encontrar variedad y calidad en diferentes marcas de ropa a precios más
-            accesibles. Nuestro objetivo es brindar una experiencia única al usuario y satisfacer sus necesidades con productos relevantes para
-            ellos, sin perder de vista la satisfacción del cliente final.
-          </motion.h3>
-          <motion.h3
-            className='text-[1.4rem]'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Nos enfocamos en la innovación, la calidad y el servicio al cliente. Trabajamos en estrecha colaboración con nuestros proveedores y
-            clientes para garantizar que todos los productos cumplan con los estándares más altos. Además, nos esforzamos por mantenernos al tanto
-            de las últimas tendencias en moda y tecnología para poder ofrecer siempre productos actualizados y atractivos.
-          </motion.h3>
-          <motion.h3
-            className='text-[1.4rem]'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            Estamos comprometidos con la satisfacción del cliente y nos esforzamos por brindar un excelente servicio en cada interacción. Siempre
-            estamos abiertos a comentarios y sugerencias de nuestros clientes, ya que creemos en la importancia de escuchar y mejorar
-            constantemente.
-          </motion.h3>
-          <motion.h3
-            className='text-[1.4rem]'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            ¡Gracias por visitar nuestra página y ser parte de nuestra historia! Esperamos que disfrutes de tu experiencia de compra con nosotros
-            y que encuentres productos que te hagan sentir especial y a la moda.
-          </motion.h3>
+            <p className='text-[1.4rem]'>
+            We are a group of students with previous knowledge in previous projects and we are looking forward to develop this new digital product
+              where we can offer a wide variety of reliable and high quality items. This project was created thinking in making an
+              e-commerce on a global scale where users can find variety and quality in different brands of clothing at more affordable prices.
+              affordable prices. Our goal is to provide a unique user experience and satisfy their needs with products that are relevant to them, without losing sight of their satisfaction.
+              them, without losing sight of the end customer's satisfaction.
+            </p>
+            <p className='text-[1.4rem]'>
+            We focus on innovation, quality and customer service. We work closely with our suppliers and customers to ensure that
+              customers to ensure that all products meet the highest standards. We also strive to keep abreast of the latest trends in fashion and technology so that we can always
+              the latest trends in fashion and technology so that we can always offer up-to-date and attractive products.
+            </p>
+      
+            <p className='text-[1.4rem]'>
+            Thank you for visiting our website and being part of our history! We hope you enjoy your shopping experience with us and that you find products that make you feel special and fashionable.
+              and that you find products that make you feel special and fashionable.
+            </p>
+          </motion.div>
         </div>
       </section>
       <section className='w-[80%] mx-[auto] justify-center pb-[5rem]'>
@@ -83,7 +66,7 @@ export default function About() {
           {images.map((image, index) => (
             <motion.div key={index} whileHover={{ opacity: 0.5 }}>
               <Image
-                className='object-cover w-[16rem] h-[12rem] rounded-[1rem] border shadow-lg'
+                className='object-cover w-[20.5rem] h-[18.5rem] rounded-[1rem] border shadow-lg'
                 src={image}
                 alt={`page-${index}`}
               />
