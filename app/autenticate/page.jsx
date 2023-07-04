@@ -34,7 +34,12 @@ export default function Autenticate(){
 
     useEffect(()=>{
         if(user && user.isActive){
-            axios.put(`http://localhost:3001/users/${user._id}`,{validated:true})
+            let token = user.token
+            axios.put(`http://localhost:3001/users/${user._id}`,{validated:true}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+            })
             .then((response)=>{
                 localStorage.setItem('user',JSON.stringify({
                     data:response.data,
