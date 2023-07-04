@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import axios from "axios";
 import Swal from "sweetalert2";
 
+import imageAlert from '../../public/regalos-39871.png'
 import Image from "next/image"
 // import confirm from '../../public/tiendajaja.jpg'
 import confirm from '../../public/tiendaRopa2.jpg'
@@ -33,18 +34,33 @@ export default function Autenticate(){
 
     useEffect(()=>{
         if(user && user.isActive){
-            axios.put(`http://localhost:3001/users/${user._id}`,{validated:true})
+            let token = user.token
+            axios.put(`http://localhost:3001/users/${user._id}`,{validated:true}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+            })
             .then((response)=>{
                 localStorage.setItem('user',JSON.stringify({
                     data:response.data,
                     validated: true
                 }))
-                Swal.fire({
+                return Swal.fire({
                     title: 'Successful!',
                     text: 'Profile activation done',
                     icon: 'success',
-                    confirmButtonText: '<a href="http://localhost:3000/">Continue</a>'
+                    confirmButtonText: 'Accept',
+                  });
                 })
+                .then(() => {
+                  return Swal.fire({
+                    title: '¡I have a gift for you!',
+                    text: '15% discount on any purchase you make, valid only once.',
+                    imageUrl: 'https://www.opiniones.hosting/wp-content/uploads/2021/04/cupon-descuento.png',
+                    imageAlt: 'imagen de un regalo',
+                    confirmButtonText: '<a href="http://localhost:3000/">Continue</a>',
+                  });
+                
             })
             .catch((err)=>{
                 Swal.fire({

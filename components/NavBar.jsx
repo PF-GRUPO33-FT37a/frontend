@@ -16,7 +16,7 @@ import axios from 'axios';
 import { RxDashboard, RxPerson } from 'react-icons/rx';
 
 export default function NavBar() {
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState(null);
 	const [userData, setUserData] = useState({});
 	const router = useRouter();
 	const dispatch = useDispatch();
@@ -35,31 +35,29 @@ export default function NavBar() {
 
 	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname.includes('products')) {
+		if (!pathname.includes('/search')) {
 			setSearch('');
 		}
 	}, [pathname]);
 
-	const debouncedSearch = useCallback(
-		debounce((searchTerm) => {
-			if (searchTerm.length > 0) {
-				router.push('/search');
-				dispatch(searchProducts(searchTerm));
-			}
-		}, 500),
-		[],
-	);
 
 	const handleChange = (event) => {
 		const searchTerm = event.target.value;
 		setSearch(searchTerm);
-		if (pathname.includes(search)) {
-			debouncedSearch(searchTerm);
+		
+		// if (pathname.includes('/search')) {
+		// 	debouncedSearch(searchTerm);
+		// }
+	};
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			dispatch(searchProducts(search));
+			router.push('/search');
 		}
 	};
 
 	useEffect(() => {
-		if ((!search || search == '') && pathname.includes('search')) {
+		if (search == null && pathname.includes('search')) {
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
@@ -75,6 +73,7 @@ export default function NavBar() {
 				<input
 					className='bg-[#90909050] w-[40%] p-[0.6rem] rounded-[1rem]  pl-[1rem]'
 					type='text'
+					onKeyPress={handleKeyPress}
 					onChange={handleChange}
 					value={search}
 				/>
@@ -108,7 +107,7 @@ export default function NavBar() {
 					{userData && userData.data ? (
 						<Link href={'/profile'}>
 						<Image 
-						className='rounded-full'
+						className='rounded-full h-[50px] w-[50px] object-cover'
 						src={userData.data.image[0]} alt='img-user' width={50} height={50} />
 						</Link>
 					) : (

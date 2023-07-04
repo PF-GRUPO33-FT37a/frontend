@@ -7,10 +7,16 @@ import { useRouter } from 'next/navigation';
 export default function ContainerUsers() {
 	const router = useRouter();
 
+	const [localUser, setLocalUser] = useState({})
 	const [userData, setUserData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(0);
 	const [dataUpdate, setDataUpdate] = useState({});
+
+	useEffect(() => {
+		let data = JSON.parse(localStorage.getItem('user'));
+		if (data && data.data) setLocalUser(data);
+	}, []);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -55,7 +61,13 @@ export default function ContainerUsers() {
 			for (const userId in dataUpdate) {
 				const updates = dataUpdate[userId];
 				console.log(updates);
-				await axios.put(`http://localhost:3001/users/${userId}`, updates);
+				let token = localUser.data.token
+				console.log({ESTEESELTOKEN:localUser})
+				await axios.put(`http://localhost:3001/users/${userId}`, updates, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					  }
+				});
 			}
 			window.location.reload();
 		} catch (error) {
