@@ -150,11 +150,11 @@ export default function Menu() {
                         <></>
                 }
             </div>
-            <Link href={'/products/create'}>
+            <span>
                 <li
-                    className="block pb-[0.4rem]"
-                >Create</li>
-            </Link>
+                    className="block pb-[0.4rem] opacity-0 cursor-default"
+                >More</li>
+            </span>
         </ul>
     )
 }

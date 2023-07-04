@@ -107,7 +107,7 @@ export default function NavBar() {
 					{userData && userData.data ? (
 						<Link href={'/profile'}>
 						<Image 
-						className='rounded-full'
+						className='rounded-full h-[50px] w-[50px] object-cover'
 						src={userData.data.image[0]} alt='img-user' width={50} height={50} />
 						</Link>
 					) : (

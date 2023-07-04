@@ -2,11 +2,16 @@
 import axios from 'axios';
 import { useState, useEffect, useMemo } from 'react';
 import { useTable, useSortBy, usePagination, useCell } from 'react-table';
+import EditForm from './EditForm';
+// import { IoMdImages } from 'react-icons/io';
+// import Swal from 'sweetalert2';
+// import { useFormik } from 'formik';
 
 export default function ContainerProducts() {
 	const [productData, setProductData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
-	const [editedValues, setEditedValues] = useState({});
+	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [showEditModal, setShowEditModal] = useState(false);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -34,94 +39,15 @@ export default function ContainerProducts() {
 		setSearchTerm(e.target.value);
 	};
 
-	const EditableCell = ({
-		value: initialValue,
-		row: { index },
-		column: { id },
-		updateData,
-	}) => {
-		const [value, setValue] = useState(initialValue);
-		const [size, setSize] = useState(initialValue[0]?.size);
-		const [stock, setStock] = useState(initialValue[0]?.stock);
-		const [loadedImages, setLoadedImages] = useState(initialValue);
+	const handleEdit = (product) => {
+		setSelectedProduct(product);
+		setShowEditModal(true);
+	};
+	console.log(selectedProduct);
 
-		const handleImageUpload = (e) => {
-			const file = e.target.files[0];
-			const reader = new FileReader();
-
-			reader.onload = (event) => {
-				const imageUrl = event.target.result;
-				setLoadedImages([...loadedImages, imageUrl]);
-			};
-
-			reader.readAsDataURL(file);
-		};
-
-		const onChange = (e) => {
-			setValue(e.target.value);
-		};
-
-		const onChangeSize = (e) => {
-			setSize(e.target.value);
-		};
-
-		const onChangeStock = (e) => {
-			setStock(e.target.value);
-		};
-
-		const onBlur = () => {
-			updateData(index, id, value);
-		};
-
-		const onBlurSize = () => {
-			updateData(index, id, { size, stock });
-		};
-
-		useEffect(() => {
-			setValue(initialValue);
-		}, [initialValue]);
-		if (id === 'size') {
-			return (
-				<div>
-					{Array.isArray(value) &&
-						value.map((s, idx) => (
-							<div key={idx}>
-								Size:
-								<input
-									type='text'
-									value={s.size}
-									onChange={onChangeSize}
-									onBlur={onBlurSize}
-								/>
-								<br />
-								Stock:
-								<input
-									type='number'
-									value={s.stock}
-									onChange={onChangeStock}
-									onBlur={onBlurSize}
-								/>
-							</div>
-						))}
-				</div>
-			);
-		} else if (id === 'images') {
-			return (
-				<div>
-					{value.map((image) => (
-						<img
-							className='w-14 h-14'
-							key={id}
-							src={image}
-							alt={`Image ${id}`}
-						/>
-					))}
-					<input type='file' onChange={handleImageUpload} />
-				</div>
-			);
-		}
-
-		return <input value={value} onChange={onChange} onBlur={onBlur} />;
+	const closeEditModal = () => {
+		setShowEditModal(false);
+		setSelectedProduct(null);
 	};
 
 	const columns = useMemo(
@@ -129,7 +55,6 @@ export default function ContainerProducts() {
 			{
 				Header: 'Product',
 				accessor: 'name',
-				Cell: EditableCell,
 				canSort: true,
 				sortType: (rowA, rowB, columnId) => {
 					const valueA = rowA.values[columnId] || '';
@@ -141,19 +66,39 @@ export default function ContainerProducts() {
 				Header: 'Size',
 				accessor: 'size',
 				canSort: true,
-				Cell: EditableCell,
+				Cell: ({ value }) => (
+					<div>
+						{value.map((s, idx) => (
+							<div key={idx}>
+								Size: {s.size}
+								<br />
+								Stock: {s.stock}
+							</div>
+						))}
+					</div>
+				),
 			},
 			{
 				Header: 'Images',
 				accessor: 'images',
-				Cell: EditableCell,
+				Cell: ({ row, value }) => (
+					<div className='flex flex-row justify-evenly '>
+						{value.map((image) => (
+							<img
+								src={image}
+								alt='img'
+								className='w-14 h-14 gap-5 border rounded-lg object-cover w-100 h-100 shadow-lg '
+							/>
+						))}
+					</div>
+				),
 				canSort: false,
 			},
 			{
 				Header: 'Price',
 				accessor: 'price',
 				canSort: true,
-				Cell: EditableCell,
+				// Cell: EditableCell,
 			},
 			{
 				Header: 'Stock',
@@ -166,9 +111,9 @@ export default function ContainerProducts() {
 				Cell: ({ row }) => (
 					<select
 						value={row.original.isActive}
-						onChange={(e) =>
-							updateProduct(row.original._id, 'isActive', e.target.value)
-						}
+						// onChange={(e) =>
+						// 	updateProduct(row.original._id, 'isActive', e.target.value)
+						// }
 						className='block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
 					>
 						<option value='true'>Active</option>
@@ -182,77 +127,16 @@ export default function ContainerProducts() {
 					return valueA - valueB;
 				},
 			},
+			{
+				Header: 'Actions',
+				Cell: ({ row }) => (
+					<button onClick={() => handleEdit(row.original)}>Edit</button>
+				),
+				canSort: false,
+			},
 		],
 		[],
 	);
-
-	// const updateProduct = (productId, propertyName, value) => {
-	// 	if (propertyName === 'size') {
-	// 		setEditedValues((prevValues) => ({
-	// 			...prevValues,
-	// 			[productId]: {
-	// 				...prevValues[productId],
-	// 				size: {
-	// 					size: value.size,
-	// 					stock: value.stock,
-	// 				},
-	// 			},
-	// 		}));
-	// 	} else {
-	// 		setEditedValues((prevValues) => ({
-	// 			...prevValues,
-	// 			[productId]: {
-	// 				...prevValues[productId],
-	// 				[propertyName]: value,
-	// 			},
-	// 		}));
-	// 	}
-	// };
-	const updateProduct = (productId, propertyName, value) => {
-		if (propertyName === 'size') {
-			setEditedValues((prevValues) => ({
-				...prevValues,
-				[productId]: {
-					...prevValues[productId],
-					size: {
-						size: value.size,
-						stock: value.stock,
-					},
-				},
-			}));
-		} else if (propertyName === 'images') {
-			setEditedValues((prevValues) => ({
-				...prevValues,
-				[productId]: {
-					...prevValues[productId],
-					images: value,
-				},
-			}));
-		} else {
-			setEditedValues((prevValues) => ({
-				...prevValues,
-				[productId]: {
-					...prevValues[productId],
-					[propertyName]: value,
-				},
-			}));
-		}
-	};
-	console.log(editedValues);
-	const saveChanges = async () => {
-		try {
-			for (const productId of Object.keys(editedValues)) {
-				const updates = editedValues[productId];
-				console.log(updates);
-				await axios.put(`http://localhost:3001/products/${productId}`, updates);
-			}
-			console.log('Changes saved successfully!');
-			// setEditedValues({});
-			// window.location.reload();
-		} catch (error) {
-			console.error('Error saving changes:', error);
-		}
-	};
 
 	const {
 		getTableProps,
@@ -275,10 +159,6 @@ export default function ContainerProducts() {
 			columns,
 			data: filteredData,
 			initialState: { pageIndex: 0, pageSize: 5 },
-			updateData: (rowIndex, columnId, value) => {
-				const productId = filteredData[rowIndex]._id;
-				updateProduct(productId, columnId, value);
-			},
 		},
 		useSortBy,
 		usePagination,
@@ -287,6 +167,9 @@ export default function ContainerProducts() {
 	return (
 		<div className='w-11/12 mx-auto py-14'>
 			<div className='shadow-md rounded-lg overflow-hidden'>
+				{showEditModal && (
+					<EditForm product={selectedProduct} onClose={closeEditModal} />
+				)}
 				<div className='p-4'>
 					<input
 						type='text'
@@ -296,6 +179,7 @@ export default function ContainerProducts() {
 						className='w-full py-2 px-3 border border-collapse rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm'
 					/>
 				</div>
+
 				<table
 					{...getTableProps()}
 					className='w-full h-auto border-collapse overflow-hidden shadow-md'
@@ -342,7 +226,7 @@ export default function ContainerProducts() {
 						})}
 					</tbody>
 				</table>
-				<button onClick={saveChanges}>Save Changes</button>
+				{/* <button onClick={saveChanges}>Save Changes</button> */}
 				<div className='flex justify-evenly'>
 					<button onClick={() => previousPage()} disabled={!canPreviousPage}>
 						prev
