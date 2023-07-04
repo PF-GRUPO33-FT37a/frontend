@@ -27,7 +27,12 @@ export default function ProductDetail() {
     const [sizeSelect,setSizeSelect] = useState("")
     const [cantSelect, setCantSelect] = useState()
     const [cart,setCart] = useState()
+
+    const myUser = window.localStorage.getItem('user')
+    const myUserParse = JSON.parse(myUser)
+
     const [refresh, setRefresh] = useState()
+
     
     const notify = (message) => {
         toast.success(message, {
@@ -185,14 +190,42 @@ export default function ProductDetail() {
                                     }
                                     <div className="flex flex-col gap-y-[0.6rem]">
                                         <div>
+
+                                            <h2 className="font-bold text-[1.4rem]">$ {productDetail[0]?.price}</h2>
+                                            {
+                                                (!myUserParse?.data?.isAdmin)
+                                                ?
+                                                <span>ver cuotas</span>
+                                                :
+                                                <></>
+                                            }
+
                                             <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.price
                                             .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
                                             .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</h2>
-                                            <span>ver cuotas</span>
+                                           
+
                                         </div>
                                     </div>
                                 </div>
                                 <h3>Talles</h3>
+                                {
+                                    (myUserParse?.data?.isAdmin)
+                                    ?
+                                    <div className=" p-[1rem] px-[2rem] rounded-[0.4rem] border-[#11111150] border-[1px]">
+                                        {
+                                            productDetail[0]?.size?.map((size,index)=>{
+                                                return (
+                                                    <div key={index} className="flex gap-x-[1rem]">
+                                                        <span>{size.size}</span>
+                                                        <span>Stock: {size.stock}</span>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    :
+
                                 <select
                                     onChange={handleSelect}
                                     name="" id="" className="text-black p-[0.6rem] w-[100%] text-center">
@@ -214,7 +247,14 @@ export default function ProductDetail() {
                                         })
                                     }
                                 </select>
+                                }
+
                                 {
+                                    (myUserParse?.data?.isAdmin)
+                                    ?
+                                    <></>
+                                    :
+
                                     (productDetail[0]?.stock > 0)
                                         ?
                                         <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
@@ -242,8 +282,6 @@ export default function ProductDetail() {
                                             onClick={addMyCart}
                                             className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
                                         </div>
-
-
                                 }
                             </div>
                             {

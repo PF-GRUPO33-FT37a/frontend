@@ -39,6 +39,7 @@ export default function Footer() {
 			closePopup()
 		})
 	  }
+	 
 	return (
 		<footer className='bg-black min-h-[40vh] text-white  p-[2rem] '>
 			<div className='flex justify-around'>
@@ -64,8 +65,8 @@ export default function Footer() {
 							Recibí las mejores promociones y novedades del mundo de la moda
 						</p>
 						<div className='flex gap-x-[1rem] mb-[1rem] justify-start' >
-						<form className="flex justify-start rounded-[0.6rem]">
-						<div className="flex gap-x-[1rem] mb-[0.6rem]">
+						<form className="flex  rounded-[0.6rem] gap-x-[0.4rem]">
+						<div className="">
 							<input
 							className="text-black rounded-[0.6rem] py-[0.6rem] pl-[1rem]"
 							type="e-mail"
@@ -89,21 +90,23 @@ export default function Footer() {
 					<span className='text-[0.8rem]'>
 						© 2023 Online Shop | e-commerce Inc.
 					</span>
-					<Image src={stripe} alt='logo-stripe' width={150} height={100}/>
+					<Image 
+					className='mx-auto'
+					src={stripe} alt='logo-stripe' width={250} height={200}/>
 				</div>
 
 				<div className='flex w-[70%] justify-around'>
 				<article className="flex flex-col gap-y-2">
-					<h3 className="underline">Info</h3>
-					<span className="text-sm">About</span>
+					<h3 className="underline cursor-default">Info</h3>
+					<Link href={'/about'} className="text-sm">About</Link>
 					<span
 						className="text-sm text-blue-500 cursor-pointer"
 						onClick={openPopup}
 					>
 						Contact Us
 					</span>
-					<span className="text-sm">Privacy Policy</span>
-					<span className="text-sm">Terms</span>
+					<span className="text-sm cursor-pointer">Privacy Policy</span>
+					<span className="text-sm cursor-pointer">Terms</span>
 					</article>
 
 					<div id="popup" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
@@ -120,7 +123,7 @@ export default function Footer() {
 					</div>
 					</div>
 					<article className='flex flex-col gap-y-[0.6rem]'>
-						<h3 className='underline'>Products</h3>
+						<h3 className='underline cursor-default'>Products</h3>
 						<Link href={'/products/hombres'} className='text-[0.8rem]'>Male</Link>
 						<Link href={'/products/female'} className='text-[0.8rem]'>Female</Link>
 						<Link href={'/products/boy'} className='text-[0.8rem]'>Boy</Link>
@@ -128,22 +131,22 @@ export default function Footer() {
 					</article>
 
 					<article className='flex flex-col gap-y-[0.6rem]'>
-						<h3 className='underline'>Metodos de pago</h3>
-						<span className='text-[0.8rem]'>Mercado Pago</span>
-						<span className='text-[0.8rem]'>RapiPago</span>
-						<span className='text-[0.8rem]'>Pago Facil</span>
-						<span className='text-[0.8rem]'>Visa</span>
-						<span className='text-[0.8rem]'>MasterCard</span>
-						<span className='text-[0.8rem]'>Naranja</span>
-						<span className='text-[0.8rem]'>American Express</span>
+						<h3 className='underline cursor-default'>Metodos de pago</h3>
+						<span className='text-[0.8rem] cursor-default'>Mercado Pago</span>
+						<span className='text-[0.8rem] cursor-default'>RapiPago</span>
+						<span className='text-[0.8rem] cursor-default'>Pago Facil</span>
+						<span className='text-[0.8rem] cursor-default'>Visa</span>
+						<span className='text-[0.8rem] cursor-default'>MasterCard</span>
+						<span className='text-[0.8rem] cursor-default'>Naranja</span>
+						<span className='text-[0.8rem] cursor-default'>American Express</span>
 						
 					</article>
 
 					<article className='flex flex-col gap-y-[0.6rem]'>
-						<h3 className='underline'>Redes</h3>
-						<span className='text-[0.8rem]'>Facebook</span>
-						<span className='text-[0.8rem]'>Twitter</span>
-						<span className='text-[0.8rem]'>Instagram</span>
+						<h3 className='underline cursor-default'>Redes</h3>
+						<span className='text-[0.8rem] cursor-pointer'>Facebook</span>
+						<span className='text-[0.8rem] cursor-pointer'>Twitter</span>
+						<span className='text-[0.8rem] cursor-pointer'>Instagram</span>
 					</article>
 				</div>
 			</div>
