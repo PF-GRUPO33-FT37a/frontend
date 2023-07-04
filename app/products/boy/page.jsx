@@ -16,22 +16,22 @@ export default function ProductsPage() {
         {
             title: "Shoes",
             img: childrenShoes,
-            link:'products/boy/shoes'
+            link:'/products/boy/shoes'
         },
         {
             title: "Hoodies",
             img: childrenHoodie,
-            link:'products/boy/sweatshirt'
+            link:'/products/boy/sweatshirt'
         },
         {
             title: "T-Shirts",
             img: childrenShirt,
-            link:'products/boy/shirt'
+            link:'/products/boy/shirt'
         },
         {
             title: "Pants",
             img: childrenTrouser,
-            link:'products/boy/pants'
+            link:'/products/boy/pants'
         },
     ]
 

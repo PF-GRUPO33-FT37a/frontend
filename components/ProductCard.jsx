@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 
 
 export default function ProductCard({ product }) {
+    const average = product.rating || null
+    const averageStars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
 
     const notify = (message) => {
         toast.success(message, {
@@ -39,10 +41,14 @@ export default function ProductCard({ product }) {
     // const [productos, setProductos] = useState([])
 
     const handleOnClick = (id) => {
-        path.includes('/children/pants') && route.push(`/products/children/pants/${id}`)
-        path.includes('/children/shirt') && route.push(`/products/children/shirt/${id}`)
-        path.includes('/children/shoes') && route.push(`/products/children/shoes/${id}`)
-        path.includes('/children/sweatshirt') && route.push(`/products/children/sweatshirt/${id}`)
+        path.includes('/boy/pants') && route.push(`/products/boy/pants/${id}`)
+        path.includes('/boy/shirt') && route.push(`/products/boy/shirt/${id}`)
+        path.includes('/boy/shoes') && route.push(`/products/boy/shoes/${id}`)
+        path.includes('/boy/sweatshirt') && route.push(`/products/boy/sweatshirt/${id}`)
+        path.includes('/girl/pants') && route.push(`/products/girl/pants/${id}`)
+        path.includes('/girl/shirt') && route.push(`/products/girl/shirt/${id}`)
+        path.includes('/girl/shoes') && route.push(`/products/girl/shoes/${id}`)
+        path.includes('/girl/sweatshirt') && route.push(`/products/girl/sweatshirt/${id}`)
         path.includes('/female/hoodie') && route.push(`/products/female/hoodie/${id}`)
         path.includes('/female/pants') && route.push(`/products/female/pants/${id}`)
         path.includes('/female/shoes') && route.push(`/products/female/shoes/${id}`)
@@ -209,7 +215,9 @@ export default function ProductCard({ product }) {
 
                             <span
 
-                                className="font-bold text-[#F8652A]">$ {product.price * cant}</span>
+                                className="font-bold text-[#F8652A]">{(product.price * cant)
+                                    .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                                    .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</span>
                             {
                                 product?.stock > 0
                                     ?
@@ -290,7 +298,18 @@ export default function ProductCard({ product }) {
                 <div className="w-[90%] mx-[auto] h-[30%]">
                     <h2 className="font-bold">{product?.brand}</h2>
                     <p>{product?.name}</p>
-                    <span className="font-bold">$ {product.price}</span>
+                    <span className="font-bold">{product.price
+                        .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                        .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</span>
+                    { product.rating !== 0 ?
+                        <div className="flex gap-x-[0.4rem]">
+                            <h1 className="flex text-[1.2rem] text-blue-500 self-baseline"
+                            >{averageStars}</h1>
+                            <h1 className="flex text-[0.7rem] self-baseline"
+                            >({average})</h1>
+                        </div>
+                        : <></>
+                    }
                 </div>
                 <ToastContainer
                     autoClose={2000}
