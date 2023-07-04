@@ -63,7 +63,12 @@ export default function UserProfile(){
     }, [refresh, userId])
     
     function submitChange(response, name) {        // cuando se resuelven los errores, se realiza el PUT
-        axios.put(`http://localhost:3001/users/${data._id}`, response)
+        let token = data.token
+        axios.put(`http://localhost:3001/users/${data._id}`, response, {
+            headers: {
+                Authorization: `Bearer ${token}`
+              }
+        })
         .then((response)=>{
             setRefresh(response) // pide la información actualizada del usuario
             setErrors({...errors, [name]: ''}) // limpia los errors

@@ -7,9 +7,15 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default function FormProducts() {
+	const [userLocal, setUserLocal] = useState({})
 	const [images, setImages] = useState([]);
 	const [sizeValue, setSizeValue] = useState([]);
 	const [colorValue, setColorValue] = useState([]);
+
+	useEffect(() => {
+		let data = JSON.parse(localStorage.getItem('user'));
+		if (data && data.data) setUserLocal(data);
+	}, []);
 
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required('Name is required').min(4),
@@ -65,8 +71,13 @@ export default function FormProducts() {
 				formData.append('images', file);
 			});
 			console.log(formData);
+			let token = userLocal.data.token
 			axios
-				.post('http://localhost:3001/products', formData)
+				.post('http://localhost:3001/products', formData,{
+					headers: {
+						Authorization: `Bearer ${token}`
+					  }
+				})
 				.then((response) => {
 					Swal.fire({
 						title: 'Create Product!',
