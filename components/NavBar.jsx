@@ -16,7 +16,7 @@ import axios from 'axios';
 import { RxDashboard, RxPerson } from 'react-icons/rx';
 
 export default function NavBar() {
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState(null);
 	const [userData, setUserData] = useState({});
 	const router = useRouter();
 	const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function NavBar() {
 
 	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname.includes('products')) {
+		if (!pathname.includes('/search')) {
 			setSearch('');
 		}
 	}, [pathname]);
@@ -57,7 +57,7 @@ export default function NavBar() {
 	};
 
 	useEffect(() => {
-		if ((!search || search == '') && pathname.includes('search')) {
+		if (search == null && pathname.includes('search')) {
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
