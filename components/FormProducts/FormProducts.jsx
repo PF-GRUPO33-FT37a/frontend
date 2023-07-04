@@ -132,7 +132,7 @@ export default function FormProducts() {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto'>
+		<div className='flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-md w-[70%]  mx-auto mt-[2rem]'>
 			<h1 className='text-4xl font-bold text-black mb-[2rem]'>
 				Add your products
 			</h1>
@@ -315,6 +315,8 @@ export default function FormProducts() {
 								<option value='male'>Male</option>
 								<option value='female'>Female</option>
 								<option value='child'>Child</option>
+								<option value='boy'>Boy</option>
+								<option value='girl'>Girl</option>
 							</select>
 							{formik.errors.gender && (
 								<div className='absolute text-red-500 text-sm'>

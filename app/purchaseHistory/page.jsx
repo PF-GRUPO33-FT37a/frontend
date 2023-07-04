@@ -5,7 +5,7 @@ import SkeletonPurchaseHistory from "@/components/SkeletonComponents/SkeletonPur
 import axios from "axios"
 import Image from "next/image"
 
-export default function PurchaseHistory() {
+export default function PurchaseHistoryPage() {
     // const user = JSON.parse(window.localStorage.getItem('user'))
     // console.log(user)
 

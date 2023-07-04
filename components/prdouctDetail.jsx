@@ -27,19 +27,27 @@ export default function ProductDetail() {
     const [sizeSelect,setSizeSelect] = useState("")
     const [cantSelect, setCantSelect] = useState()
     const [cart,setCart] = useState()
+
+    const myUser = window.localStorage.getItem('user')
+    const myUserParse = JSON.parse(myUser)
+
+    const [refresh, setRefresh] = useState()
+
     
     const notify = (message) => {
         toast.success(message, {
             autoClose: 2000,
         });
     };
-
+    
     const notifyError = (message) => toast.error(message);
     
     const path = usePathname()
     const idPath = path.split('/').pop()
     const [detail, setDetail] = useState({});
     const [ reviews, setReviews ] = useState([])
+    const average = productDetail[0]?.rating || null
+    const averageStars = '★'.repeat(parseInt(average)) + '☆'.repeat(5 - parseInt(average))
     
     const getDetail = async () => {
         const response = await axios(`http://localhost:3001/products/${idPath}`)
@@ -125,7 +133,7 @@ export default function ProductDetail() {
         const myCartLocal = localStorage.getItem('myCart')
         const myCart = JSON.parse(myCartLocal)
         setCart(myCart)
-    }, [idPath])
+    }, [idPath, refresh])
 
 
     console.log(productDetail[0]);
@@ -171,15 +179,53 @@ export default function ProductDetail() {
                                         <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.brand}</h2>
                                         <p>{productDetail[0]?.name}</p>
                                     </div>
+                                    { average ? 
+                                        <div className="flex gap-x-[0.4rem]">
+                                            <h1 className="flex text-[1.5rem] text-blue-500 self-baseline"
+                                            >{averageStars}</h1>
+                                            <h1 className="flex text-[1rem] self-center"
+                                            >({average})</h1>
+                                        </div>
+                                        : <></>
+                                    }
                                     <div className="flex flex-col gap-y-[0.6rem]">
-                                        <span>Vendido por (persona)</span>
                                         <div>
+
                                             <h2 className="font-bold text-[1.4rem]">$ {productDetail[0]?.price}</h2>
-                                            <span>ver cuotas</span>
+                                            {
+                                                (!myUserParse?.data?.isAdmin)
+                                                ?
+                                                <span>ver cuotas</span>
+                                                :
+                                                <></>
+                                            }
+
+                                            <h2 className="font-bold text-[1.4rem]">{productDetail[0]?.price
+                                            .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                                            .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</h2>
+                                           
+
                                         </div>
                                     </div>
                                 </div>
                                 <h3>Talles</h3>
+                                {
+                                    (myUserParse?.data?.isAdmin)
+                                    ?
+                                    <div className=" p-[1rem] px-[2rem] rounded-[0.4rem] border-[#11111150] border-[1px]">
+                                        {
+                                            productDetail[0]?.size?.map((size,index)=>{
+                                                return (
+                                                    <div key={index} className="flex gap-x-[1rem]">
+                                                        <span>{size.size}</span>
+                                                        <span>Stock: {size.stock}</span>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    :
+
                                 <select
                                     onChange={handleSelect}
                                     name="" id="" className="text-black p-[0.6rem] w-[100%] text-center">
@@ -201,7 +247,14 @@ export default function ProductDetail() {
                                         })
                                     }
                                 </select>
+                                }
+
                                 {
+                                    (myUserParse?.data?.isAdmin)
+                                    ?
+                                    <></>
+                                    :
+
                                     (productDetail[0]?.stock > 0)
                                         ?
                                         <div className="flex flex-col gap-y-[0.6rem] mt-[2rem]">
@@ -229,8 +282,6 @@ export default function ProductDetail() {
                                             onClick={addMyCart}
                                             className="text-[#11111180] border-[1px] border-[#11111180]  p-[0.6rem] w-[100%] text-center bg-[#E9E9ED] cursor-pointer hover:text-black">♥ Agregar a favoritos</span>
                                         </div>
-
-
                                 }
                             </div>
                             {
@@ -264,7 +315,7 @@ export default function ProductDetail() {
                     </section>
                     <section className="w-[70%] mx-[auto] flex flex-col justify-left pt-[1rem] pb-[4rem] gap-y-[0.5rem]">
                         <h1 className="text-[1.8rem]">Reviews: <strong>{productDetail[0]?.name}</strong></h1>
-                        <ContainerReviews productId={productDetail[0]._id} reviews={reviews}/>
+                        <ContainerReviews productId={productDetail[0]._id} reviews={reviews} setRefresh={setRefresh}/>
                     </section>
                     </>
             }
