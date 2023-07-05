@@ -11,6 +11,11 @@ import "react-toastify/dist/ReactToastify.css";
 import SizeSelected from "./productCard/SizeSelected";
 import { useDispatch } from "react-redux";
 
+import 'tippy.js/themes/light.css';
+import 'tippy.js/themes/translucent.css';
+import 'tippy.js/themes/material.css';
+import 'tippy.js/themes/light-border.css';
+
 
 export default function ProductCard({ product }) {
     const average = product.rating || null
@@ -156,19 +161,23 @@ export default function ProductCard({ product }) {
         <Tippy
             interactive={true}
             placement="left"
+            delay={100}
+            theme="material"
             content={
-                <div className="flex gap-x-[1rem] py-[1rem] z-0">
+                <div className="flex gap-x-[0.3rem] pb-[0.6rem] z-0 ">
                     {
                         (product?.sameCode?.length > 0)
                             ?
-                            <div className="w-[20%] flex flex-col gap-y-[1rem]">
+                            <div className="w-[40px] flex flex-col gap-y-[1rem]">
                                 {
                                     product?.sameCode?.map((color, index) => {
                                         if (product?._id !== color?._id) {
                                             return (
-                                                <Image
-                                                    key={index}
-                                                    src={color?.images[0]} alt={color?.name} width={200} height={400} />
+                                                <div key={index} className="h-[60px]  bg-white flex items-center">
+                                                    <Image
+                                                    className=""    
+                                                        src={color?.images[0]} alt={color?.name} width={200} height={400} />
+                                                </div>
                                             )
                                         }
                                     })
@@ -178,11 +187,14 @@ export default function ProductCard({ product }) {
                             <></>
                     }
 
-                    <div className={`flex flex-col gap-y-[1rem] ${(product.sameCode.length > 0) ? 'w-[70%]' : 'w-[90%] mx-[auto]'}`}>
+                    {/* <div className={`flex flex-col gap-y-[1rem] ${(product.sameCode.length > 0) ? 'w-[100%]' : 'w-[100%] mx-[auto]'}`}> */}
+                    <div className={`flex flex-col gap-y-[1rem] w-[230px]`}>
                         <div className="relative">
+                            <div className="bg-white w-[230px]">
                             <Image
-                                className="w-[100%] cursor-pointer"
+                                className=" cursor-pointer h-[350px] object-contain w-full"
                                 src={product?.images[0]} alt={product?.name} width={200} height={400} />
+                            </div>
                             {
                                 (product?.stock === 0)
                                     ?
@@ -297,7 +309,7 @@ export default function ProductCard({ product }) {
         >
             <div
                 onClick={() => { handleOnClick(product?._id) }}
-                className="w-[28%]  flex flex-col gap-y-[0.6rem] h-[340px] "
+                className="w-[28%]  flex flex-col gap-y-[0.6rem] h-[450px] "
             >
                 <div className="relative h-[70%] ">
                     <Image
