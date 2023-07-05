@@ -17,7 +17,7 @@ import CarouselBanner from '@/components/CarouselBanner';
 import ArivalsCarousel from '@/components/ArivalsCarousel';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

@@ -65,7 +65,7 @@ export default function ArivalsCarousel({items}){
     slidesToSlide={2}
     swipeable
   >
-    {items?.map((item, index) => <div className='flex flex-col justify-center'>
+    {items?.map((item, index) => <div key={index} className='flex flex-col justify-center'>
             <Image className='w-[180px] h-[250px] object-cover mt-[0.8rem] cursor-pointer'
             onClick={handleClick} id={item._id}
             src={item.images[0]} alt={`image_${index}`}

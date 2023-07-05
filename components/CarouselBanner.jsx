@@ -83,7 +83,7 @@ export default function CarouselBanner({ routes }) {
               alt="image"
               layout="fill"
               />
-          <motion.button whileHover={{backgroundColor: 'gray', duration: 0.5}} className='absolute text-white font-bold text-[1.3rem] top-[21rem] left-[4rem] bg-[#90909050] p-[0.4rem] pl-[0.8rem] pr-[0.8rem] rounded-[1.5rem] bg-black'   onClick={handleButtonClick}>Take a look ➔</motion.button>
+          <motion.button whileHover={{backgroundColor: 'gray', transition: { duration: 1 }}} className='absolute text-white font-bold text-[1.3rem] top-[21rem] left-[4rem] bg-[#90909050] p-[0.4rem] pl-[0.8rem] pr-[0.8rem] rounded-[1.5rem] bg-black'   onClick={handleButtonClick}>Take a look ➔</motion.button>
           <motion.h1 className="text-black text-[2rem]">{anounces[0]}</motion.h1>
         </motion.div>
       </AnimatePresence>
