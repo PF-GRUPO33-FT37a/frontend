@@ -266,7 +266,7 @@ export default function CheckoutPage() {
 
 
     return (
-        <main>
+        <main className="bg-[#F3F4F6]">
 
             <section className="pt-[10rem] pb-[4rem] flex w-[80%] mx-[auto] justify-between min-h-[100vh]">
                 <div className="w-[60%] pt-[1rem]">
