@@ -156,7 +156,7 @@ export default function EditForm({ product, onClose }) {
 		<div className='flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto'>
 			<button onClick={onClose}>X</button>
 			<h1 className='text-4xl font-bold text-black mb-[2rem]'>
-				Add your products
+				Edit {product.name}
 			</h1>
 			<form
 				onSubmit={formik.handleSubmit}

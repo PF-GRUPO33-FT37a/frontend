@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function ContainerUsers() {
 	const router = useRouter();
 
-	const [localUser, setLocalUser] = useState({})
+	const [localUser, setLocalUser] = useState({});
 	const [userData, setUserData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(0);
@@ -61,11 +61,11 @@ export default function ContainerUsers() {
 			for (const userId in dataUpdate) {
 				const updates = dataUpdate[userId];
 				console.log(updates);
-				let token = localUser.data.token
+				let token = localUser.data.token;
 				await axios.put(`http://localhost:3001/users/${userId}`, updates, {
 					headers: {
-						Authorization: `Bearer ${token}`
-					  }
+						Authorization: `Bearer ${token}`,
+					},
 				});
 			}
 			window.location.reload();
@@ -194,17 +194,17 @@ export default function ContainerUsers() {
 					return valueA - valueB;
 				},
 			},
-			{
-				Header: 'Admin',
-				accessor: 'isAdmin',
-				Cell: EditableCell,
-				canSort: true,
-				sortType: (rowA, rowB, columnId) => {
-					const valueA = rowA.values[columnId] ? 1 : 0;
-					const valueB = rowB.values[columnId] ? 1 : 0;
-					return valueA - valueB;
-				},
-			},
+			// {
+			// 	Header: 'Admin',
+			// 	accessor: 'isAdmin',
+			// 	Cell: EditableCell,
+			// 	canSort: true,
+			// 	sortType: (rowA, rowB, columnId) => {
+			// 		const valueA = rowA.values[columnId] ? 1 : 0;
+			// 		const valueB = rowB.values[columnId] ? 1 : 0;
+			// 		return valueA - valueB;
+			// 	},
+			// },
 		],
 		[data, dataUpdate],
 	);
@@ -240,8 +240,8 @@ export default function ContainerUsers() {
 	);
 
 	return (
-		<div className='w-11/12 mx-auto py-4'>
-			<div className='bg-white shadow-md rounded-lg overflow-hidden'>
+		<div className='w-11/12 mx-auto py-14'>
+			<div className='shadow-md rounded-lg overflow-hidden'>
 				<div className='p-4'>
 					<input
 						type='text'
@@ -251,11 +251,12 @@ export default function ContainerUsers() {
 						className='w-full py-2 px-3 border border-collapse rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm'
 					/>
 				</div>
+
 				<table
 					{...getTableProps()}
 					className='w-full h-auto border-collapse overflow-hidden shadow-md'
 				>
-					<thead className='bg-[#55608f]'>
+					<thead className='bg-orange-500'>
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
@@ -282,7 +283,7 @@ export default function ContainerUsers() {
 							return (
 								<tr
 									{...row.getRowProps()}
-									className='hover:bg-opacity-30 hover:bg-gray-500 '
+									className='hover:bg-opacity-30 hover:bg-gray-500'
 								>
 									{row.cells.map((cell) => (
 										<td
@@ -297,16 +298,29 @@ export default function ContainerUsers() {
 						})}
 					</tbody>
 				</table>
-				<button onClick={saveChanges}>Save Changes</button>
-				<div className='flex justify-evenly'>
-					<button onClick={() => previousPage()} disabled={!canPreviousPage}>
+				<div className='flex justify-evenly items-center'>
+					<button
+						onClick={() => previousPage()}
+						disabled={!canPreviousPage}
+						className={`py-1 px-2 text-white rounded ${
+							!canPreviousPage
+								? 'bg-gray-300 cursor-not-allowed'
+								: 'bg-[#F8652A]'
+						}`}
+					>
 						prev
 					</button>
-					<button onClick={() => nextPage()} disabled={!canNextPage}>
+					<button
+						onClick={() => nextPage()}
+						disabled={!canNextPage}
+						className={`py-1 px-2 text-white rounded ${
+							!canNextPage ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#F8652A]'
+						}`}
+					>
 						next
 					</button>
 					<span>
-						Page
+						Page{' '}
 						<strong>
 							{pageIndex + 1} of {pageOptions.length}
 						</strong>
@@ -314,13 +328,14 @@ export default function ContainerUsers() {
 					<span>
 						| Go to page:
 						<input
-							type='number'
+							type='text'
 							defaultValue={pageIndex + 1}
 							onChange={(e) => {
 								const page = e.target.value ? Number(e.target.value) - 1 : 0;
 								gotoPage(page);
 							}}
 							style={{ width: '50px' }}
+							className='ml-2 py-2 px-3 border border-collapse rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm'
 						/>
 					</span>
 					<select
@@ -328,6 +343,7 @@ export default function ContainerUsers() {
 						onChange={(e) => {
 							setPageSize(Number(e.target.value));
 						}}
+						className='py-2 px-3 border border-collapse rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm'
 					>
 						{[5, 10, 15, 20].map((pageSize) => (
 							<option key={pageSize} value={pageSize}>
@@ -335,6 +351,12 @@ export default function ContainerUsers() {
 							</option>
 						))}
 					</select>
+					<button
+						onClick={saveChanges}
+						className='bg-orange-500 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded'
+					>
+						Guardar cambios
+					</button>
 				</div>
 			</div>
 		</div>
