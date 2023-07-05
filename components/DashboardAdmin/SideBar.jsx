@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { RxDashboard, RxPerson } from 'react-icons/rx';
 import { RiShoppingCartFill } from 'react-icons/ri';
-import { MdNoEncryptionGmailerrorred } from 'react-icons/md';
+import { MdNoEncryptionGmailerrorred, MdAddBox } from 'react-icons/md';
 
 export default function SideBar({ children }) {
 	return (
@@ -21,6 +21,11 @@ export default function SideBar({ children }) {
 							<RxPerson size={30} />
 						</div>
 					</Link>
+					<Link href='/admin/ban'>
+						<div className='bg-gray-100 hover:bg-gray-200 cursor-pointer p-3 rounded-lg inline-block'>
+							<MdNoEncryptionGmailerrorred size={30} />
+						</div>
+					</Link>
 
 					<Link href='/admin/products'>
 						<div className='bg-gray-100 hover:bg-gray-200 cursor-pointer p-3 rounded-lg inline-block'>
@@ -28,9 +33,9 @@ export default function SideBar({ children }) {
 						</div>
 					</Link>
 
-					<Link href='/admin/ban'>
+					<Link href='/admin/create'>
 						<div className='bg-gray-100 hover:bg-gray-200 cursor-pointer p-3 rounded-lg inline-block'>
-							<MdNoEncryptionGmailerrorred size={30} />
+							<MdAddBox size={30} />
 						</div>
 					</Link>
 				</div>
