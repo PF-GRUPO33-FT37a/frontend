@@ -18,7 +18,7 @@ import magnify from '../public/magnify.png'
 import { RxDashboard, RxPerson } from 'react-icons/rx';
 
 export default function NavBar() {
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState(null);
 	const [userData, setUserData] = useState({});
 	const router = useRouter();
 	const dispatch = useDispatch();
@@ -38,31 +38,29 @@ export default function NavBar() {
 
 	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname.includes('products')) {
+		if (!pathname.includes('/search')) {
 			setSearch('');
 		}
 	}, [pathname]);
 
-	const debouncedSearch = useCallback(
-		debounce((searchTerm) => {
-			if (searchTerm.length > 0) {
-				router.push('/search');
-				dispatch(searchProducts(searchTerm));
-			}
-		}, 500),
-		[],
-	);
 
 	const handleChange = (event) => {
 		const searchTerm = event.target.value;
 		setSearch(searchTerm);
-		if (pathname.includes(search)) {
-			debouncedSearch(searchTerm);
+		
+		// if (pathname.includes('/search')) {
+		// 	debouncedSearch(searchTerm);
+		// }
+	};
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			dispatch(searchProducts(search));
+			router.push('/search');
 		}
 	};
 
 	useEffect(() => {
-		if ((!search || search == '') && pathname.includes('search')) {
+		if (search == null && pathname.includes('search')) {
 			dispatch(searchProducts());
 		}
 	}, [search, dispatch]);
@@ -151,7 +149,7 @@ export default function NavBar() {
 							</motion.div>
 						</Link>
 					) : (
-						<Link href={'/login'}>Register/Login</Link>
+						<Link href={'/login'} className='bg-black text-white font-semibold text-[0.9rem] p-[0.4rem] rounded-md'>Register/Login</Link>
 					)}
 				</div>
 				</div>

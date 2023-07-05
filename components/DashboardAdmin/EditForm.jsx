@@ -1,29 +1,22 @@
 'use client';
-
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-export default function FormProducts() {
-	const [userLocal, setUserLocal] = useState({})
+export default function EditForm({ product, onClose }) {
 	const [images, setImages] = useState([]);
 	const [sizeValue, setSizeValue] = useState([]);
 	const [colorValue, setColorValue] = useState([]);
 
-	useEffect(() => {
-		let data = JSON.parse(localStorage.getItem('user'));
-		if (data && data.data) setUserLocal(data);
-	}, []);
-
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required('Name is required').min(4),
 		category: Yup.string().required('Category is required').min(4),
-		color: Yup.string().required('Color is required'),
+		// color: Yup.required('Color is required'),
 		gender: Yup.string().required('Gender is required'),
 		season: Yup.string().required('Season is required'),
-		brand: Yup.string().required('Brand is required'),
+		// brand: Yup.required('Brand is required'),
 		price: Yup.number().positive('Price must be a positive number'),
 		articleCode: Yup.string().required('articleCode is required'),
 		stock: Yup.number().positive('Price must be a positive number'),
@@ -32,16 +25,16 @@ export default function FormProducts() {
 
 	const formik = useFormik({
 		initialValues: {
-			name: '',
-			category: '',
-			gender: '',
+			name: product.name || '',
+			category: product.category || '',
+			gender: product.gender || '',
 			size: '',
-			color: '',
-			season: '',
+			color: product.color || '',
+			season: product.season || '',
 			stock: '',
-			brand: '',
-			price: 1,
-			articleCode: '',
+			brand: product.brand || '',
+			price: product.price || 1,
+			articleCode: product.articleCode || '',
 		},
 		validationSchema: validationSchema,
 		validate: (values) => {
@@ -54,6 +47,7 @@ export default function FormProducts() {
 			return errors;
 		},
 		onSubmit: (values) => {
+			// const existingData = product
 			const formData = new FormData();
 			formData.append('name', values.name);
 			formData.append('category', values.category);
@@ -67,17 +61,14 @@ export default function FormProducts() {
 			formData.append('brand', values.brand);
 			formData.append('articleCode', values.articleCode);
 			formData.append('price', values.price);
-			images.forEach((file) => {
-				formData.append('images', file);
-			});
-			console.log(formData);
-			let token = userLocal.data.token
+			images.length
+				? images.forEach((file) => {
+						formData.append('images', file);
+				  })
+				: formData.append('images', product.images);
+			console.log(product.images);
 			axios
-				.post('http://localhost:3001/products', formData,{
-					headers: {
-						Authorization: `Bearer ${token}`
-					  }
-				})
+				.put(`http://localhost:3001/products/${product._id}`, formData)
 				.then((response) => {
 					Swal.fire({
 						title: 'Create Product!',
@@ -101,6 +92,25 @@ export default function FormProducts() {
 				});
 		},
 	});
+	useEffect(() => {
+		if (product) {
+			formik.setValues({
+				name: product.name || '',
+				category: product.category || '',
+				gender: product.gender || '',
+				size: '',
+				color: product.color || '',
+				season: product.season || '',
+				stock: '',
+				brand: product.brand || '',
+				price: product.price || 1,
+				articleCode: product.articleCode || '',
+			});
+			setSizeValue(product.size || []);
+			setColorValue(product.color || []);
+			// setImages(product.images || []);
+		}
+	}, [product]);
 
 	useEffect(() => {
 		formik.validateForm();
@@ -143,7 +153,8 @@ export default function FormProducts() {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-md w-[70%]  mx-auto mt-[2rem]'>
+		<div className='flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto'>
+			<button onClick={onClose}>X</button>
 			<h1 className='text-4xl font-bold text-black mb-[2rem]'>
 				Add your products
 			</h1>
@@ -326,8 +337,6 @@ export default function FormProducts() {
 								<option value='male'>Male</option>
 								<option value='female'>Female</option>
 								<option value='child'>Child</option>
-								<option value='boy'>Boy</option>
-								<option value='girl'>Girl</option>
 							</select>
 							{formik.errors.gender && (
 								<div className='absolute text-red-500 text-sm'>

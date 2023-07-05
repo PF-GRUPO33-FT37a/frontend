@@ -18,13 +18,14 @@ import ArivalsCarousel from '@/components/ArivalsCarousel';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-
+	const router = useRouter()
 	const [ arrivals, setArrivals ] = useState([])
 
 	function handleClick(){
-		
+		router.push('/login')
 	}
 
 	useEffect(()=> {

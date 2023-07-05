@@ -38,6 +38,9 @@ export default function ProductCard({ product }) {
     
     const [sizes,setSize] = useState(0)
 
+    const myUser = window.localStorage.getItem('user')
+    const myUserParse = JSON.parse(myUser)
+
     // const [productos, setProductos] = useState([])
 
     const handleOnClick = (id) => {
@@ -145,7 +148,7 @@ export default function ProductCard({ product }) {
     }
 
     useEffect(() => {
-
+        console.log(myUserParse);
     }, [cant, sizeCheck,cantSelect])
     console.log(cantSelect);
     return (
@@ -221,6 +224,19 @@ export default function ProductCard({ product }) {
                             {
                                 product?.stock > 0
                                     ?
+                                    myUserParse?.data?.isAdmin 
+                                    ?
+                                    <div className="flex flex-col gap-y-[0.2rem]">
+                                        Size
+                                        {
+                                            product?.size?.map((size,index)=>{
+                                                return (
+                                                    <span key={index}>{size.size}</span>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    :
                                     <div className="flex flex-col gap-y-[0.2rem]">
                                         Size
                                         {
