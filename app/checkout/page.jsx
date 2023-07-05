@@ -8,10 +8,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { CardElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Stripe Components/CheckoutForm";
 import { useRouter } from "next/navigation";
-import stripeImg from "../../public/stripee.png"
-import Image from "next/image";
-
-import { addTotalPay } from "@/redux/Slice";
+import { removePrice } from "@/redux/Slice";
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_KEY_PUBLIC}`); // estado "products"
 
@@ -22,24 +19,24 @@ export default function CheckoutPage() {
     const [clientSecret, setClientSecret] = useState("");
     const totalPay = useSelector(state => state.products.totalPay)
     const desc = useSelector(state => state.products.desc)
-    const cupon = useSelector(state=> state.products.cupon)
+    const cupon = useSelector(state => state.products.cupon)
 
     const router = useRouter()
-    const dispatch = useDispatch()
 
     const [sizeCheck, setSizeCheck] = useState([])
     const [cantSelect, setCantSelect] = useState([])
-    const [amount,setAmount] = useState(totalPay)
+    const [amount, setAmount] = useState(totalPay)
+    const dispatch = useDispatch()
 
     const getMyCart = () => { // extrae localStorage y almacena en estado "products"
         const myCartLocal = localStorage.getItem("myCart")
         const myCart = JSON.parse(myCartLocal)
         console.log(myCart.lenght);
-        if(!myCart){
+        if (!myCart) {
             router.push('/')
         }
         setProducts(myCart)
-        
+
     }
 
     // const addMyCart = () => {
@@ -76,23 +73,23 @@ export default function CheckoutPage() {
     //     }
     // }
 
-    const addSizeProduct = (id,prod) =>{
-        const {size} = prod
+    const addSizeProduct = (id, prod) => {
+        const { size } = prod
         console.log(prod);
-        setProducts(prevProducts =>{
-                return prevProducts.map(producto=>{
-                    if(producto._id === id){
-                        return {
-                            ...producto,
-                            cantSelect:[...producto.cantSelect,{size,cant:1}]
-                        }
+        setProducts(prevProducts => {
+            return prevProducts.map(producto => {
+                if (producto._id === id) {
+                    return {
+                        ...producto,
+                        cantSelect: [...producto.cantSelect, { size, cant: 1 }]
                     }
-                    return producto
-                })
-            
+                }
+                return producto
+            })
+
         })
-            
-        
+
+
     }
 
     const restCount = (id, size, stock, cant) => {
@@ -199,39 +196,52 @@ export default function CheckoutPage() {
     // }
 
     const handleDeleteProductCart = (producId) => {
+        console.log(products);
         console.log('voy a eliminar');
+        products.forEach(prod => {
+            if (prod._id === producId) {
+                const totalCant = prod?.cantSelect?.reduce((acu, size) => {
+                    return acu + size.cant
+                }, 0)
+                dispatch(removePrice(totalCant*prod.price))
+
+            }
+        });
         const newArrayProduct = products.filter(product => {
             if (product._id !== producId) {
                 return product
             }
         })
+        console.log(newArrayProduct);
+        
+            localStorage.setItem('myCart', JSON.stringify(newArrayProduct))
+        
         setProducts(newArrayProduct)
     }
 
 
 
     useEffect(() => {
-        if(cupon){
+        if (cupon) {
             setAmount(totalPay - desc)
-        }else {
+        } else {
             setAmount(totalPay)
         }
         getMyCart()
         console.log(products);
-        
-    }, [cupon,totalPay])
+
+    }, [cupon, totalPay])
 
     useEffect(() => {
         console.log('hola');
         console.log(products);
-        if(products){
+        if (products) {
             localStorage.setItem('myCart', JSON.stringify(products))
         }
 
         const myCartLocal = localStorage.getItem("myCart")
         const myCart = JSON.parse(myCartLocal)
-        if(myCart.length === 0){
-            dispatch(addTotalPay(0))
+        if (myCart.length === 0) {
             router.push('/')
         }
     }, [products])
@@ -259,7 +269,7 @@ export default function CheckoutPage() {
         <main>
 
             <section className="pt-[10rem] pb-[4rem] flex w-[80%] mx-[auto] justify-between min-h-[100vh]">
-                <div className="w-[60%] pt-[1rem] flex flex-col gap-y-[0.6rem] items-center">
+                <div className="w-[60%] pt-[1rem]">
                     {
                         stripePromise && clientSecret && (
                             <Elements stripe={stripePromise} options={{ clientSecret }} >
@@ -267,7 +277,6 @@ export default function CheckoutPage() {
                             </Elements>
                         )
                     }
-                    <Image src={stripeImg} alt="power-stripe" width={150} height={150}/>
                 </div>
                 <div className="w-[40%] pt-[1rem]">
                     <Summary products={products}
