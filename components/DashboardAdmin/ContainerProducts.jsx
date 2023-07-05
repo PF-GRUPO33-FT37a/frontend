@@ -252,7 +252,7 @@ export default function ContainerProducts() {
 			<div className='shadow-md rounded-lg overflow-hidden'>
 				{showEditModal && (
 					<div
-						className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 flex justify-center items-center'
+						className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 flex justify-center items-center '
 						onClick={closeEditModal}
 					>
 						<EditForm

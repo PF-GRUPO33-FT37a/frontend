@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 export default function EditForm({ product, onClose }) {
 	const [images, setImages] = useState([]);
+	const [existingImages, setExistingImages] = useState([]);
 	const [sizeValue, setSizeValue] = useState([]);
 	const [colorValue, setColorValue] = useState([]);
 
@@ -66,7 +67,7 @@ export default function EditForm({ product, onClose }) {
 				? images.forEach((file) => {
 						formData.append('images', file);
 				  })
-				: formData.append('images', product.images);
+				: formData.append('images', existingImages);
 			console.log(product.images);
 			axios
 				.put(`http://localhost:3001/products/${product._id}`, formData)
@@ -78,7 +79,7 @@ export default function EditForm({ product, onClose }) {
 						confirmButtonText: 'continue',
 					});
 					console.log(response.data);
-					setTimeout(() => window.location.reload(), 3000);
+					setTimeout(() => window.location.reload(), 1000);
 					// formik.setValues(formik.initialValues);
 					// setSizeValue([]);
 					// setImages([]);
@@ -111,11 +112,19 @@ export default function EditForm({ product, onClose }) {
 			});
 			setSizeValue(product.size || []);
 			setColorValue(product.color || []);
+			setExistingImages(product.images);
 			// setImages(product.images || []);
 		}
 	}, [product]);
+	console.log(existingImages);
 	const handleButtonClick = (e) => {
 		e.stopPropagation();
+	};
+
+	const handleImageDelete = (index) => {
+		const updatedImages = [...existingImages];
+		updatedImages.splice(index, 1);
+		setExistingImages(updatedImages);
 	};
 
 	useEffect(() => {
@@ -161,17 +170,19 @@ export default function EditForm({ product, onClose }) {
 	return (
 		<div
 			onClick={handleButtonClick}
-			className='flex flex-col items-center justify-center bg-gray-100 p-4 rounded-lg shadow-md w-full h-auto max-w-3xl mx-auto'
+			className='flex flex-col items-center justify-center bg-gray-100 p-8 shadow-md w-full h-auto max-w-3xl mx-auto'
 		>
-			<div className='flex justify-end'>
-				<button onClick={onClose} className='text-gray-600 hover:text-gray-900'>
+			<div className='flex flex-col '>
+				<button
+					onClick={onClose}
+					className='text-gray-600 hover:text-gray-900 self-end mt-10'
+				>
 					X
 				</button>
+				<h1 className='text-4xl font-bold text-black mb-[2rem]'>
+					Edit {product.name}
+				</h1>
 			</div>
-
-			<h1 className='text-4xl font-bold text-black mb-[2rem]'>
-				Edit {product.name}
-			</h1>
 			<form
 				onSubmit={formik.handleSubmit}
 				className=' relative w-full flex flex-col gap-y-[2rem]'
@@ -259,6 +270,26 @@ export default function EditForm({ product, onClose }) {
 								}}
 							/>
 						</label>
+					</div>
+
+					<div>
+						<div className='flex'>
+							{existingImages.map((image, index) => (
+								<div key={index} className='flex flex-col'>
+									<img
+										src={image}
+										alt='img'
+										className='w-14 h-14 gap-5 border rounded-lg shadow-lg'
+									/>
+									<button
+										onClick={() => handleImageDelete(index)}
+										className='text-red-500 absolute'
+									>
+										X
+									</button>
+								</div>
+							))}
+						</div>
 					</div>
 
 					<div className='w-[25%] '>
