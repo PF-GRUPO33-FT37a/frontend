@@ -150,7 +150,9 @@ export default function ContainerProducts() {
 			{
 				Header: 'Active',
 				accessor: 'isActive',
-				Cell: EditableCell,
+				Cell: ({ value }) => {
+					return value ? 'Active' : 'Not Active';
+				},
 				canSort: true,
 				sortType: (rowA, rowB, columnId) => {
 					const valueA = rowA.values[columnId] ? 1 : 0;
@@ -249,8 +251,15 @@ export default function ContainerProducts() {
 		<div className='w-11/12 mx-auto py-14'>
 			<div className='shadow-md rounded-lg overflow-hidden'>
 				{showEditModal && (
-					<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex justify-center items-center'>
-						<EditForm product={selectedProduct} onClose={closeEditModal} />
+					<div
+						className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 flex justify-center items-center'
+						onClick={closeEditModal}
+					>
+						<EditForm
+							product={selectedProduct}
+							onClose={closeEditModal}
+							onClick={(e) => e.stopPropagation()}
+						/>
 					</div>
 				)}
 				<div className='p-4'>
@@ -258,7 +267,7 @@ export default function ContainerProducts() {
 						type='text'
 						value={searchTerm}
 						onChange={handleSearch}
-						placeholder='Search users...'
+						placeholder='Search products...'
 						className='w-full py-2 px-3 border border-collapse rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm'
 					/>
 				</div>
@@ -362,12 +371,12 @@ export default function ContainerProducts() {
 							</option>
 						))}
 					</select>
-					<button
+					{/* <button
 						onClick={saveChanges}
 						className='bg-orange-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded'
 					>
 						Guardar cambios
-					</button>
+					</button> */}
 				</div>
 			</div>
 		</div>
