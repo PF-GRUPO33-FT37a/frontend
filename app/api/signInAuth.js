@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default async function customAuth({ user }) {
 	const userExistsResponse = await axios.get(
-		`http://localhost:3001/users/auth/${user.email}`,
+		`http://localhost:3001/users/authNew/${user.email}`,
 	);
 
 	if (!userExistsResponse.data) {
