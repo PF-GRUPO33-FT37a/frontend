@@ -60,11 +60,11 @@ export default function Footer() {
 				<div className='w-[30%] text-center'>
 					<div className='flex items-center gap-x-[1rem] justify-center   '>
 						<Image
-							className='border-r-2 border-white px-[2rem]  w-[150px]'
+							className='relative border-r-2 border-white px-[2rem] left-[2rem] w-[150px]'
 							src={logo}
 							alt='logo'
-							width={100}
-							height={100}
+							width={200}
+							height={200}
 						/>
 						<div className=' flex flex-col'>
 							<span>e-commerce</span>
