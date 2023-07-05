@@ -1,6 +1,8 @@
 'use client'
 import Link from "next/link";
 import { useState } from "react"
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function Menu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +10,7 @@ export default function Menu() {
     const [isOpen3, setIsOpen3] = useState(false);
     const [isOpen4, setIsOpen4] = useState(false);
     const [isOpen5, setIsOpen5] = useState(false);
+    const pathname = usePathname()
 
     const openMenu = () => {
         setIsOpen(true);
@@ -45,23 +48,30 @@ export default function Menu() {
 
 
     return (
-        <ul className="flex justify-around items-center ">
+        <ul className="flex justify-around items-center shadow-lg">
             <Link href={'/'}>
-                <li
-                    className="block pb-[0.4rem]"
-                >Home</li>
+                <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
+                     whileTap={{ scale: 0.92}}
+                    className={`block pb-[0.4rem] font-bold ${pathname === '/'? 'border-b-2 border-black' : ''}`}
+                >HOME</motion.li>
             </Link>
-            <Link
-                className="block pb-[0.4rem]"
-                href={'/about'}
-            >About</Link>
+            <Link href={'/about'}>
+                <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
+                     whileTap={{ scale: 0.92}}
+                    className={`block pb-[0.4rem] font-bold ${pathname === '/about'? 'border-b-2 border-black' : ''}`}
+                >ABOUT</motion.li>
+            </Link>
             <div
                 onMouseEnter={openMenu}
                 onMouseLeave={closeMenu}
                 className="relative ">
-                <Link
-                    className="block pb-[0.4rem]"
-                    href={'/products'}>Products</Link>
+                <Link href={'/products'}>
+                    <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
+                     whileTap={{ scale: 0.92}}
+                        className={`block pb-[0.4rem] font-bold
+                        ${pathname.includes('/products') && !pathname.includes('/create') ? 'border-b-2 border-black' : ''}`}
+                    >PRODUCTS</motion.li>
+                </Link>
                 {
                     isOpen
                         ?
@@ -151,9 +161,10 @@ export default function Menu() {
                 }
             </div>
             <Link href={'/products/create'}>
-                <li
-                    className="block pb-[0.4rem]"
-                >Create</li>
+                <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
+                    whileTap={{ scale: 0.92}}
+                    className={`block pb-[0.4rem] font-bold ${pathname === '/products/create'? 'border-b-2 border-black' : ''}`}
+                >CREATE</motion.li>
             </Link>
         </ul>
     )
