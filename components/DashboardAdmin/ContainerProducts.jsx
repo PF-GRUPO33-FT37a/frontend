@@ -42,6 +42,7 @@ export default function ContainerProducts() {
 	};
 
 	const handleEdit = (product) => {
+		console.log(product);
 		setSelectedProduct(product);
 		setShowEditModal(true);
 	};
@@ -103,21 +104,21 @@ export default function ContainerProducts() {
 					</div>
 				),
 			},
-			{
-				Header: 'Size',
-				accessor: 'size',
-				canSort: true,
-				Cell: ({ value }) => (
-					<div className='space-y-3'>
-						{value.map((s, idx) => (
-							<div key={idx} className='flex flex-col  p-1 rounded-lg'>
-								<div className='text-sm '>Size: {s.size}</div>
-								<div className='text-sm'>Stock: {s.stock}</div>
-							</div>
-						))}
-					</div>
-				),
-			},
+			// {
+			// 	Header: 'Size',
+			// 	accessor: 'size',
+			// 	canSort: true,
+			// 	Cell: ({ value }) => (
+			// 		<div className='space-y-3'>
+			// 			{value.map((s, idx) => (
+			// 				<div key={idx} className='flex flex-col  p-1 rounded-lg'>
+			// 					<div className='text-sm '>Size: {s.size}</div>
+			// 					<div className='text-sm'>Stock: {s.stock}</div>
+			// 				</div>
+			// 			))}
+			// 		</div>
+			// 	),
+			// },
 			{
 				Header: 'Images',
 				accessor: 'images',
@@ -160,11 +161,11 @@ export default function ContainerProducts() {
 			{
 				Header: 'Edit',
 				Cell: ({ row }) => (
-					<label htmlFor='edit'>
+					<label htmlFor={`edit-${row.index}`}>
 						<button
 							onClick={() => handleEdit(row.original)}
 							className='hidden'
-							id='edit'
+							id={`edit-${row.index}`}
 						>
 							Edit
 						</button>

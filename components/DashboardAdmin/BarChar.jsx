@@ -24,7 +24,15 @@ export default function BarChart() {
 		const response = await axios.get('http://localhost:3001/transactions');
 		const transactions = response.data;
 
-		const dailyExpenses = transactions.reduce((acc, transaction) => {
+		const sevenDaysAgo = new Date();
+		sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+		const filteredTransactions = transactions.filter((transaction) => {
+			const transactionDate = new Date(transaction.date);
+			return transactionDate >= sevenDaysAgo;
+		});
+
+		const dailyExpenses = filteredTransactions.reduce((acc, transaction) => {
 			const transactionDate = new Date(transaction.date).toLocaleDateString();
 			if (acc[transactionDate]) {
 				acc[transactionDate] += transaction.amount;
