@@ -1,11 +1,13 @@
 'use client';
 import Image from 'next/image';
-import logo from '../../public/logocommerce.png';
+import logo from '../../public/logo.png';
 import SideBar from '@/components/DashboardAdmin/SideBar';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NoAccess from '@/components/DashboardAdmin/NoAccess';
 import BarChart from '@/components/DashboardAdmin/BarChar';
+import PieChart from '@/components/DashboardAdmin/PieChart';
+import RecentPruchase from '@/components/DashboardAdmin/RecentPurchase';
 
 export default function AdminPage() {
 	const router = useRouter();
@@ -33,8 +35,12 @@ export default function AdminPage() {
 							/>
 							<div>Perfil Admin</div>
 						</nav>
-						<div>
+						<div className='flex justify-center'>
+							<PieChart />
+						</div>
+						<div className='p-4 grid md:grid-cols-3 grid-cols-1 gap-4 mt-7'>
 							<BarChart />
+							<RecentPruchase />
 						</div>
 					</main>
 				</SideBar>
