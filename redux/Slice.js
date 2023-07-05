@@ -68,6 +68,12 @@ export const Slice = createSlice({
       console.log(newArray);
       state.arrayPrice = [...newArray,action.payload]
     },
+    removePrice:(state,action)=>{
+      const newTotal = state.totalPay - action.payload
+      state.totalPay = newTotal
+      state.desc = Math.round(newTotal*0.15)
+      
+    }
   },
 });
 
@@ -81,6 +87,7 @@ export const { getProductsStart,
   addTotalPay,
   changeCupon,
   addArrayPrice,
+  removePrice
  } = Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
