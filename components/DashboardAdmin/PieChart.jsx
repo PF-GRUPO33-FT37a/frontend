@@ -39,7 +39,7 @@ export default function PieChart() {
 				setChartOptions({
 					plugins: {
 						legend: {
-							position: 'top',
+							position: 'right',
 						},
 						title: {
 							display: true,
@@ -62,7 +62,7 @@ export default function PieChart() {
 	}, []);
 
 	return (
-		<div className='h-[70vh] w-[60vh]'>
+		<div className='h-[70vh] w-[60vw]'>
 			<Pie
 				data={{
 					labels: chartData?.map((data) => data.name),
@@ -80,7 +80,6 @@ export default function PieChart() {
 					],
 				}}
 				options={chartOptions}
-				className='w-150 h-150'
 			/>
 		</div>
 	);
