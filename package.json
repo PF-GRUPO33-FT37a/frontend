@@ -25,6 +25,7 @@
     "framer-motion": "^10.12.16",
     "google-maps": "^4.3.3",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "nanoid": "^4.0.2",
     "next": "^13.4.7",
     "next-auth": "^4.22.1",

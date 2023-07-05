@@ -10,7 +10,7 @@ export default function SideBar({ children }) {
 			<div className='fixed w-20 h-screen p-4 bg-gray-100 border-r-[1px] flex flex-col justify-between'>
 				<div className='flex flex-col items-center'>
 					<Link href='/admin'>
-						<div className='bg-purple-800 text-white p-3 rounded-lg inline-block'>
+						<div className='bg-[#F8652A] text-white p-3 rounded-lg inline-block'>
 							<RxDashboard size={30} />
 						</div>
 					</Link>
