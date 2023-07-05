@@ -12,9 +12,7 @@ export default function RecentPurchase() {
 			try {
 				const response = await axios.get('http://localhost:3001/transactions');
 				const orders = response.data;
-
 				orders.sort((a, b) => {
-					// Ordenar por fecha de manera descendente
 					const dateA = new Date(a.date);
 					const dateB = new Date(b.date);
 					if (dateA > dateB) return -1;
@@ -22,7 +20,9 @@ export default function RecentPurchase() {
 					return b.amount - a.amount;
 				});
 
-				setTransactions(orders);
+				const recentOrders = orders.slice(0, 20);
+
+				setTransactions(recentOrders);
 				console.log(orders);
 			} catch (error) {
 				console.log(error);
