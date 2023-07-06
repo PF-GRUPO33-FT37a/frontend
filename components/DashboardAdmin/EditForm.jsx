@@ -67,8 +67,7 @@ export default function EditForm({ product, onClose }) {
 				? images.forEach((file) => {
 						formData.append('images', file);
 				  })
-				: formData.append('images', existingImages);
-			console.log(product.images);
+				: formData.append('images', product.images);
 			axios
 				.put(`http://localhost:3001/products/${product._id}`, formData)
 				.then((response) => {
@@ -79,7 +78,7 @@ export default function EditForm({ product, onClose }) {
 						confirmButtonText: 'continue',
 					});
 					console.log(response.data);
-					setTimeout(() => window.location.reload(), 1000);
+					setTimeout(() => window.location.reload(), 2000);
 					// formik.setValues(formik.initialValues);
 					// setSizeValue([]);
 					// setImages([]);
@@ -112,8 +111,7 @@ export default function EditForm({ product, onClose }) {
 			});
 			setSizeValue(product.size || []);
 			setColorValue(product.color || []);
-			setExistingImages(product.images);
-			// setImages(product.images || []);
+			setExistingImages(product.images || []);
 		}
 	}, [product]);
 	console.log(existingImages);
@@ -154,6 +152,7 @@ export default function EditForm({ product, onClose }) {
 		formik.setFieldValue('color', '');
 		console.log(color);
 	};
+
 	function handleImage(files) {
 		const selectFiles = Array.from(files).slice(0, 3);
 		setImages(selectFiles);
@@ -553,7 +552,7 @@ export default function EditForm({ product, onClose }) {
 						sizeValue.length > 0 && (
 							<button
 								type='submit'
-								className='font-normal text-[1rem] py-2 px-3 bg-black text-white transform -skew-x-12 w-24 h-12 shadow-md hover:bg-green-500 transition-colors duration-300'
+								className='font-normal text-[1rem] py-2 px-3 bg-black text-white transform -skew-x-12 w-24 h-12 shadow-md hover:bg-green-500 transition-colors duration-300 mb-6'
 								style={{
 									clipPath:
 										'polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%)',

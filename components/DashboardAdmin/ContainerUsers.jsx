@@ -353,7 +353,7 @@ export default function ContainerUsers() {
 					</select>
 					<button
 						onClick={saveChanges}
-						className='bg-orange-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded'
+						className='bg-orange-500 hover:bg-blue-900 ransition-colors duration-300 text-white font-bold py-2 px-4 rounded'
 					>
 						Guardar cambios
 					</button>
