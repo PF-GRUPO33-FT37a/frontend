@@ -7,15 +7,16 @@ import Link from 'next/link';
 import Menu from './Menu/Menu';
 import userBanner from '../public/userBanner.png';
 import { useRouter, usePathname } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { debounce } from 'lodash';
-import { searchProducts, clearState } from '@/redux/Slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { debounce, set } from 'lodash';
+import { searchProducts, clearState, newNotifyCart } from '@/redux/Slice';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import magnify from '../public/magnify.png'
 
 import { RxDashboard, RxPerson } from 'react-icons/rx';
+import MyCart from './MyCart';
 
 export default function NavBar() {
 	const [search, setSearch] = useState(null);
@@ -23,6 +24,9 @@ export default function NavBar() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const [ isOpen, setIsOpen ] = useState(false)
+	const [myCart, setMyCart] = useState()
+
+	const notifyCart = useSelector(state=> state.products.notifyCart)
 
 	useEffect(() => {
 		let data = JSON.parse(localStorage.getItem('user'));
@@ -30,11 +34,18 @@ export default function NavBar() {
 	}, []);
 
 	useEffect(() => {
+		console.log('hola');
 		const myCartLocal = localStorage.getItem('myCart');
 		if (!myCartLocal) {
 			localStorage.setItem('myCart', JSON.stringify([]));
+		}else{
+			const myCartParse = JSON.parse(myCartLocal)
+				console.log(myCartParse);
+				dispatch(newNotifyCart(myCartParse.length))
+				setMyCart(myCartParse)
+				console.log({ESTAMOSACAAADSADQEWQ:myCart});
 		}
-	}, []);
+	}, [notifyCart,dispatch]);
 
 	const pathname = usePathname();
 	useEffect(() => {
@@ -65,17 +76,18 @@ export default function NavBar() {
 		}
 	}, [search, dispatch]);
 
+	
 	console.log(userData);
 
 	return (
 		<nav className='flex flex-col justify-between pt-[1rem]  gap-y-[1.1rem] fixed w-full z-50 bg-white'>
-			<div className='flex justify-around w-full items-center'>
+			<div className='flex justify-around w-full items-center '>
 					<Link href={'/'}>
 						<Image className='w-[100px] h-auto relative left-[5rem]'
 						src={logo} alt='logo-img' width={200} height={200}/> {/* VER PARA QUE LIMPIE EL BUSCADOR AL CLIQUEAR*/}
 					</Link>
-				<div className='flex align-baseline justify-end w-[50%]'>
-					<motion.div className="flex justify-end relative w-[70%]" initial={false} animate={isOpen ? "open" : "closed"}>
+				<div className='flex align-baseline justify-between w-[50%] '>
+					<motion.div className=" flex justify-end relative w-[70%]" initial={false} animate={isOpen ? "open" : "closed"}>
 						<motion.input variants={{
 							open: {
 								clipPath: "none",
@@ -113,12 +125,30 @@ export default function NavBar() {
 						</motion.div>
 					</motion.div>
 
-				<div className={`flex items-center justify-between gap-x-[2rem]
-				 ${userData && userData.data ? "w-[15%]" : "w-[20%]"}`}>
+				<div className={`flex items-center justify-between gap-x-[2rem] 
+				 ${userData && userData.data ? "w-[20%]" : "w-[30%]"}`}>
 				<Link href={'/checkout'} className={` ${(userData && userData?.data?.isAdmin) ? "hidden" : ""}`}>
-					<motion.div whileTap={{ scale: 0.92}} whileHover={{scale: 1.1}}>
-						<Image src={cart} alt='ico-cart' width={250} height={250} />
-					</motion.div>
+
+					{
+						(myCart)
+						? 
+						<MyCart notifyCart={notifyCart} myCart={myCart}/>
+						:
+						<></>
+					}
+						
+					{/* <motion.div whileTap={{ scale: 0.92}} whileHover={{scale: 1.1}} className='relative '>
+						{
+							(notifyCart>0)
+							?
+						<div className='absolute w-[20px] h-[20px] rounded-full bg-green-500 left-[65%] top-[10%] flex justify-center items-center   '>
+							<span className='text-[0.8rem]'>{notifyCart}</span>
+						</div>
+						:<></>
+						}
+						<Image 
+						src={cart} alt='ico-cart' width={50} height={50} />
+					</motion.div> */}
 				</Link>
 				<div className={`bg-purple-800 text-white p-[0.6rem] rounded-lg ${(userData && userData?.data?.isAdmin) ? "inline-block" : "hidden" } `}>
 					<Link href={'/admin'}>
@@ -146,7 +176,7 @@ export default function NavBar() {
 							<motion.div whileTap={{ scale: 0.92}} whileHover={{scale: 1.1}}>
 								<Image 
 								className='rounded-full '
-								src={userData.data.image[0]} alt='img-user' width={280} height={280} />
+								src={userData.data.image[0]} alt='img-user' width={50} height={50} />
 							</motion.div>
 						</Link>
 					) : (
