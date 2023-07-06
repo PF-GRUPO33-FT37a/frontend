@@ -8,7 +8,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { CardElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Stripe Components/CheckoutForm";
 import { useRouter } from "next/navigation";
-import { removePrice } from "@/redux/Slice";
+import { removeNotifyCart, removePrice } from "@/redux/Slice";
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_KEY_PUBLIC}`); // estado "products"
 
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
                     return acu + size.cant
                 }, 0)
                 dispatch(removePrice(totalCant*prod.price))
-
+                dispatch(removeNotifyCart())
             }
         });
         const newArrayProduct = products.filter(product => {

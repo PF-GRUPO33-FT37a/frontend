@@ -14,7 +14,8 @@ export const Slice = createSlice({
     totalPay: 0,
     desc:0,
     cupon:false,
-    arrayPrice: []
+    arrayPrice: [],
+    notifyCart:0,
   },
   reducers: {
     getProductsStart: (state) => {
@@ -71,8 +72,17 @@ export const Slice = createSlice({
     removePrice:(state,action)=>{
       const newTotal = state.totalPay - action.payload
       state.totalPay = newTotal
-      state.desc = Math.round(newTotal*0.15)
-      
+      state.desc = Math.round(newTotal*0.15) 
+    },
+    addNotifyCart:(state,action)=>{
+      state.notifyCart = state.notifyCart + 1;
+      console.log("Aca estamos con santi ------------- bien  invasivo")
+    },
+    removeNotifyCart:(state,action)=>{
+      state.notifyCart = state.notifyCart - 1;
+    },
+    newNotifyCart:(state,action)=>{
+      state.notifyCart = action.payload
     }
   },
 });
@@ -87,7 +97,10 @@ export const { getProductsStart,
   addTotalPay,
   changeCupon,
   addArrayPrice,
-  removePrice
+  removePrice,
+  addNotifyCart,
+  removeNotifyCart,
+  newNotifyCart
  } = Slice.actions;
 
 export const getProducts = (gender, category) => async (dispatch) => {
