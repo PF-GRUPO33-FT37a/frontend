@@ -56,7 +56,12 @@ export default function Menu() {
                         className={`block pb-[0.4rem] font-bold ${pathname === '/' ? 'border-b-2 border-black' : ''}`}
                     >HOME</motion.li>
                 </Link>
-
+                <Link href={'/search'}>
+                    <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
+                        whileTap={{ scale: 0.92}}
+                        className={`block pb-[0.4rem] font-bold ${pathname === '/search'? 'border-b-2 border-black' : ''}`}
+                    >SHOP</motion.li>
+                </Link>
                 <div
                     onMouseEnter={openMenu}
                     onMouseLeave={closeMenu}
@@ -162,12 +167,6 @@ export default function Menu() {
                         className={`block pb-[0.4rem] font-bold ${pathname === '/about' ? 'border-b-2 border-black' : ''}`}
                     >ABOUT</motion.li>
                 </Link>
-                {/* <Link href={'/products/create'}>
-                <motion.li initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 0.2}}
-                    whileTap={{ scale: 0.92}}
-                    className={`block pb-[0.4rem] font-bold ${pathname === '/products/create'? 'border-b-2 border-black' : ''}`}
-                >CREATE</motion.li>
-            </Link> */}
             </ul>
         </div>
     )
