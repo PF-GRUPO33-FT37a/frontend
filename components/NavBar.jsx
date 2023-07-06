@@ -87,7 +87,7 @@ export default function NavBar() {
 						src={logo} alt='logo-img' width={200} height={200}/> {/* VER PARA QUE LIMPIE EL BUSCADOR AL CLIQUEAR*/}
 					</Link>
 				<div className='flex align-baseline justify-between w-[50%] '>
-					<motion.div className=" flex justify-end relative w-[70%]" initial={false} animate={isOpen ? "open" : "closed"}>
+					<motion.div className=" flex justify-end relative w-[70%] top-[0.6rem]" initial={false} animate={isOpen ? "open" : "closed"}>
 						<motion.input variants={{
 							open: {
 								clipPath: "none",
