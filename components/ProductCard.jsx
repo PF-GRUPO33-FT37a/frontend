@@ -316,8 +316,8 @@ export default function ProductCard({ product }) {
             >
                 <div className="relative h-[70%] ">
                     <Image
-                        className="w-[90%] h-[100%] object-cover mx-[auto] cursor-pointer"
-                        src={product?.images[0]} alt={product?.name} width={200} height={400} />
+                        className="w-[90%] h-[100%] object-contain mx-[auto] cursor-pointer"
+                        src={product?.images[0]} alt={product?.name} width={400} height={400} />
                     {
                         (product?.stock === 0)
                             ?

@@ -145,9 +145,8 @@ export default function FormProducts() {
 		let newArr = sizeValue.filter((size) => size.size != value);
 		setSizeValue(newArr);
 	};
-
 	return (
-		<div className='flex flex-col items-left bg-gray-100 rounded-lg shadow-md w-[70%] pt-[12rem] pl-[2rem] pr-[2rem] pb-[5rem]'>
+		<div className='flex flex-col items-left bg-gray-100 rounded-lg shadow-md w-[70%] pt-[5rem] pl-[2rem] pr-[2rem] pb-[5rem]'>
 			<h1 className='text-4xl font-black leading-[3.5rem] text-black mb-[2rem]'>
 				Add your products
 			</h1>
