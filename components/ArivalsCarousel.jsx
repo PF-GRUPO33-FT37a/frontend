@@ -2,6 +2,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import SkeletonArrivalsCarousel from '@/components/SkeletonComponents/SkeletonArrivalsCarousel';
 
 export default function ArivalsCarousel({items}){
     const router = useRouter()
@@ -65,15 +66,19 @@ export default function ArivalsCarousel({items}){
     slidesToSlide={2}
     swipeable
   >
-    {items?.map((item, index) => <div key={index} className='flex flex-col justify-center'>
-            <Image className='w-[180px] h-[250px] object-cover mt-[0.8rem] cursor-pointer'
-            onClick={handleClick} id={item._id}
-            src={item.images[0]} alt={`image_${index}`}
-            width={400} height={400}/>
-            <h1 className='text-white w-[180px] mt-[0.8rem]'>{item.price
-                .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-                .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</h1>
-            <h1 className='text-white w-[180px] mt-[0.8rem]'>{item.name}</h1>
-    </div>)}
+    {items.length ?
+      items?.map((item, index) => <div key={index} className='flex flex-col justify-center'>
+              <Image className='w-[180px] h-[250px] object-cover mt-[0.8rem] cursor-pointer'
+              onClick={handleClick} id={item._id}
+              src={item.images[0]} alt={`image_${index}`}
+              width={400} height={400}/>
+              <h1 className='text-white w-[180px] mt-[0.8rem]'>{item.price
+                  .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                  .replace(/\./g, '#').replace(/,/g, '.').replace(/#/g, ',')}</h1>
+              <h1 className='text-white w-[180px] mt-[0.8rem]'>{item.name}</h1>
+      </div>)
+      :
+      <SkeletonArrivalsCarousel/>
+    }
   </Carousel>)
 }

@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-export default function UserMenu({ setView }) {
+export default function UserMenu({ setView, view }) {
 	const myUser = window.localStorage.getItem('user')
 	const myUserParse = JSON.parse(myUser)
 	const { data: session } = useSession();
@@ -40,9 +40,9 @@ export default function UserMenu({ setView }) {
 		setView(id)
 	}
 	return (
-		<div className='relative w-[100%] shadow-xl py-[2rem]'>
-			<ul className='bg-white flex flex-col gap-y-[1rem]'>
-				<li className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
+		<div className='relative w-[100%] shadow-xl pt-[1rem]'>
+			<ul className='bg-white flex flex-col'>
+				<li className={`${view === 'profile' ? 'text-white bg-black' : 'text-black bg-white' } hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.8rem] cursor-pointer`}
 					id='profile' onClick={handleButtonClicks}>Account profile
 				</li>
 				{
@@ -50,14 +50,14 @@ export default function UserMenu({ setView }) {
 						?
 						<></>
 						:
-						<li className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
+						<li className={`${view === 'purchase_history' ? 'text-white bg-black' : 'text-black bg-white' } hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.8rem] cursor-pointer`}
 							id='purchase_history' onClick={handleButtonClicks}>Purchase history
 						</li>
 				}
 				{
 					myUserParse?.data?.isAdmin
 						?
-						<li className={`hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer`}
+						<li className={`${view === 'create' ? 'text-white bg-black' : 'text-black bg-white' } hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.8rem] cursor-pointer`}
 							id='create' onClick={handleButtonClicks}>Create product
 						</li>
 
@@ -66,7 +66,7 @@ export default function UserMenu({ setView }) {
 				}
 
 				<hr className='border-gray-200' />
-				<li className='hover:bg-[#909090] hover:text-[white] pl-[1.8rem] pr-[2rem] py-[0.6rem] cursor-pointer'
+				<li className='hover:bg-[#909090] hover:text-[white] pl-[1.8rem] py-[1rem] cursor-pointer'
 					onClick={handleClick}
 				>Log out
 				</li>
