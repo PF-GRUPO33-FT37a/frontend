@@ -84,7 +84,7 @@ export default function NavBar() {
 			<div className='flex justify-around w-full items-center '>
 					<Link href={'/'}>
 						<Image className='w-[100px] h-auto relative left-[5rem]'
-						src={logo} alt='logo-img' width={200} height={200} />
+						src={logo} alt='logo-img' width={200} height={200}/> {/* VER PARA QUE LIMPIE EL BUSCADOR AL CLIQUEAR*/}
 					</Link>
 				<div className='flex align-baseline justify-between w-[50%] '>
 					<motion.div className=" flex justify-end relative w-[70%]" initial={false} animate={isOpen ? "open" : "closed"}>
@@ -112,9 +112,10 @@ export default function NavBar() {
 								}
 							}
 						}}
-							className='bg-white text-[0.9rem] w-[500px] h-[40px] border-[2px] border-black border-solid" p-[0.3rem] pl-[1rem]'
+							className='bg-white rounded text-[0.9rem] w-[500px] h-[40px] border-[2px] border-black border-solid" p-[0.3rem] pl-[1rem]'
 							type='text'
 							onChange={handleChange}
+							onKeyPress={handleKeyPress}
 							value={search}
 							placeholder='Search a product'
 						/><motion.div whileHover={{scale: 1.01}}>
@@ -179,7 +180,8 @@ export default function NavBar() {
 							</motion.div>
 						</Link>
 					) : (
-						<Link href={'/login'} className='bg-black text-white font-semibold text-[0.9rem] p-[0.4rem] rounded-md'>Register/Login</Link>
+						<Link href={'/login'} className='bg-black text-white font-semibold text-[0.9rem] p-[0.4rem] rounded'
+						>Register/Login</Link>
 					)}
 				</div>
 				</div>
