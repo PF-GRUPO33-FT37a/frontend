@@ -145,8 +145,8 @@ export default function UserProfile(){
     }
 
     return <section className="m-[4rem] flex justify-center gap-x-[6rem]">
-        <div className="flex flex-col gap-y-[1rem]">
-            <h1 className="text-[2rem] font-black leading-[3.5rem]">Profile picture</h1>
+        <div className="flex flex-col gap-y-[1rem] items-center">
+            <h1 className="text-4xl font-black leading-[3.5rem]">Account profile</h1>
             <div className='relative'
                 onMouseEnter={handleMouse} onMouseLeave={handleMouse}>
                 <Image className='flex w-[250px] h-[250px] border-[1px] object-fill border-black border-[3px]' // imagen de perfil

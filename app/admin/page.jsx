@@ -22,7 +22,9 @@ export default function AdminPage() {
 
 	return (
 		<>
-			{userLocal?.data?.isAdmin ? (
+			{userLocal?.data?.isAdmin == false ? (
+				<NoAccess />
+			) : (
 				<SideBar>
 					<main className='bg-gray-100 min-h-screen'>
 						<nav className='flex justify-between w-[80%] mx-[auto] items-center py-[1rem]'>
@@ -44,8 +46,6 @@ export default function AdminPage() {
 						</div>
 					</main>
 				</SideBar>
-			) : (
-				<NoAccess />
 			)}
 		</>
 	);

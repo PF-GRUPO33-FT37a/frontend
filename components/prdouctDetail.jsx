@@ -168,7 +168,7 @@ export default function ProductDetail() {
                                     style={{
                                         transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
                                     }}
-                                    className="w-full  object-cover hover:scale-150 transform transition-transform"
+                                    className="w-full  object-fill hover:scale-150 transform transition-transform"
                                     src={currentImg} alt={`img`} width={1000} height={1000} />
                             </div>
                         </article>
