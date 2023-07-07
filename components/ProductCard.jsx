@@ -4,7 +4,7 @@ import 'tippy.js/dist/tippy.css';
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import sold from "../public/soldout.png"
-import { addNotifyCart, addTotalPay } from "@/redux/Slice";
+import { addTotalPay } from "@/redux/Slice";
 
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
@@ -79,7 +79,6 @@ export default function ProductCard({ product }) {
                 const cantzero = cantSelect.shift()
                 localStorage.setItem('myCart', JSON.stringify([{ ...product, cant: cant, cantSelect: cantSelect }]))
                 notify('Add to Cart')
-                dispatch(addNotifyCart())
             } else {
                 const cantzero = cantSelect.shift()
                 const productMyCart = { ...product, cant: cant, cantSelect:cantSelect }
@@ -89,7 +88,6 @@ export default function ProductCard({ product }) {
                     console.log(myCart);
                     localStorage.setItem('myCart', JSON.stringify(myCart))
                     notify('Add to Cart')
-                    dispatch(addNotifyCart())
                 } else {
 
                     console.log(sameProduct);
@@ -97,7 +95,6 @@ export default function ProductCard({ product }) {
                     const newArray = [...arrayFilter, productMyCart]
                     localStorage.setItem('myCart', JSON.stringify(newArray))
                     notify('Add to Cart')
-                    dispatch(addNotifyCart())
                 }
             }
 

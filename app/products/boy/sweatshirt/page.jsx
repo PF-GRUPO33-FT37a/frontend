@@ -9,7 +9,7 @@ import SkeletonFilterBar from "@/components/SkeletonComponents/SkeletonFilterBar
 import SkeletonContainerProducts from "@/components/SkeletonComponents/SkeletonContainerProducts"
 
 
-export default function BoySweatshirtPage() {
+export default function boySweatshirtPage() {
 
     const dispatch = useDispatch();
     const allProducts = useSelector((state) => state.products.allProducts);
