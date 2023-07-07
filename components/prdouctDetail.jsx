@@ -98,6 +98,8 @@ export default function ProductDetail() {
             console.log('entre');
             dispatch(addTotalPay(0))
             window.localStorage.setItem('myCart', JSON.stringify([{ ...productDetail[0], cantSelect: [cantSelect] }]))
+            notify('Add to Cart')
+            dispatch(addNotifyCart())
         }
         else {
             const product = myCart.find(prod => prod._id === productDetail[0]._id)
@@ -211,7 +213,7 @@ export default function ProductDetail() {
                                             </div>
                                         </div>
                                     </div>
-                                    <h3>Talles</h3>
+                                    <h3>Sizes</h3>
                                     {
                                         (myUserParse?.data?.isAdmin)
                                             ?
@@ -233,7 +235,7 @@ export default function ProductDetail() {
                                                 onChange={handleSelect}
                                                 name="" id="" className="text-black p-[0.6rem] w-[100%] text-center">
 
-                                                <option value="" selected disabled>Elegir talle</option>
+                                                <option value="" selected disabled>Select size</option>
                                                 {
                                                     productDetail[0]?.size?.map((size, index) => {
                                                         if (size.stock > 0) {
@@ -267,10 +269,10 @@ export default function ProductDetail() {
                                                             ?
                                                             <span
                                                                 onClick={addMyCart}
-                                                                className="text-[#F8652A] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#E9E9ED]">Agregar a carrito</span>
+                                                                className="text-[white] bg-[#f78559] p-[0.6rem] w-[100%] text-center border-[1px] border-[#F8652A] cursor-pointer hover:bg-[#F8652A]">Add to cart</span>
                                                             :
                                                             <span
-                                                                className="text-[#11111180] p-[0.6rem] w-[100%] text-center border-[1px] border-[#11111180] cursor-default ">Agregar a carrito</span>
+                                                                className="text-[#11111180] p-[0.6rem] w-[100%] text-center border-[1px] border-[#11111180] cursor-default ">Add to cart</span>
                                                     }
                                                 </div>
                                                 :

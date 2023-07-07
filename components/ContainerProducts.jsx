@@ -24,12 +24,14 @@ export default function ContainerProducts({products}) {
                ( products
                 ?
                 products.map((product)=>{
-                    return(
-                        <ProductCard
-                        key={product._id}
-                        product={product}
-                        />
-                    )
+                    if(product.isActive){
+                        return(
+                            <ProductCard
+                            key={product._id}
+                            product={product}
+                            />
+                        )
+                    }
                 })
 
                 :

@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import stripe from '../public/stripeblack.png'
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
+
 export default function Footer() {
 
 	const [inputNew, setInputNew] = useState("")
@@ -15,6 +18,13 @@ export default function Footer() {
 		email: "",
 		message: ""
 	})
+
+	const notify = (message) => {
+        toast.success(message, {
+            position:"bottom-left",
+            autoClose: 2000,
+        });
+    };
 
 	useEffect(() => {
 		console.log(dataForm)
@@ -37,10 +47,12 @@ export default function Footer() {
 	}
 
 	const submitNew = () =>{
+		
 		axios.post('http://localhost:3001/newsletter',{email:inputNew})
 		.then((response)=>{
 			alert('Gracias')
 		})
+		notify('Thanks for your subscription!')
 	}
 
 	console.log(inputNew);
@@ -97,7 +109,7 @@ export default function Footer() {
 								</div>
 								<span 
 								onClick={submitNew}
-								className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem]" >
+								className="rounded-[0.6rem] bg-[#909090] py-[0.6rem] px-[1rem] hover:bg-[#6d6c6c] cursor-pointer" >
 									Subscribe
 								</span>
 							</form>
@@ -157,13 +169,16 @@ export default function Footer() {
 					</article>
 
 					<article className='flex flex-col gap-y-[0.6rem]'>
-						<h3 className='underline cursor-default'>Redes</h3>
+						<h3 className='underline cursor-default'>Networks</h3>
 						<span className='text-[0.8rem] cursor-pointer'>Facebook</span>
 						<span className='text-[0.8rem] cursor-pointer'>Twitter</span>
 						<span className='text-[0.8rem] cursor-pointer'>Instagram</span>
 					</article>
 				</div>
 			</div>
+			<ToastContainer
+                    autoClose={2000}
+                    theme="light" />
 		</footer>
 	);
 }
